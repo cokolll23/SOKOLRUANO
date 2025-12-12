@@ -2,46 +2,19 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Интернет-магазин \"Одежда\"");
 ?>
-<?if (IsModuleInstalled("advertising")):?>
-	<div class="mb-5">
-		<?$APPLICATION->IncludeComponent(
-			"bitrix:advertising.banner",
-			"bootstrap_v4",
-			array(
-				"COMPONENT_TEMPLATE" => "bootstrap_v4",
-				"TYPE" => "MAIN",
-				"NOINDEX" => "Y",
-				"QUANTITY" => "3",
-				"BS_EFFECT" => "fade",
-				"BS_CYCLING" => "N",
-				"BS_WRAP" => "Y",
-				"BS_PAUSE" => "Y",
-				"BS_KEYBOARD" => "Y",
-				"BS_ARROW_NAV" => "Y",
-				"BS_BULLET_NAV" => "Y",
-				"BS_HIDE_FOR_TABLETS" => "N",
-				"BS_HIDE_FOR_PHONES" => "Y",
-				"CACHE_TYPE" => "A",
-				"CACHE_TIME" => "36000000",
-			),
-			false
-		);?>
-	</div>
-<?endif?>
-
 <?
+
 global $trendFilter;
 $trendFilter = array('PROPERTY_TREND' => '59');
 ?>
-<h2>Тренды сезона</h2>
 <?$APPLICATION->IncludeComponent(
-	"bitrix:catalog.section",
-	"bootstrap_v4",
+	"bitrix:catalog.section", 
+	"bootstrap_v4", 
 	array(
 		"IBLOCK_TYPE_ID" => "catalog",
 		"IBLOCK_ID" => "17",
 		"BASKET_URL" => "/bonus-shop/personal/cart/",
-		"COMPONENT_TEMPLATE" => "",
+		"COMPONENT_TEMPLATE" => "bootstrap_v4",
 		"IBLOCK_TYPE" => "catalog",
 		"SECTION_ID" => $_REQUEST["SECTION_ID"],
 		"SECTION_CODE" => "",
@@ -57,7 +30,7 @@ $trendFilter = array('PROPERTY_TREND' => '59');
 		"INCLUDE_SUBSECTIONS" => "Y",
 		"SHOW_ALL_WO_SECTION" => "Y",
 		"HIDE_NOT_AVAILABLE" => "N",
-		"PAGE_ELEMENT_COUNT" => "12",
+		"PAGE_ELEMENT_COUNT" => "9",
 		"LINE_ELEMENT_COUNT" => "3",
 		"PROPERTY_CODE" => array(
 			0 => "NEWPRODUCT",
@@ -81,7 +54,7 @@ $trendFilter = array('PROPERTY_TREND' => '59');
 		"PRODUCT_DISPLAY_MODE" => "Y",
 		"ADD_PICT_PROP" => "MORE_PHOTO",
 		"LABEL_PROP" => array(
-			0 => "NEWPRODUCT"
+			0 => "NEWPRODUCT",
 		),
 		"OFFER_ADD_PICT_PROP" => "-",
 		"OFFER_TREE_PROPS" => array(
@@ -135,8 +108,7 @@ $trendFilter = array('PROPERTY_TREND' => '59');
 		"ADD_PROPERTIES_TO_BASKET" => "Y",
 		"PRODUCT_PROPS_VARIABLE" => "prop",
 		"PARTIAL_PRODUCT_PROPERTIES" => "N",
-		"PRODUCT_PROPERTIES" => array(
-		),
+		"PRODUCT_PROPERTIES" => "",
 		"OFFERS_CART_PROPERTIES" => array(
 			0 => "COLOR_REF",
 			1 => "SIZES_SHOES",
@@ -156,7 +128,34 @@ $trendFilter = array('PROPERTY_TREND' => '59');
 		"SHOW_404" => "N",
 		"MESSAGE_404" => "",
 		"COMPATIBLE_MODE" => "N",
+		"CUSTOM_FILTER" => "{\"CLASS_ID\":\"CondGroup\",\"DATA\":{\"All\":\"AND\",\"True\":\"True\"},\"CHILDREN\":[]}",
+		"HIDE_NOT_AVAILABLE_OFFERS" => "N",
+		"PROPERTY_CODE_MOBILE" => array(
+		),
+		"BACKGROUND_IMAGE" => "-",
+		"PRODUCT_ROW_VARIANTS" => "[{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false}]",
+		"ENLARGE_PRODUCT" => "STRICT",
+		"PRODUCT_BLOCKS_ORDER" => "price,props,sku,quantityLimit,quantity,buttons",
+		"SHOW_SLIDER" => "Y",
+		"LABEL_PROP_MOBILE" => array(
+		),
+		"LABEL_PROP_POSITION" => "top-left",
+		"SHOW_MAX_QUANTITY" => "N",
+		"MESS_NOT_AVAILABLE_SERVICE" => "Недоступно",
+		"DISPLAY_COMPARE" => "N",
+		"USE_ENHANCED_ECOMMERCE" => "N",
+		"LAZY_LOAD" => "N",
+		"MESS_BTN_LAZY_LOAD" => "Показать ещё",
+		"LOAD_ON_SCROLL" => "N",
+		"DISABLE_INIT_JS_IN_COMPONENT" => "N",
+		"SLIDER_INTERVAL" => "3000",
+		"SLIDER_PROGRESS" => "N"
 	),
 	false
+);?>
+<?$APPLICATION->IncludeComponent(
+    "bitrix:eshop.banner",
+    "",
+    array()
 );?>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

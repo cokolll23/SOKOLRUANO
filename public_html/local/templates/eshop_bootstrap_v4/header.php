@@ -18,6 +18,7 @@ $curPage = $APPLICATION->GetCurPage(true);
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
     <link rel="shortcut icon" type="image/x-icon" href="<?= SITE_DIR ?>favicon.ico"/>
+
     <? $APPLICATION->ShowHead(); ?>
 </head>
 <body class="bx-background-image bx-theme-<?= $theme ?>" <? $APPLICATION->ShowProperty("backgroundImage"); ?>>
@@ -212,6 +213,7 @@ $curPage = $APPLICATION->GetCurPage(true);
 
     <div class="workarea">
         <div class="container-fluid bx-content-section">
+            <!--red banner img-->
             <? if ($curPage == SITE_DIR . "index.php"): ?>
                 <div class="row lab-banner">
                     <div class='col-6 lab-banner_text-wrapp'>
@@ -236,7 +238,21 @@ $curPage = $APPLICATION->GetCurPage(true);
                         endif; ?>
                     </div>
                 </div>
+                <div class="row lab-text-order">
+                    <? $APPLICATION->IncludeComponent(
+                            "bitrix:main.include",
+                            "",
+                            array(
+                                    "AREA_FILE_SHOW" => "file",
+                                    "PATH" => SITE_DIR . "include/text-order.php"
+                            ),
+                            false
+                    ); ?>
+
+                </div>
             <? endif ?>
+            <!--End red banner img-->
+
             <div class="row row-content">
                 <? $needSidebar = preg_match("~^" . SITE_DIR . "(catalog|personal\/cart|personal\/order\/make)/~", $curPage); ?>
                 <div class="bx-content <?= ($needSidebar ? "col" : "col-md-9 col-sm-8") ?>">

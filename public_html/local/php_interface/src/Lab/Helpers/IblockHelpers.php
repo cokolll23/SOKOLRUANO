@@ -1,8 +1,10 @@
 <?php
-namespace Lab\Helpers\Iblock;
+
+namespace Lab\Helpers;
 
 use Bitrix\Iblock\IblockTable;
 use Bitrix\Main\SystemException;
+use Bitrix\Iblock\PropertyTable;
 
 class IblockHelpers
 {
@@ -26,4 +28,26 @@ class IblockHelpers
         }
         return $foundIblocks[0]['ID'];
     }
+
+    public static function addElsToIblock($arUsers, $IblockId)
+    {
+// todo добавить элементы в ib  'sotrudniki'
+    }
+
+    public static function getPropsListIblock($iblockCode='sotrudniki')
+    {
+        $iblockId = self::getIblockIdByCode($iblockCode);
+        $properties = PropertyTable::getList([
+            'filter' => ['IBLOCK_ID' => $iblockId],
+            'order' => ['SORT' => 'ASC'],
+            'select' => ['*']
+        ]);
+
+        while ($property = $properties->fetch()) {
+            $arProps[] = $property;
+        }
+        return $arProps;
+    }
+
+
 }

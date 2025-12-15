@@ -3,6 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("test");
 
 use Lab\Helpers\UsersHelpers as Users;
+use Lab\Helpers\IblockHelpers as IH;
 
 
 ?>
@@ -408,6 +409,10 @@ function addUsersAno($arUsersAno)
 }
 //addUsersAno($arUsersAno);
 //=====================================================
+
+$arPtoperties = IH::getPropsListIblock();
+pretty_print($arPtoperties);
+
 ?>
 
 

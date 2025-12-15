@@ -5,6 +5,9 @@
 
 </div><!--end .container.bx-content-section-->
 </div><!--end .workarea-->
+<?
+$curPage = $APPLICATION->GetCurPage(true);
+if ($curPage == SITE_DIR . "index.php"): ?>
 <? $APPLICATION->IncludeComponent(
         "bitrix:main.include",
         "",
@@ -48,7 +51,7 @@
         "",
         array()
 ); ?>
-
+<?php endif; ?>
 <footer class="bx-footer">
 
 

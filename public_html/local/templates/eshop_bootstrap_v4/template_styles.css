@@ -532,19 +532,44 @@ NEW*/
     display: flex;
 }
 
-.order1 .li, .order2 .li {
+.order1 .li, .order2 .li, .order11 .li {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.order1 .li .ord-txt, .order2 .li .ord-txt {
+.order1 .li .ord-txt, .order2 .li .ord-txt, .order11 .li .ord-txt {
     font-size: 22px;
     line-height: 24px;
     padding-left: 10%;
 }
 
-.order1 .li .span, .order2 .li .span {
+.order1 .li .span, .order2 .li .span , .order11 .li .span{
+    border-radius: 50%;
+    display: flex;
+    width: 60px;
+    height: 60px;
+    background-color: #BE0510;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 900;
+
+}
+
+.order11{
+    flex-wrap: wrap;
+
+}
+.table{
+
+}
+.table td .td{
+    display: flex;
+
+}
+.table td .td .span{
     border-radius: 50%;
     display: flex;
     width: 60px;

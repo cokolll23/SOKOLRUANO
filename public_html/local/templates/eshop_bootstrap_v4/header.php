@@ -238,6 +238,7 @@ $curPage = $APPLICATION->GetCurPage(true);
                         endif; ?>
                     </div>
                 </div>
+            <div class="container">
                 <div class="row lab-text-order">
                     <? $APPLICATION->IncludeComponent(
                             "bitrix:main.include",
@@ -250,6 +251,7 @@ $curPage = $APPLICATION->GetCurPage(true);
                     ); ?>
 
                 </div>
+            </div>
             <? endif ?>
             <!--End red banner img-->
 

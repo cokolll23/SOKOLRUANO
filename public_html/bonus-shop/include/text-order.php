@@ -55,33 +55,46 @@
     </div>
 </div>
 <br><br><br><br>
-<div class="order1 flex  container" style="justify-content: center;">
 
-    <div class="li col-4">
-        <div class="span">1</div>
-        <div class="ord-txt">Успешное <br>прохождение <br>этапов адаптации</div>
-    </div>
-    <div class="li col-4">
-        <div class="span">2</div>
-        <div class="ord-txt">Активности, <br>способствующие <br>укреплению HR-бренда</div>
-    </div>
-    <div class="li col-4">
-        <div class="span">3</div>
-        <div class="ord-txt">Активное<br> участие в <br> корпоративных<br> событиях</div>
-    </div>
-</div>
-<div class="order2 flex  container" style="justify-content: center;">
-
-    <div class="li col-4">
-        <div class="span">4</div>
-        <div class="ord-txt">Своевременное и <br> регулярное <br>профессиональное <br>обучение</div>
-    </div>
-    <div class="li col-4">
-        <div class="span">5</div>
-        <div class="ord-txt">Участие в спортивных <br>соревнованиях</div>
-    </div>
-    <div class="li col-4">
-        <div class="span">6</div>
-        <div class="ord-txt">Особые <br> профессиональные <br> успехи</div>
-    </div>
-</div>
+<table class="table container-fluid">
+    <tr>
+        <td class="">
+            <div class="td">
+                <div class="span">1</div>
+                <div class="ord-txt">Успешное <br>прохождение <br>этапов адаптации</div>
+            </div>
+        </td>
+        <td>
+            <div class="td">
+                <div class="span">2</div>
+                <div class="ord-txt">Активности, <br>способствующие <br>укреплению HR-бренда</div>
+            </div>
+        </td>
+        <td>
+            <div class="td">
+                <div class="span">3</div>
+                <div class="ord-txt">Активное<br> участие в <br> корпоративных<br> событиях</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="td">
+                <div class="span">4</div>
+                <div class="ord-txt">Своевременное и <br> регулярное <br>профессиональное <br>обучение</div>
+            </div>
+        </td>
+        <td>
+            <div class="td">
+                <div class="span">5</div>
+                <div class="ord-txt">Участие в спортивных <br>соревнованиях</div>
+            </div>
+        </td>
+        <td>
+            <div class="td">
+                <div class="span">6</div>
+                <div class="ord-txt">Особые <br> профессиональные <br> успехи</div>
+            </div>
+        </td>
+    </tr>
+</table>

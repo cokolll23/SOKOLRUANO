@@ -17,4 +17,4 @@ $eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", ['Lab\Eve
 //$eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", 'OnAfterIBlockElementUpdateHandler');
 
 //todo Отменяем создание заказа до его создания при цена заказа выше определенной цифры https://chat.deepseek.com/a/chat/s/6e829ee6-c90c-46b8-a2f5-dbab70924b95
-AddEventHandler("sale", "OnBeforeOrderAdd", "OnBeforeOrderAddHandler");
+AddEventHandler("sale", "OnBeforeOrderAdd", ['Lab\EventsHandlers\SaleEventsHandlers', 'onBeforeOrderAdd']);

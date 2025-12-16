@@ -12,15 +12,25 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 $arPtoperties = $arResult["PROPERTIES"];
-pretty_print($arResult["ITEMS"]);
+//pretty_print($arResult);
 ?>
 <? if ($arParams["DISPLAY_TOP_PAGER"]): ?>
     <?= $arResult["NAV_STRING"] ?><br/>
 <? endif; ?>
+
 <table class="bonus iksweb">
     <thead class="stiky">
     <tr>
+        <?php global $USER;
+        if ($USER->IsAdmin()) {?>
+            <a class="btn btn-danger mr-1"  href="https://sokolru.ru/bitrix/admin/iblock_list_admin.php?IBLOCK_ID=21&type=users&lang=ru&find_section_section=0&SECTION_ID=0&apply_filter=Y">Редактировать</a>
+        <?php }; ?>
 
+        <?php foreach ($arResult["SECTIONS"] as $section): ?>
+            <a class="btn btn-danger mr-1" href=<?= SITE_DIR . 'tablitsa-ballov/?SECTION_ID='.$section['ID']?> ><?php echo $section['NAME']?></a>
+        <?php endforeach; ?>
+        <br>
+        <br>
     </tr>
     <tr>
         <th>Сотрудники</th>

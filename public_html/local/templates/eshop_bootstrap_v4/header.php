@@ -238,23 +238,26 @@ $curPage = $APPLICATION->GetCurPage(true);
                         endif; ?>
                     </div>
                 </div>
-            <div class="container">
-                <div class="row lab-text-order">
-                    <? $APPLICATION->IncludeComponent(
-                            "bitrix:main.include",
-                            "",
-                            array(
-                                    "AREA_FILE_SHOW" => "file",
-                                    "PATH" => SITE_DIR . "include/text-order.php"
-                            ),
-                            false
-                    ); ?>
+                <div class="container">
+                    <div class="row lab-text-order">
+                        <? $APPLICATION->IncludeComponent(
+                                "bitrix:main.include",
+                                "",
+                                array(
+                                        "AREA_FILE_SHOW" => "file",
+                                        "PATH" => SITE_DIR . "include/text-order.php"
+                                ),
+                                false
+                        ); ?>
 
+                    </div>
                 </div>
-            </div>
             <? endif ?>
             <!--End red banner img-->
-
-            <div class="row row-content">
-                <? $needSidebar = preg_match("~^" . SITE_DIR . "(catalog|personal\/cart|personal\/order\/make)/~", $curPage); ?>
-                <div class="bx-content <?= ($needSidebar ? "col" : "col-md-9 col-sm-8") ?>">
+            <? if ($curPage != SITE_DIR . "tablitsa-ballov/index.php"): ?>
+            <div class="row row-content ">
+            <? else: ?>
+            <div class="row ">
+            <? endif; ?>
+            <? $needSidebar = preg_match("~^" . SITE_DIR . "(catalog|personal\/cart|personal\/order\/make)/~", $curPage); ?>
+            <div class="bx-content <?= ($needSidebar ? "col" : "col-md-9 col-sm-8") ?>">

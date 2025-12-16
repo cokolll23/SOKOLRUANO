@@ -2,10 +2,7 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Таблица баллов");
 ?>
-    <a class="btn btn-danger"  href="https://otus.cokru.ru/bitrix/admin/iblock_list_admin.php?IBLOCK_ID=19&type=news&lang=ru&find_section_section=37&SECTION_ID=37">Редактировать</a>
-    <a class="btn btn-danger" href='/s2/tabl/?SECTION_ID=37'>АНО</a>
-    <a class="btn btn-danger" href="/s2/tabl/?SECTION_ID=39">МУФ</a>
-    <a class="btn btn-danger" href="/s2/tabl/?SECTION_ID=38">Комитет</a>
+
 
 <?$APPLICATION->IncludeComponent(
         "lab:news",

@@ -17,8 +17,13 @@ if ($curPage == SITE_DIR . "index.php"): ?>
         ),
         false
 ); ?>
-<div class="see-balls"></div>
+<a class="see-balls_wrapp" href=<?SITE_DIR?>"tablitsa-ballov/">
+<div class="see-balls">Посмотреть мои баллы
 
+    <svg width="50px" height="50px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter"><polyline points="13 17 18 12 13 7"></polyline><line x1="6" y1="12" x2="18" y2="12"></line></svg>
+
+</div>
+</a>
 <? $APPLICATION->IncludeComponent(
         "bitrix:advertising.banner",
         "bootstrap_v4",

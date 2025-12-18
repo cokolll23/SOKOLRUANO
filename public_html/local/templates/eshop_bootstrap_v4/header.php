@@ -19,7 +19,10 @@ $curPage = $APPLICATION->GetCurPage(true);
     <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
     <link rel="shortcut icon" type="image/x-icon" href="<?= SITE_DIR ?>favicon.ico"/>
 
-    <? $APPLICATION->ShowHead(); ?>
+    <? $APPLICATION->ShowHead();
+    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/fonts/ony/ony.css');
+    ?>
+
 </head>
 <body class="bx-background-image bx-theme-<?= $theme ?>" <? $APPLICATION->ShowProperty("backgroundImage"); ?>>
 <div id="panel"><? $APPLICATION->ShowPanel(); ?></div>

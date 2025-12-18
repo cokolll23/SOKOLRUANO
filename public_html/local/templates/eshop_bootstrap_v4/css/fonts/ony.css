@@ -1,0 +1,10 @@
+@font-face {
+    font-family: ONY_ONE;
+    src: url('ony/ONYOne-Regular.otf') format('otf');
+    font-style: normal;
+}
+@font-face {
+    font-family: ONY_TRACK;
+    src: url('ony/ONYOne-Bold.otf') format('otf');
+    font-style: normal;
+}

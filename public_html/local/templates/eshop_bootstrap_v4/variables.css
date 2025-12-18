@@ -46,15 +46,15 @@
 
 .bx-red,
 .bx-theme-red {
-	--primary: #e22b2b;
-	--theme-color-primary: #e22b2b;
+	--primary: #E30613;
+	--theme-color-primary: #E30613;
 	--theme-color-second: #e95c5c;
 	--theme-color-light: #f0f0f0;
-	--theme-b-link: #e22b2b;
+	--theme-b-link: #E30613;
 	--theme-b-link-hover: #e95c5c;
 	--theme-b-tx-primary: #fff;
-	--theme-b-bg-primary: #e22b2b;
-	--theme-b-bd-primary: #e22b2b;
+	--theme-b-bg-primary: #E30613;
+	--theme-b-bd-primary: #E30613;
 	--theme-b-sd-primary: rgba(226, 43, 43, 0.5);
 	--theme-b-tx-primary-hover: #fff;
 	--theme-b-bg-primary-hover: #e95c5c;

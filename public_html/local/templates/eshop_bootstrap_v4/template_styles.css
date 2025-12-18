@@ -667,4 +667,10 @@ a.see-balls_wrapp {
 .text-orders table.table tr td{
     border: none!important;
 }
+.more {
+    background-color: #e30613;
+    border-style: none !important;
+    border-radius: 30px;
+    padding: 20px ;
+}
 

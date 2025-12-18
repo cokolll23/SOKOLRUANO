@@ -458,7 +458,7 @@ $COLUMN33_Result = \CIBlockElement::GetList(
 )->GetNext();
 
 echo $COLUMN33_Value=$COLUMN33_Result['PROPERTY_COLUMN33_VALUE'];
-echo $elementId =$COLUMN33_Result['ID'];
+
 
 /*while($ar_fields = $COLUMN33_Result->fetch())
 {

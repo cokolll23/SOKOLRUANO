@@ -35,75 +35,72 @@ $eventManager->addEventHandler('sale', 'OnSaleStatusOrderChange', 'statusChange'
 function statusChange(\Bitrix\Main\Event $event)
 
 {
-
     $order = $event->getParameter("ENTITY");
+    if (in_array($order->getField('STATUS_ID'), array('F'))) {
+
+        $ORDER = \Bitrix\Sale\Order::load($order->getId());
+
+        if (!$ORDER) {
+            return;
+        }
+
+        // Получаем коллекцию свойств заказа
+        $propertyCollection = $ORDER->getPropertyCollection();
+        $userId = $ORDER->getUserId();
+
+        $customerProperties = [];
+
+        // Получаем email
+        $emailProperty = $propertyCollection->getUserEmail();
+        $orderPrice = $ORDER->getPrice();
+
+        $customerProperties['EMAIL'] = $emailProperty->getValue();
+        $customerProperties['PRICE'] = $orderPrice;
 
 
-    // if (in_array($order->getField('STATUS_ID'), array('F'))) {
+        $iblockId = IH::getIblockIdByCode('sotrudniki');
+        $propertyId = IH::getPropertyIdByCode('sotrudniki', 'COLUMN33');
+        $elementCode = $customerProperties['EMAIL'];
+        $propertyCode = 'COLUMN33';
 
-    $ORDER = \Bitrix\Sale\Order::load($order->getId());
+        $COLUMN33_Result = \CIBlockElement::GetList(
+            [],
+            [
+                'IBLOCK_ID' => $iblockId,
+                'CODE' => $elementCode,
+                'ACTIVE' => 'Y'
+            ],
+            false,
+            false,
+            [
+                'ID',
+                'NAME',
+                'PROPERTY_' . $propertyCode
+            ]
+        )->GetNext();
 
-    if (!$ORDER) {
-        return;
+        $COLUMN33_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode . '_VALUE'] ?? null;
+        $elementId = $COLUMN33_Result['ID'];
+
+        $COLUMN33_ValueNew = (int)$COLUMN33_Value - (int)$customerProperties['PRICE'];
+
+        $arPrices = [$COLUMN33_Value, $customerProperties['PRICE'], $COLUMN33_ValueNew];
+
+        // Устанавливаем значение свойства
+        \CIBlockElement::SetPropertyValuesEx(
+            $elementId,
+            $iblockId,
+            array(
+                "COLUMN33" => $COLUMN33_ValueNew
+            )
+        );
+
+
+        $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arPrices, true);
+        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));
+
     }
-
-    // Получаем коллекцию свойств заказа
-    $propertyCollection = $ORDER->getPropertyCollection();
-    $userId = $ORDER->getUserId();
-
-    $customerProperties = [];
-
-    // Получаем email
-    $emailProperty = $propertyCollection->getUserEmail();
-    $orderPrice = $ORDER->getPrice();
-
-    $customerProperties['EMAIL'] = $emailProperty->getValue();
-    $customerProperties['PRICE'] = $orderPrice;
-
-
-    $iblockId = IH::getIblockIdByCode('sotrudniki');
-    $propertyId = IH::getPropertyIdByCode('sotrudniki', 'COLUMN33');
-    $elementCode = $customerProperties['EMAIL'];
-    $propertyCode = 'COLUMN33';
-
-    $COLUMN33_Result = \CIBlockElement::GetList(
-        [],
-        [
-            'IBLOCK_ID' => $iblockId,
-            'CODE' => $elementCode,
-            'ACTIVE' => 'Y'
-        ],
-        false,
-        false,
-        [
-            'ID',
-            'NAME',
-            'PROPERTY_' . $propertyCode
-        ]
-    )->GetNext();
-
-    $COLUMN33_Value=$COLUMN33_Result['PROPERTY_' . $propertyCode . '_VALUE'] ?? null;
-    $elementId =$COLUMN33_Result['ID'];
-
-    $COLUMN33_ValueNew = $COLUMN33_Value-$customerProperties['PRICE'];
-
-    $arPrices = [$COLUMN33_Value,$customerProperties['PRICE'],$COLUMN33_ValueNew];
-
-    // Устанавливаем значение свойства
-    \CIBlockElement::SetPropertyValuesEx(
-        $elementId,
-        $iblockId,
-        array(
-            "COLUMN33" => $COLUMN33_ValueNew
-        )
-    );
-
-
-    $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arPrices, true);
-    file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-    Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));
-
-    //  }
 
 
 }

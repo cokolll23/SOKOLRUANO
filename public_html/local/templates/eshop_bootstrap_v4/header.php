@@ -34,29 +34,53 @@ $curPage = $APPLICATION->GetCurPage(true);
             <div class="row pt-0 pt-md-3 mb-3 align-items-center" style="position: relative;">
                 <div class="d-block d-md-none bx-menu-button-mobile" data-role='bx-menu-button-mobile-position'></div>
                 <!--region menu-->
-
-                <div class="col-4">
-                    <? $APPLICATION->IncludeComponent(
-                            "bitrix:menu",
-                            "bootstrap_ano",
-                            array(
-                                    "ROOT_MENU_TYPE" => "left",
-                                    "MENU_CACHE_TYPE" => "A",
-                                    "MENU_CACHE_TIME" => "36000000",
-                                    "MENU_CACHE_USE_GROUPS" => "Y",
-                                    "MENU_THEME" => "red",
-                                    "CACHE_SELECTED_ITEMS" => "N",
-                                    "MENU_CACHE_GET_VARS" => array(),
-                                    "MAX_LEVEL" => "3",
-                                    "CHILD_MENU_TYPE" => "left",
-                                    "USE_EXT" => "N",
-                                    "DELAY" => "N",
-                                    "ALLOW_MULTI_SELECT" => "N",
-                                    "COMPONENT_TEMPLATE" => "bootstrap_ano"
-                            ),
-                            false
-                    ); ?>
-                </div>
+                <? if ($curPage == SITE_DIR . "index.php"): ?>
+                    <div class="col-4">
+                        <? $APPLICATION->IncludeComponent(
+                                "bitrix:menu",
+                                "bootstrap_ano",
+                                array(
+                                        "ROOT_MENU_TYPE" => "left",
+                                        "MENU_CACHE_TYPE" => "A",
+                                        "MENU_CACHE_TIME" => "36000000",
+                                        "MENU_CACHE_USE_GROUPS" => "Y",
+                                        "MENU_THEME" => "red",
+                                        "CACHE_SELECTED_ITEMS" => "N",
+                                        "MENU_CACHE_GET_VARS" => array(),
+                                        "MAX_LEVEL" => "3",
+                                        "CHILD_MENU_TYPE" => "left",
+                                        "USE_EXT" => "N",
+                                        "DELAY" => "N",
+                                        "ALLOW_MULTI_SELECT" => "N",
+                                        "COMPONENT_TEMPLATE" => "bootstrap_ano"
+                                ),
+                                false
+                        ); ?>
+                    </div>
+                <? else: ?>
+                    <div class="col-4">
+                        <? $APPLICATION->IncludeComponent(
+                                "bitrix:menu",
+                                "bootstrap_ano",
+                                array(
+                                        "ROOT_MENU_TYPE" => "top",
+                                        "MENU_CACHE_TYPE" => "A",
+                                        "MENU_CACHE_TIME" => "36000000",
+                                        "MENU_CACHE_USE_GROUPS" => "Y",
+                                        "MENU_THEME" => "red",
+                                        "CACHE_SELECTED_ITEMS" => "N",
+                                        "MENU_CACHE_GET_VARS" => array(),
+                                        "MAX_LEVEL" => "3",
+                                        "CHILD_MENU_TYPE" => "left",
+                                        "USE_EXT" => "N",
+                                        "DELAY" => "N",
+                                        "ALLOW_MULTI_SELECT" => "N",
+                                        "COMPONENT_TEMPLATE" => "bootstrap_ano"
+                                ),
+                                false
+                        ); ?>
+                    </div>
+                <? endif; ?>
 
                 <!--endregion-->
                 <div class="col-4 col-md-4 align-items-center bx-header-logo"
@@ -154,46 +178,46 @@ $curPage = $APPLICATION->GetCurPage(true);
                     <div class="row mb-4">
                         <div class="col">
                             <? $APPLICATION->IncludeComponent(
-	"bitrix:search.title", 
-	"visual1",
-	array(
-		"NUM_CATEGORIES" => "1",
-		"TOP_COUNT" => "5",
-		"CHECK_DATES" => "N",
-		"SHOW_OTHERS" => "N",
-		"PAGE" => SITE_DIR."tablitsa-ballov/",
-		"CATEGORY_0_TITLE" => GetMessage("SEARCH_GOODS"),
-		"CATEGORY_0" => array(
-			0 => "iblock_catalog",
-			1 => "iblock_users",
-		),
-		"CATEGORY_0_iblock_catalog" => array(
-			0 => "all",
-		),
-		"CATEGORY_OTHERS_TITLE" => GetMessage("SEARCH_OTHER"),
-		"SHOW_INPUT" => "Y",
-		"INPUT_ID" => "title-search-input",
-		"CONTAINER_ID" => "search",
-		"PRICE_CODE" => array(
-			0 => "BASE",
-		),
-		"SHOW_PREVIEW" => "Y",
-		"PREVIEW_WIDTH" => "75",
-		"PREVIEW_HEIGHT" => "75",
-		"CONVERT_CURRENCY" => "Y",
-		"COMPONENT_TEMPLATE" => "visual",
-		"ORDER" => "date",
-		"USE_LANGUAGE_GUESS" => "Y",
-		"TEMPLATE_THEME" => "red",
-		"PRICE_VAT_INCLUDE" => "Y",
-		"PREVIEW_TRUNCATE_LEN" => "",
-		"CURRENCY_ID" => "RUB",
-		"CATEGORY_0_iblock_users" => array(
-			0 => "all",
-		)
-	),
-	false
-); ?>
+                                    "bitrix:search.title",
+                                    "visual1",
+                                    array(
+                                            "NUM_CATEGORIES" => "1",
+                                            "TOP_COUNT" => "5",
+                                            "CHECK_DATES" => "N",
+                                            "SHOW_OTHERS" => "N",
+                                            "PAGE" => SITE_DIR . "tablitsa-ballov/",
+                                            "CATEGORY_0_TITLE" => GetMessage("SEARCH_GOODS"),
+                                            "CATEGORY_0" => array(
+                                                    0 => "iblock_catalog",
+                                                    1 => "iblock_users",
+                                            ),
+                                            "CATEGORY_0_iblock_catalog" => array(
+                                                    0 => "all",
+                                            ),
+                                            "CATEGORY_OTHERS_TITLE" => GetMessage("SEARCH_OTHER"),
+                                            "SHOW_INPUT" => "Y",
+                                            "INPUT_ID" => "title-search-input",
+                                            "CONTAINER_ID" => "search",
+                                            "PRICE_CODE" => array(
+                                                    0 => "BASE",
+                                            ),
+                                            "SHOW_PREVIEW" => "Y",
+                                            "PREVIEW_WIDTH" => "75",
+                                            "PREVIEW_HEIGHT" => "75",
+                                            "CONVERT_CURRENCY" => "Y",
+                                            "COMPONENT_TEMPLATE" => "visual",
+                                            "ORDER" => "date",
+                                            "USE_LANGUAGE_GUESS" => "Y",
+                                            "TEMPLATE_THEME" => "red",
+                                            "PRICE_VAT_INCLUDE" => "Y",
+                                            "PREVIEW_TRUNCATE_LEN" => "",
+                                            "CURRENCY_ID" => "RUB",
+                                            "CATEGORY_0_iblock_users" => array(
+                                                    0 => "all",
+                                            )
+                                    ),
+                                    false
+                            ); ?>
                         </div>
                     </div>
                 <?php
@@ -258,7 +282,7 @@ $curPage = $APPLICATION->GetCurPage(true);
                     </div>
                 </div>
                 <div class="container">
-                    <div class="row lab-text-order">
+                    <div id="lab-text-order" class="row lab-text-order">
                         <? $APPLICATION->IncludeComponent(
                                 "bitrix:main.include",
                                 "",

@@ -11,7 +11,7 @@
 
     <table class="table container-fluid" style="border: none!important">
         <tr>
-            <td class="" >
+            <td class="">
                 <div class="td">
                     <div class="span">1</div>
                     <div class="ord-txt">Успешное <br>прохождение <br>этапов адаптации</div>
@@ -51,5 +51,12 @@
             </td>
         </tr>
     </table>
+    <div class="row">
+        <div class="col-md-4 col-sm-3"></div>
+        <div class="col-md-4 col-sm-3" style="text-align: center;">
+            <a style="width: 60%;font-weight: bold; font-size: 16px;"  href="https://disk.yandex.ru/d/EzOAujB8eLesOA" type="button" class="more btn btn-danger">Подробнее</a>
+        </div>
+        <div class="col-md-4 col-sm-3"></div>
+    </div>
 
 </div>

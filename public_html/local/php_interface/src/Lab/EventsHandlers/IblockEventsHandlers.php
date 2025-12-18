@@ -16,7 +16,11 @@ class IblockEventsHandlers
            $intElementID = $arFields['ID'];
            $iblockID = $arFields['IBLOCK_ID'];
 
+           if (!is_array($arFields['PROPERTY_VALUES']))
+               return;
+
            $res = array_diff_key($arFields['PROPERTY_VALUES'], array($propertyId => true)) ;
+
            array_walk_recursive($res, function ($item, $key) use (&$result) {
                $result[] = $item;
            });

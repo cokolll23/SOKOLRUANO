@@ -440,7 +440,31 @@ function addUsersAno($arUsersAno)
 
 //pretty_print($arUsersKomitet);
 
-echo IH::getPropertyIdByCode('sotrudniki', 'COLUMN33');
+
+$COLUMN33_Result = \CIBlockElement::GetList(
+    [],
+    [
+        'IBLOCK_ID' => 21,
+        'CODE' => 'ivanov.i@mos.ru',
+        'ACTIVE' => 'Y'
+    ],
+    false,
+    false,
+    [
+        'ID',
+        'NAME',
+        'PROPERTY_' . 'COLUMN33'
+    ]
+)->GetNext();
+
+echo $COLUMN33_Value=$COLUMN33_Result['PROPERTY_COLUMN33_VALUE'];
+echo $elementId =$COLUMN33_Result['ID'];
+
+/*while($ar_fields = $COLUMN33_Result->fetch())
+{
+    $ar[]=$COLUMN33_Result ;
+}*/
+//pretty_print($ar);
 
 ?>
 

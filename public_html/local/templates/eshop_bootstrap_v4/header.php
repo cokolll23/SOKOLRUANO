@@ -151,35 +151,46 @@ $curPage = $APPLICATION->GetCurPage(true);
                     <div class="row mb-4">
                         <div class="col">
                             <? $APPLICATION->IncludeComponent(
-                                    "bitrix:search.title",
-                                    "bootstrap_v4",
-                                    array(
-                                            "NUM_CATEGORIES" => "1",
-                                            "TOP_COUNT" => "5",
-                                            "CHECK_DATES" => "N",
-                                            "SHOW_OTHERS" => "N",
-                                            "PAGE" => SITE_DIR . "catalog/",
-                                            "CATEGORY_0_TITLE" => GetMessage("SEARCH_GOODS"),
-                                            "CATEGORY_0" => array(
-                                                    0 => "iblock_catalog",
-                                            ),
-                                            "CATEGORY_0_iblock_catalog" => array(
-                                                    0 => "all",
-                                            ),
-                                            "CATEGORY_OTHERS_TITLE" => GetMessage("SEARCH_OTHER"),
-                                            "SHOW_INPUT" => "Y",
-                                            "INPUT_ID" => "title-search-input",
-                                            "CONTAINER_ID" => "search",
-                                            "PRICE_CODE" => array(
-                                                    0 => "BASE",
-                                            ),
-                                            "SHOW_PREVIEW" => "Y",
-                                            "PREVIEW_WIDTH" => "75",
-                                            "PREVIEW_HEIGHT" => "75",
-                                            "CONVERT_CURRENCY" => "Y"
-                                    ),
-                                    false
-                            ); ?>
+	"bitrix:search.title", 
+	"visual1",
+	array(
+		"NUM_CATEGORIES" => "1",
+		"TOP_COUNT" => "5",
+		"CHECK_DATES" => "N",
+		"SHOW_OTHERS" => "N",
+		"PAGE" => SITE_DIR."tablitsa-ballov/",
+		"CATEGORY_0_TITLE" => GetMessage("SEARCH_GOODS"),
+		"CATEGORY_0" => array(
+			0 => "iblock_catalog",
+			1 => "iblock_users",
+		),
+		"CATEGORY_0_iblock_catalog" => array(
+			0 => "all",
+		),
+		"CATEGORY_OTHERS_TITLE" => GetMessage("SEARCH_OTHER"),
+		"SHOW_INPUT" => "Y",
+		"INPUT_ID" => "title-search-input",
+		"CONTAINER_ID" => "search",
+		"PRICE_CODE" => array(
+			0 => "BASE",
+		),
+		"SHOW_PREVIEW" => "Y",
+		"PREVIEW_WIDTH" => "75",
+		"PREVIEW_HEIGHT" => "75",
+		"CONVERT_CURRENCY" => "Y",
+		"COMPONENT_TEMPLATE" => "visual",
+		"ORDER" => "date",
+		"USE_LANGUAGE_GUESS" => "Y",
+		"TEMPLATE_THEME" => "red",
+		"PRICE_VAT_INCLUDE" => "Y",
+		"PREVIEW_TRUNCATE_LEN" => "",
+		"CURRENCY_ID" => "RUB",
+		"CATEGORY_0_iblock_users" => array(
+			0 => "all",
+		)
+	),
+	false
+); ?>
                         </div>
                     </div>
                 <?php
@@ -216,12 +227,17 @@ $curPage = $APPLICATION->GetCurPage(true);
             <!--red banner img-->
             <? if ($curPage == SITE_DIR . "index.php"): ?>
                 <div class="row lab-banner">
-                    <div class='col-6 lab-banner_text-wrapp'>
-                        <div class='col-6 lab-banner_text-inner'>
-                            <div class="lab-banner_text-big1">Магазин</div>
-                            <div class="lab-banner_text-big2">бонусов</div>
-                            <p class="lab-banner_text-small1">Обменяй М-баллы</p>
-                            <p class="lab-banner_text-small2">на приятные сюрпризы!</p>
+                    <div class='col lab-banner_text-wrapp'>
+                        <div class='col lab-banner_text-inner'>
+                            <div class="">
+                                <div class="lab-banner_text-big1">Магазин</div>
+                                <br>
+                                <div class="lab-banner_text-big2">бонусов</div>
+                            </div>
+                            <div class="">
+                                <div class="lab-banner_text-small1">Обменяй М-баллы</div>
+                                <div class="lab-banner_text-small2">на приятные сюрпризы!</div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-6 lab-banner-img">
@@ -252,12 +268,24 @@ $curPage = $APPLICATION->GetCurPage(true);
 
                     </div>
                 </div>
+                <div class="row container lab-text-order1">
+                    <? $APPLICATION->IncludeComponent(
+                            "bitrix:main.include",
+                            "",
+                            array(
+                                    "AREA_FILE_SHOW" => "file",
+                                    "PATH" => SITE_DIR . "include/text-order1.php"
+                            ),
+                            false
+                    ); ?>
+
+                </div>
             <? endif ?>
             <!--End red banner img-->
             <? if ($curPage != SITE_DIR . "tablitsa-ballov/index.php"): ?>
             <div class="row row-content ">
-            <? else: ?>
-            <div class="row ">
-            <? endif; ?>
-            <? $needSidebar = preg_match("~^" . SITE_DIR . "(catalog|personal\/cart|personal\/order\/make)/~", $curPage); ?>
-            <div class="bx-content <?= ($needSidebar ? "col" : "col-md-9 col-sm-8") ?>">
+                <? else: ?>
+                <div class="row ">
+                    <? endif; ?>
+                    <? $needSidebar = preg_match("~^" . SITE_DIR . "(catalog|personal\/cart|personal\/order\/make)/~", $curPage); ?>
+                    <div class="bx-content <?= ($needSidebar ? "col" : "col-md-9 col-sm-8") ?>">

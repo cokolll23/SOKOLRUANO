@@ -508,10 +508,17 @@ NEW*/
 
 .lab-banner_text-wrapp {
     position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+
 }
 
 .lab-banner_text-wrapp, .lab-banner_text-inner {
-
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .lab-align-right {
@@ -538,13 +545,13 @@ NEW*/
     justify-content: center;
 }
 
-.order1 .li .ord-txt, .order2 .li .ord-txt, .order11 .li .ord-txt {
+.order1 .li .ord-txt, .order2 .li .ord-txt, .ord-txt {
     font-size: 22px;
     line-height: 24px;
     padding-left: 10%;
 }
 
-.order1 .li .span, .order2 .li .span , .order11 .li .span{
+.order1 .li .span, .order2 .li .span, .order11 .li .span {
     border-radius: 50%;
     display: flex;
     width: 60px;
@@ -558,18 +565,21 @@ NEW*/
 
 }
 
-.order11{
+.order11 {
     flex-wrap: wrap;
 
 }
-.table{
+
+.table {
 
 }
-.table td .td{
+
+.table td .td {
     display: flex;
 
 }
-.table td .td .span{
+
+.table td .td .span {
     border-radius: 50%;
     display: flex;
     width: 60px;
@@ -582,7 +592,8 @@ NEW*/
     font-weight: 900;
 
 }
-.see-balls{
+
+.see-balls {
     font-weight: 900;
     color: #fff;
     font-size: 36px;
@@ -590,6 +601,21 @@ NEW*/
     align-items: center;
     justify-content: center;
 }
-a.see-balls_wrapp{
+
+a.see-balls_wrapp {
     text-decoration: none;
+}
+
+.alert.alert-danger {
+    z-index: 11111;
+}
+#bx-soa-region,
+#bx-soa-delivery,
+#bx-soa-pickup,
+#bx-soa-paysystem {
+    display: none;
+}
+.title-search-result{z-index: 44444!important;}
+.bx_searche .bx_item_element a{
+    color: #BE0510!important;
 }

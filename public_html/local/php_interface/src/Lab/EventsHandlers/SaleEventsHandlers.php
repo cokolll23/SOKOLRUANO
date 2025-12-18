@@ -1,6 +1,10 @@
 <?php
 namespace Lab\EventsHandlers;
 
+
+use Bitrix\Sale;
+use Bitrix\Catalog;
+use Bitrix\Main\Diag\Debug;
 use Lab\Helpers\IblockHelpers as IH;
 
 
@@ -49,6 +53,14 @@ class SaleEventsHandlers
 
         $log = date('Y-m-d H:i:s') . ' OnAfterIBlockElementUpdateHandler ' . print_r($arFields, true);
         file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+
+    }
+
+    public static function onStatusChange(Bitrix\Main\Event $event)
+    {
+        $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($event, true);
+        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));
 
     }
 

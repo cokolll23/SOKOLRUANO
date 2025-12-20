@@ -20,6 +20,42 @@ if (!CModule::IncludeModule("iblock")) {
     return;
 }
 
+// todo  уменьшение количества товара при оформлении заказа битрикс
+$eventManager->addEventHandler('sale', 'OnSaleOrderSaved', function(\Bitrix\Main\Event $event) {
+    $order = $event->getParameter("ENTITY");
+
+    $order = $event->getParameter("ENTITY");
+    $isNew = $event->getParameter("IS_NEW");
+
+    if (!$isNew) {
+        return;
+    }
+
+    $basket = $order->getBasket();
+
+    foreach ($basket as $basketItem) {
+        $productId = $basketItem->getProductId();
+        $quantity = $basketItem->getQuantity();
+
+        // Вариант 1: Обновление через CCatalogProduct
+        if (\Bitrix\Main\Loader::includeModule('catalog')) {
+            // Получаем текущие остатки
+            $productData = CCatalogProduct::GetByID($productId);
+
+            if ($productData) {
+                $newQuantity = $productData['QUANTITY'] - $quantity;
+
+                // Обновляем общее количество
+                CCatalogProduct::Update($productId, [
+                    'QUANTITY' => $newQuantity
+                ]);
+            }
+        }
+
+
+    }
+});
+
 // todo сделать хендлер при изменении элемента складывать значения свойств
 $eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementUpdateHandler']);
 //$eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", 'OnAfterIBlockElementUpdateHandler');
@@ -29,13 +65,16 @@ AddEventHandler("sale", "OnBeforeOrderAdd", ['Lab\EventsHandlers\SaleEventsHandl
 
 //todo при изменении статуса на Выполнен id F  вычитает стоимость заказа из значения св-ва COLUMN33 данного покупателя вычисляем по E-mail
 // в иб sotrudniki по символьному коду элемента
-//$eventManager->addEventHandler('sale', 'OnSaleStatusOrderChange', ['\Lab\EventsHandlers\SaleEventsHandlers', 'onStatusChange']);
 $eventManager->addEventHandler('sale', 'OnSaleStatusOrderChange', 'statusChange');
-//addEventHandler('sale', 'OnSaleOrderSaved', ['Lab\EventsHandlers\SaleEventsHandlers', 'onStatusChange']);
 function statusChange(\Bitrix\Main\Event $event)
 
 {
     $order = $event->getParameter("ENTITY");
+
+    if (in_array($order->getField('STATUS_ID'), array('D'))) {
+        // при отмене увеличение количества товара
+    }
+
     if (in_array($order->getField('STATUS_ID'), array('F'))) {
 
         $ORDER = \Bitrix\Sale\Order::load($order->getId());

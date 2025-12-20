@@ -109,4 +109,19 @@ class UsersHelpers
           }*/
     }
 
+    public static function getCurrentUserEmail(){
+        // Получаем ID текущего пользователя
+        global $USER;
+        $userId = $USER->GetID();
+
+        if ($userId > 0) {
+            // Запрашиваем профиль пользователя
+            $rsUser = \CUser::GetByID($userId);
+            if ($arUser = $rsUser->Fetch()) {
+                $userEmail=$arUser["EMAIL"];
+            }
+        }
+        return $userEmail;
+    }
+
 }

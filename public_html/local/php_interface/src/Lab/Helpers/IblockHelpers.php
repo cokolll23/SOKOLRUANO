@@ -8,6 +8,9 @@ use Bitrix\Iblock\PropertyTable;
 use Bitrix\Iblock\SectionTable;
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\Loader;
+use Lab\Helpers\UsersHelpers as UH;
+
+;
 
 Loader::includeModule('iblock');
 
@@ -141,5 +144,48 @@ class IblockHelpers
         }
 
         return false;
+    }
+
+    /*
+     * получить инфу элемента иб по емеил текущего пользователя
+     * array(ID NAME PROPERTY_$propertyCode_VALUE)
+     * output $iblockId
+     * $iblockName
+     * $propVal by Code
+     */
+    public static function getPropertyValIblockByEmailCurrentUser($iblockCode, $propertyCode)
+    {
+        $currentUserEmail = UH::getCurrentUserEmail();
+        $IBLOCK_ID = self::getIblockIdByCode($iblockCode);
+
+
+        $propVal = \CIBlockElement::GetList(
+            [],
+            [
+                'IBLOCK_ID' => $IBLOCK_ID,
+                'CODE' => $currentUserEmail,
+                'ACTIVE' => 'Y'
+            ],
+            false,
+            false,
+            [
+                'ID',
+                'NAME',
+                'PROPERTY_' . $propertyCode
+            ]
+        )->GetNext();
+       /* if ($propVal['PROPERTY_'.$propertyCode.'_VALUE']!=''){
+
+            $propertyVal = 'У вас сумма баллов : '.$propVal['PROPERTY_'.$propertyCode.'_VALUE'];
+        }else{
+            $propertyVal = 'У вас на данный момент нет баллов';
+        }*/
+
+       return  $propVal;
+    }
+
+    public static function getIblockElementInfo()
+    {
+
     }
 }

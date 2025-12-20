@@ -12,7 +12,7 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 $arPtoperties = $arResult["PROPERTIES"];
-pretty_print($arResult["ITEMS"]);
+//pretty_print($arResult["ITEMS"]);
 ?>
 <? if ($arParams["DISPLAY_TOP_PAGER"]): ?>
     <?= $arResult["NAV_STRING"] ?><br/>
@@ -47,6 +47,8 @@ pretty_print($arResult["ITEMS"]);
         <?
         $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
         $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
+
+        //pretty_print($arItem["PROPERTIES"]);
         ?>
         <tr class="news-item" id="<?=$this->GetEditAreaId($arItem['ID']);?>">
             <td><? if ($arParams["DISPLAY_NAME"] != "N" && $arItem["NAME"]): ?>
@@ -60,13 +62,11 @@ pretty_print($arResult["ITEMS"]);
             <?
 
             foreach ($arItem["PROPERTIES"] as $pid => $arProperty): ?>
-                <? if ($arProperty["VALUE"] != ''): ?>
+
                     <td>
-                        <?= $arProperty["DISPLAY_VALUE"]; ?>
+                        <?= $arProperty["VALUE"]; ?>
                     </td>
-                <? else: ?>
-                    <td></td>
-                <? endif; ?>
+
             <? endforeach; ?>
         </tr>
     <? endforeach; ?>

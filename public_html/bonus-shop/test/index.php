@@ -388,7 +388,7 @@ $arMuf = json_decode($strMuf, true);
 function addUsersAno($arUsersAno)
 {
     foreach ($arUsersAno as $userFields) {
-        $userFields=(array)$userFields;
+        $userFields = (array)$userFields;
         $lastName = $userFields['Фамилия'];
         $firstName = $userFields['Имя'];
         $Email = $userFields['E-Mail'];
@@ -409,6 +409,7 @@ function addUsersAno($arUsersAno)
         }
     }
 }
+
 //addUsersAno($arUsersAno);
 //=====================================================
 
@@ -441,11 +442,25 @@ function addUsersAno($arUsersAno)
 //pretty_print($arUsersKomitet);
 
 
+$IBLOCK_ID = IH::getIblockIdByCode('sotrudniki');
+// Получаем ID текущего пользователя
+global $USER;
+$userId = $USER->GetID();
+
+if ($userId > 0) {
+    // Запрашиваем профиль пользователя
+    $rsUser = CUser::GetByID($userId);
+    if ($arUser = $rsUser->Fetch()) {
+        $userEmail = $arUser["EMAIL"];
+    }
+}
+
+
 $COLUMN33_Result = \CIBlockElement::GetList(
     [],
     [
-        'IBLOCK_ID' => 21,
-        'CODE' => 'ivanov.i@mos.ru',
+        'IBLOCK_ID' => $IBLOCK_ID,
+        'CODE' => $userEmail,
         'ACTIVE' => 'Y'
     ],
     false,
@@ -457,7 +472,7 @@ $COLUMN33_Result = \CIBlockElement::GetList(
     ]
 )->GetNext();
 
-echo $COLUMN33_Value=$COLUMN33_Result['PROPERTY_COLUMN33_VALUE'];
+$COLUMN33_Value = $COLUMN33_Result['PROPERTY_COLUMN33_VALUE'];
 
 
 /*while($ar_fields = $COLUMN33_Result->fetch())
@@ -465,8 +480,21 @@ echo $COLUMN33_Value=$COLUMN33_Result['PROPERTY_COLUMN33_VALUE'];
     $ar[]=$COLUMN33_Result ;
 }*/
 //pretty_print($ar);
+$userId = $USER->GetID();
 
+
+$ar = IH::getPropertyValIblockByEmailCurrentUser('sotrudniki', 'COLUMN33');
+
+if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
+
+    $propertyVal = 'У вас сумма баллов : ' . $ar['PROPERTY_COLUMN33_VALUE'];
+} else {
+    $propertyVal = 'У вас на данный момент нет баллов';
+}
+pretty_print($ar);
+echo $ar['ID'];
 ?>
+    <a href='<?= SITE_DIR ?>tablitsa-ballov/?ELEMENT_ID=<?= $ar['ID']; ?>'>Ссылка</a>
 
 
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

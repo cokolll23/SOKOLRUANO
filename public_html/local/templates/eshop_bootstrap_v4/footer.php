@@ -55,14 +55,43 @@ if ($curPage == SITE_DIR . "index.php"): ?>
                     "ACTIVE_COMPONENT" => "Y"
             )
     ); ?>
-    <div id="feedback">
-        <? $APPLICATION->IncludeComponent(
-                "sporina:forms.feedback",
-                "",
-                array()
-        ); ?>
-    </div>
+
 <?php endif; ?>
+<?php // форма обратной связи?>
+<div id="feedback">
+    <? $APPLICATION->IncludeComponent(
+	"sporina:forms.feedback", 
+	".default", 
+	array(
+		"COMPONENT_TEMPLATE" => ".default",
+		"FORM_NAME" => "Форма обратной связи",
+		"SUCCESS_MESSAGE" => "Спасибо! Ваша заявка отправлена.",
+		"ERROR_MESSAGE" => "Ошибка при отправке. Попробуйте позже.",
+		"USE_POPUP" => "N",
+		"SHOW_NAME" => "Y",
+		"SHOW_PHONE" => "Y",
+		"SHOW_EMAIL" => "Y",
+		"SHOW_MESSAGE" => "Y",
+		"REQUIRED_FIELDS" => array(
+			0 => "NAME",
+			1 => "PHONE",
+			2 => "EMAIL",
+		),
+		"FORM_BACKGROUND_COLOR" => "#ffffff",
+		"FIELD_BACKGROUND_COLOR" => "#ffffff",
+		"BUTTON_BACKGROUND_COLOR" => "#E30613 ",
+		"BUTTON_TEXT_COLOR" => "#ffffff",
+		"BORDER_COLOR" => "#dddddd",
+		"TEXT_COLOR" => "#333333",
+		"VALIDATE_EMAIL" => "Y",
+		"VALIDATE_PHONE" => "Y",
+		"ENABLE_CONSENT" => "N",
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => "3600"
+	),
+	false
+); ?>
+</div>
 <footer class="bx-footer">
 
 

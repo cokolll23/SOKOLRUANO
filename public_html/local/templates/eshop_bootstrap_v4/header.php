@@ -35,7 +35,7 @@ $curPage = $APPLICATION->GetCurPage(true);
                 <div class="d-block d-md-none bx-menu-button-mobile" data-role='bx-menu-button-mobile-position'></div>
                 <!--region menu-->
                 <? if ($curPage == SITE_DIR . "index.php"): ?>
-                    <div class="col-4">
+                    <div class="col-3">
                         <? $APPLICATION->IncludeComponent(
                                 "bitrix:menu",
                                 "bootstrap_ano",
@@ -58,7 +58,7 @@ $curPage = $APPLICATION->GetCurPage(true);
                         ); ?>
                     </div>
                 <? else: ?>
-                    <div class="col-4">
+                    <div class="col-3">
                         <? $APPLICATION->IncludeComponent(
                                 "bitrix:menu",
                                 "bootstrap_ano",
@@ -83,7 +83,8 @@ $curPage = $APPLICATION->GetCurPage(true);
                 <? endif; ?>
 
                 <!--endregion-->
-                <div class="col-4 col-md-4 align-items-center bx-header-logo"
+                <!--region logo-->
+                <div class="col-3 col-md-3 align-items-center bx-header-logo"
                      style="display: flex;justify-content: center;">
                     <a class="bx-logo-block d-none d-md-block" href="<?= SITE_DIR ?>">
                         <? $APPLICATION->IncludeComponent(
@@ -107,8 +108,25 @@ $curPage = $APPLICATION->GetCurPage(true);
                         ); ?>
                     </a>
                 </div>
+                <!--endregion-->
+                <!--region cur user баллы -->
+                <div class="col-3 col-md-3 align-items-center bx-header-logo"
+                     style="display: flex;justify-content: center;    flex-direction: column;">
+                    <!--<a class="bx-logo-block d-none d-md-block" href="<?php /*= SITE_DIR */?>">-->
+                        <? $APPLICATION->IncludeComponent(
+                                "bitrix:main.include",
+                                "",
+                                array(
+                                        "AREA_FILE_SHOW" => "file",
+                                        "PATH" => SITE_DIR . "include/curUserBally.php"),
+                                false
+                        ); ?>
+                    <!--</a>-->
 
-                <div class="col-4 d-none d-md-block bx-header-personal">
+                </div>
+                <!--endregion-->
+
+                <div class="col-3 d-none d-md-block bx-header-personal">
                     <? $APPLICATION->IncludeComponent(
                             "bitrix:sale.basket.basket.line",
                             "bootstrap_v4",
@@ -175,7 +193,7 @@ $curPage = $APPLICATION->GetCurPage(true);
             if (1):
                 if (\Bitrix\Main\ModuleManager::isModuleInstalled('search')):
                     ?>
-                    <div class="row mb-4">
+                    <div class="row mb-3">
                         <div class="col">
                             <? $APPLICATION->IncludeComponent(
                                     "bitrix:search.title",
@@ -228,7 +246,7 @@ $curPage = $APPLICATION->GetCurPage(true);
 
             <!--region breadcrumb-->
             <? if ($curPage != SITE_DIR . "index.php"): ?>
-                <div class="row mb-4">
+                <div class="row mb-3">
                     <div class="col" id="navigation">
                         <? $APPLICATION->IncludeComponent(
                                 "bitrix:breadcrumb",
@@ -243,7 +261,7 @@ $curPage = $APPLICATION->GetCurPage(true);
                         ); ?>
                     </div>
                 </div>
-                <h1 id="pagetitle"><? $APPLICATION->ShowTitle(false); ?></h1>
+
             <? endif ?>
             <!--endregion-->
         </div>
@@ -307,6 +325,8 @@ $curPage = $APPLICATION->GetCurPage(true);
                     ); ?>
 
                 </div>
+            <?else:?>
+                <h1 id="pagetitle"><? $APPLICATION->ShowTitle(false); ?></h1>
             <? endif ?>
             <!--End red banner img-->
             <? if ($curPage != SITE_DIR . "tablitsa-ballov/index.php"): ?>

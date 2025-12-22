@@ -1,0 +1,56 @@
+@font-face {
+    font-family: 'ONY One';
+    src: url('ONYOne-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ONY One';
+    src: url('ONYOne-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'ONY Moscow Condenced';
+    src: url('ONY_MOSCOWbrand-Condenced.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ONY Moscow Expanded';
+    src: url('ONY_MOSCOWbrand-Expanded.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ONY Moscow ExtraCondenced';
+    src: url('ONY_MOSCOWbrand-ExtraCondenced.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ONY Moscow Narrow';
+    src: url('ONY_MOSCOWbrand-Narrow.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ONY Moscow Normal';
+    src: url('ONY_MOSCOWbrand-Normal.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ONY Moscow UltraExpanded';
+    src: url('ONY_MOSCOWbrand-UltraExpanded.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ONY Moscow Wide';
+    src: url('ONY_MOSCOWbrand-Wide.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+

@@ -27,11 +27,18 @@
     src: url('css/fonts/ony/ONYOne-Regular.otf') format('otf');
     font-style: normal;
 }*/
+/*@font-face {
+    font-family: ONY_TRACK;
+    src: url('css/fonts/ony/ONY_MOSCOWbrand-Wide.otf') format('otf');
+    font-style: normal;
+}*/
 body {
     background-attachment: fixed;
     background-size: cover;
-   /*font-family: ONY_ONE, Helvetica, Arial, sans-serif;*/
-    font-family: ONY_ONE, Helvetica, Arial, sans-serif;
+    font-family: ONY One, Helvetica, Arial, sans-serif;
+   /*font-family: YS Text, Helvetica, Arial, sans-serif;*/
+    /*font-family: IBM Plex Sans, Helvetica, Arial, sans-serif;*/
+    font-size: 16px;
 }
 
 #pagetitle {
@@ -431,8 +438,8 @@ NEW*/
 .lab-banner_text-big2 {
 
     color: #fff;
-    font-size: 99px;
-    font-family: ONY_TRACK, Arial, sans-serif;
+    font-size: 129px;
+    font-family: ONY Moscow Wide, Arial, sans-serif;
     line-height: 1.15;
     font-weight: 900;
     text-transform: uppercase;

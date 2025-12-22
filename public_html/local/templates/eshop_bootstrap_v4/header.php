@@ -20,7 +20,8 @@ $curPage = $APPLICATION->GetCurPage(true);
     <link rel="shortcut icon" type="image/x-icon" href="<?= SITE_DIR ?>favicon.ico"/>
 
     <? $APPLICATION->ShowHead();
-    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/fonts/ony/ony.css');
+
+    Bitrix\Main\Page\Asset::getInstance()->addCss('/bitrix/js/lab/ui/fonts/ony/ui.font.ony.css');
     ?>
 
 </head>
@@ -112,15 +113,15 @@ $curPage = $APPLICATION->GetCurPage(true);
                 <!--region cur user баллы -->
                 <div class="col-3 col-md-3 align-items-center bx-header-logo"
                      style="display: flex;justify-content: center;    flex-direction: column;">
-                    <!--<a class="bx-logo-block d-none d-md-block" href="<?php /*= SITE_DIR */?>">-->
-                        <? $APPLICATION->IncludeComponent(
-                                "bitrix:main.include",
-                                "",
-                                array(
-                                        "AREA_FILE_SHOW" => "file",
-                                        "PATH" => SITE_DIR . "include/curUserBally.php"),
-                                false
-                        ); ?>
+                    <!--<a class="bx-logo-block d-none d-md-block" href="<?php /*= SITE_DIR */ ?>">-->
+                    <? $APPLICATION->IncludeComponent(
+                            "bitrix:main.include",
+                            "",
+                            array(
+                                    "AREA_FILE_SHOW" => "file",
+                                    "PATH" => SITE_DIR . "include/curUserBally.php"),
+                            false
+                    ); ?>
                     <!--</a>-->
 
                 </div>
@@ -325,7 +326,7 @@ $curPage = $APPLICATION->GetCurPage(true);
                     ); ?>
 
                 </div>
-            <?else:?>
+            <? else: ?>
                 <h1 id="pagetitle"><? $APPLICATION->ShowTitle(false); ?></h1>
             <? endif ?>
             <!--End red banner img-->

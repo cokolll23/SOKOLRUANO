@@ -72,7 +72,33 @@ function statusChange(\Bitrix\Main\Event $event)
     $order = $event->getParameter("ENTITY");
 
     if (in_array($order->getField('STATUS_ID'), array('D'))) {
-        // при отмене увеличение количества товара
+        // при отмене заказа увеличение количества товара
+
+        $ORDER = \Bitrix\Sale\Order::load($order->getId());
+
+        if (!$ORDER) {
+            return;
+        }
+        // Получаем коллекцию свойств заказа
+        $propertyCollection = $ORDER->getPropertyCollection();
+        $userId = $ORDER->getUserId();
+
+        $customerProperties = [];
+
+        $dbRes = Order::getList([
+            'select' => ['ID'],
+            'filter' => [],
+            'order' => ['ID' => 'DESC']
+        ]);
+
+        while ($order = $dbRes->fetch()){
+            $arItems[] = $order;
+        }
+
+        $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arItems, true);
+        $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arItems, true);
+        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+
     }
 
     if (in_array($order->getField('STATUS_ID'), array('F'))) {
@@ -135,9 +161,9 @@ function statusChange(\Bitrix\Main\Event $event)
         );
 
 
-        $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arPrices, true);
+        /*$log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arPrices, true);
         file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));
+        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));*/
 
     }
 

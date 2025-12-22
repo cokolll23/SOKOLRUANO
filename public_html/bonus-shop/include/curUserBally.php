@@ -1,5 +1,5 @@
 <?php
-
+global $USER;
 use Lab\Helpers\UsersHelpers as Users;
 use Lab\Helpers\IblockHelpers as IH;
 
@@ -12,9 +12,12 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
     $propertyVal = 'У вас на данный момент нет баллов';
 } ?>
 <div>
+    <? if ($USER->IsAuthorized()):?>
     <?= $propertyVal; ?>
+    <? endif;?>
 </div>
-<? if ($ar['ID'] != '') { ?>
+
+<? if ($ar['ID'] != ''  && $USER->IsAuthorized()) { ?>
     <a href='<?= SITE_DIR ?>tablitsa-ballov/?ELEMENT_ID=<?= $ar['ID']; ?>'>Перейти на детальный просмотр баллов</a>
 <?php } ?>
 <a href="<?= SITE_DIR?>index.php#feedback"> Написать администратору </a>

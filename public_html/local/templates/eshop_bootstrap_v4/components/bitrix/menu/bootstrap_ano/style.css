@@ -10,7 +10,7 @@
 .bx-nav-list-1-lvl {
 	display: -webkit-box;
 	display: -ms-flexbox;
-	display: flex;
+	/*display: flex;*/
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -308,6 +308,7 @@
 	z-index: 10;
 	width: 40px;
 	height: 40px;
+    /*background-color:#E30613 */;
 }
 
 .bx-aside-nav-control {

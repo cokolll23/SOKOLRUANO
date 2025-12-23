@@ -98,19 +98,29 @@ h1, h2, h3, h4, h5 {
         height: auto;
     }
 
+
+    .bx-aside-nav-control.bx-closed,
+    .bx-menu-button-mobile, .bx-aside-nav{
+        background-color: #E30613;
+    }
+    .bx-aside-nav{
+        top: 100px;
+    }
+    .bx-aside-nav ul li a span{
+        color: #fff;
+    }
+
     .bx-header-logo {
         padding: 5px 50px;
         height: 55px;
-        background-color: var(--theme-color-primary);
+       /* background-color: var(--theme-color-primary);*/
     }
 
     .bx-logo-block {
         height: auto;
     }
 
-    body.bx-theme-green .bx-store-logo {
-        background: #33b111;
-    }
+
 }
 
 /*endregion*/
@@ -620,5 +630,18 @@ a.see-balls_wrapp {
 }
 .product-item-container .product-item-title a {
     color: #e30613;
+}
+.mt-20{
+    margin-top: 40px
+}
+.lab-banner-img{
+    background: url("/bonus-shop/include/edited-photo.png");
+    background-size:cover;
+}
+.bx-header{
+    -webkit-box-shadow: -1px 7px 8px -2px rgba(34, 60, 80, 0.45);
+    -moz-box-shadow: -1px 7px 8px -2px rgba(34, 60, 80, 0.45);
+    box-shadow: -1px 7px 8px -2px rgba(34, 60, 80, 0.45);
+    padding-bottom: 10px;
 }
 

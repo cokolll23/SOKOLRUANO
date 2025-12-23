@@ -32,11 +32,11 @@ $curPage = $APPLICATION->GetCurPage(true);
     <header class="bx-header stiky">
         <div class="bx-header-section container-fluid">
             <!--region bx-header-->
-            <div class="row pt-0 pt-md-3 mb-3 align-items-center" style="position: relative;">
+            <div class="row pt-0 pt-md-none mb-3 align-items-center" style="position: relative;">
                 <div class="d-block d-md-none bx-menu-button-mobile" data-role='bx-menu-button-mobile-position'></div>
                 <!--region menu-->
                 <? if ($curPage == SITE_DIR . "index.php"): ?>
-                    <div class="col-3">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                         <? $APPLICATION->IncludeComponent(
                                 "bitrix:menu",
                                 "bootstrap_ano",
@@ -59,7 +59,7 @@ $curPage = $APPLICATION->GetCurPage(true);
                         ); ?>
                     </div>
                 <? else: ?>
-                    <div class="col-3">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                         <? $APPLICATION->IncludeComponent(
                                 "bitrix:menu",
                                 "bootstrap_ano",
@@ -82,10 +82,9 @@ $curPage = $APPLICATION->GetCurPage(true);
                         ); ?>
                     </div>
                 <? endif; ?>
-
                 <!--endregion-->
                 <!--region logo-->
-                <div class="col-3 col-md-3 align-items-center bx-header-logo"
+                <div class="col-lg-6 col-md-3 align-items-center bx-header-logo"
                      style="display: flex;justify-content: center;">
                     <a class="bx-logo-block d-none d-md-block" href="<?= SITE_DIR ?>">
                         <? $APPLICATION->IncludeComponent(
@@ -110,24 +109,9 @@ $curPage = $APPLICATION->GetCurPage(true);
                     </a>
                 </div>
                 <!--endregion-->
-                <!--region cur user баллы -->
-                <div class="col-3 col-md-3 align-items-center bx-header-logo"
-                     style="display: flex;justify-content: center;    flex-direction: column;">
-                    <!--<a class="bx-logo-block d-none d-md-block" href="<?php /*= SITE_DIR */ ?>">-->
-                    <? $APPLICATION->IncludeComponent(
-                            "bitrix:main.include",
-                            "",
-                            array(
-                                    "AREA_FILE_SHOW" => "file",
-                                    "PATH" => SITE_DIR . "include/curUserBally.php"),
-                            false
-                    ); ?>
-                    <!--</a>-->
 
-                </div>
-                <!--endregion-->
 
-                <div class="col-3 d-none d-md-block bx-header-personal">
+                <div class="col-2 d-none d-md-block bx-header-personal">
                     <? $APPLICATION->IncludeComponent(
                             "bitrix:sale.basket.basket.line",
                             "bootstrap_v4",
@@ -188,14 +172,29 @@ $curPage = $APPLICATION->GetCurPage(true);
             <!--endregion-->
 
 
-            <!--region search.title -->
-            <?php
-            //if ($curPage != SITE_DIR."index.php"):
-            if (1):
-                if (\Bitrix\Main\ModuleManager::isModuleInstalled('search')):
-                    ?>
-                    <div class="row mb-3">
-                        <div class="col">
+            <div class="row">
+                <!--region cur user баллы -->
+                <div class="col-lg-6 col-md-6 align-items-center bx-header-logo1"
+                     style="display: flex;">
+                    <!--<a class="bx-logo-block d-none d-md-block" href="<?php /*= SITE_DIR */ ?>">-->
+                    <? $APPLICATION->IncludeComponent(
+                            "bitrix:main.include",
+                            "",
+                            array(
+                                    "AREA_FILE_SHOW" => "file",
+                                    "PATH" => SITE_DIR . "include/curUserBally.php"),
+                            false
+                    ); ?>
+                    <!--</a>-->
+
+                </div>
+                <!--endregion-->
+                <!--region search.title -->
+                <?php
+
+                if (\Bitrix\Main\ModuleManager::isModuleInstalled('search')):?>
+                    <div class="col-lg-6">
+                        <div class="">
                             <? $APPLICATION->IncludeComponent(
                                     "bitrix:search.title",
                                     "visual1",
@@ -241,30 +240,32 @@ $curPage = $APPLICATION->GetCurPage(true);
                     </div>
                 <?php
                 endif;
-            endif;
-            ?>
-            <!--endregion-->
 
+                ?>
+                <!--endregion-->
+            </div>
             <!--region breadcrumb-->
             <? if ($curPage != SITE_DIR . "index.php"): ?>
-                <div class="row mb-3">
-                    <div class="col" id="navigation">
-                        <? $APPLICATION->IncludeComponent(
-                                "bitrix:breadcrumb",
-                                "universal",
-                                array(
-                                        "START_FROM" => "0",
-                                        "PATH" => "",
-                                        "SITE_ID" => "-"
-                                ),
-                                false,
-                                array('HIDE_ICONS' => 'Y')
-                        ); ?>
+                <div class="row mt-20">
+                    <div class="row mb-3">
+                        <div class="col" id="navigation">
+                            <? $APPLICATION->IncludeComponent(
+                                    "bitrix:breadcrumb",
+                                    "universal",
+                                    array(
+                                            "START_FROM" => "0",
+                                            "PATH" => "",
+                                            "SITE_ID" => "-"
+                                    ),
+                                    false,
+                                    array('HIDE_ICONS' => 'Y')
+                            ); ?>
+                        </div>
                     </div>
                 </div>
-
             <? endif ?>
             <!--endregion-->
+
         </div>
     </header>
 
@@ -286,18 +287,26 @@ $curPage = $APPLICATION->GetCurPage(true);
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 lab-banner-img">
+                    <div class="col-lg-6  lab-banner-img">
                         <? $curPage = $APPLICATION->GetCurPage(true);
-                        if ($curPage == SITE_DIR . "index.php"):
-                            $APPLICATION->IncludeComponent(
-                                    "bitrix:main.include",
-                                    "",
-                                    array(
-                                            "AREA_FILE_SHOW" => "file",
-                                            "PATH" => SITE_DIR . "include/banner-img.php"),
-                                    false
-                            );
-                        endif; ?>
+
+                        if ($curPage == SITE_DIR . "index.php"):?>
+                            <div class='lab-banner_imgs-wrapp'>
+
+
+                                <!--<img class="num-3" width="650" src="/bonus-shop/include/edited-photo.png" height="600">-->
+
+                            </div>
+                            <? /*$APPLICATION->IncludeComponent(
+                            "bitrix:main.include",
+                            "",
+                            array(
+                            "AREA_FILE_SHOW" => "file",
+                            "PATH" => SITE_DIR . "include/banner-img.php"),
+                            false
+                            );*/
+                            ?>
+                        <? endif; ?>
                     </div>
                 </div>
                 <div class="container">

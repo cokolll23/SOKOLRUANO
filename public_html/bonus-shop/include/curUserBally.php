@@ -5,6 +5,17 @@ use Lab\Helpers\UsersHelpers as Users;
 use Lab\Helpers\IblockHelpers as IH;
 
 $ar = IH::getPropertyValIblockByEmailCurrentUser('sotrudniki', 'COLUMN33');
+//pretty_print($ar);
+global $USER;
+$userId = $USER->GetID();
+
+if ($userId > 0) {
+    // Запрашиваем профиль пользователя
+    $rsUser = \CUser::GetByID($userId);
+    if ($arUser = $rsUser->Fetch()) {
+        $userEmail=$arUser["EMAIL"];
+    }
+}
 
 if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
 
@@ -24,10 +35,50 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
     <div class="col-12">
         <? if ($ar['ID'] != '' && $USER->IsAuthorized()) { ?>
             <a href='<?= SITE_DIR ?>detal/?ELEMENT_ID=<?= $ar['ID']; ?>'>Перейти на детальный просмотр баллов</a>
+
         <?php } ?>
     </div>
     <div class="col-12">
-        <a href="<?= SITE_DIR ?>index.php#feedback"> Написать администратору </a>
+        <?$APPLICATION->IncludeComponent(// создать инфоблок
+                "interlabs:feedbackform",
+                ".popup1",
+                array(
+                        "AGREE_PROCESSING" => "N",
+                        "AJAX_MODE" => "Y",
+                        "AJAX_OPTION_ADDITIONAL" => "",
+                        "AJAX_OPTION_HISTORY" => "N",
+                        "AJAX_OPTION_JUMP" => "N",
+                        "AJAX_OPTION_STYLE" => "Y",
+                        "EMAIL_FROM" => "sale@sokolru.ru",
+                        "EMAIL_TO" => "cavjob@yandex.ru",
+                        "EVENT_TYPE" => "INTERLABS_FEEDBACK",
+                        "FIELD_CHECK" => array(
+                                0 => "NAME",
+                                1 => "PHONE",
+                                2 => "EMAIL",
+                                3 => "",
+                        ),
+                        "FORM_ID" => "i_1",
+                        "IBLOCK_FIELDS_USE" => array(
+                                0 => "NAME",
+                                1 => "PHONE",
+                                2 => "EMAIL",
+                                3 => "MESSAGE",
+                        ),
+                        "IBLOCK_FIELD_EMAIL" => "EMAIL",
+                        "IBLOCK_FIELD_PHONE" => "PHONE",
+                        "IBLOCK_ID" => "19",
+                        "IBLOCK_TYPE" => "sporina_forms",
+                        "MAX_FILE_COUNT" => "10",
+                        "MAX_FILE_SIZE" => "5",
+                        "MESSAGE_ID" => "137",
+                        "SUBJECT" => "Написать администратору",
+                        "USE_CAPTCHA" => "N",
+                        "COMPONENT_TEMPLATE" => ".popup1"
+                ),
+                false
+        );?>
+        <!--<a href="<?php /*= SITE_DIR */?>index.php#feedback"> Написать администратору </a>-->
     </div>
 </div>
 

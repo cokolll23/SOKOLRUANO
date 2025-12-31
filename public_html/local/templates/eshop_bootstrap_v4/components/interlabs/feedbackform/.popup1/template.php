@@ -28,9 +28,9 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
 
 
 <div class="interlabs-feedbackform__container">
-    <button class="js-interlabs-feedbackform__container-show-button">
+    <a class="js-interlabs-feedbackform__container-show-button">
         <?php echo Loc::getMessage("FORM_POPUP_SHOW_BUTTON"); ?>
-    </button>
+    </a>
 
 
     <div class="interlabs-feedbackform__container__dialog modal-mask<?php echo (isset($arResult['validateErrors']) && count($arResult['validateErrors']) > 0) ? '' : ' hidden'; ?>">
@@ -90,7 +90,7 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                                                     <input id="<?php echo $idFileField; ?>" type="file" value=""
                                                            name="<?php echo $code; ?>[]" multiple
                                                            onchange="var inp =document.getElementById('<?php echo $idFileField; ?>');var l=[];for (var i = 0; i < inp.files.length; ++i) {l.push(inp.files.item(i).name.match(/[^\/\\]+$/));}var label=document.getElementById('<?php echo $idFileField; ?>-label');label.innerHTML=l.join(', ');if(l.length>0){var arr=label.className.split(' '); if (arr.indexOf('selected') == -1) {label.className += ' ' + 'selected';}}else{label.className += arr.join(' ').replace('selected',''); }">
-                                                    <a onclick="document.getElementById('<?php echo $idFileField; ?>').click();return false;">Îáçîð</a>
+                                                    <a onclick="document.getElementById('<?php echo $idFileField; ?>').click();return false;">ï¿½ï¿½ï¿½ï¿½ï¿½</a>
                                                     <label id="<?php echo $idFileField; ?>-label"><?php echo Loc::getMessage("INPUT_FILE_DEFAULT"); ?></label>
                                                 </label>
 
@@ -106,7 +106,7 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                                                            type="file"
                                                            name="<?php echo $code; ?>"
                                                            onchange="var inp =document.getElementById('<?php echo $idFileField; ?>');var l=[];for (var i = 0; i < inp.files.length; ++i) {l.push(inp.files.item(i).name.match(/[^\/\\]+$/));}var label=document.getElementById('<?php echo $idFileField; ?>-label');label.innerHTML=l.join(', ');if(l.length>0){var arr=label.className.split(' '); if (arr.indexOf('selected') == -1) {label.className += ' ' + 'selected';}}else{label.className += arr.join(' ').replace('selected',''); }">
-                                                    <a onclick="document.getElementById('<?php echo $idFileField; ?>').click();return false;">Îáçîð</a>
+                                                    <a onclick="document.getElementById('<?php echo $idFileField; ?>').click();return false;">ï¿½ï¿½ï¿½ï¿½ï¿½</a>
                                                     <label id="<?php echo $idFileField; ?>-label"><?php echo Loc::getMessage("INPUT_FILE_DEFAULT"); ?></label>
                                                 </label>
                                                 <?php
@@ -307,9 +307,9 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                         <label><?php echo Loc::getMessage("FORM_SAVED"); ?></label>
                     </div>
                     <div class="form-group control-buttons">
-                        <button class="interlabs-feedbackform__container-succsess__close">
+                        <a class="interlabs-feedbackform__container-succsess__close">
                             <?php echo Loc::getMessage("FORM_CLOSE"); ?>
-                        </button>
+                        </a>
                     </div>
 
                 </div>

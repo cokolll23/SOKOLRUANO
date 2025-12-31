@@ -19,12 +19,7 @@
 .interlabs-feedbackform__container .js-interlabs-feedbackform__container-show-button,
 .interlabs-feedbackform__container .js-interlabs-feedbackform__dialog__cancel-button,
 .interlabs-feedbackform__container .interlabs-feedbackform__container-succsess__close {
-  width: 144px;
-  height: 36px;
-  background: #70BB18;
-  border-radius: 2px;
-  border: none;
-  color: #F2F2F2;
+  cursor: pointer;
   font-style: normal;
   font-weight: normal;
   line-height: 25px;
@@ -314,10 +309,10 @@
 .interlabs-feedbackform__container .body input[type="submit"],
 .interlabs-feedbackform__container .body .js-interlabs-feedbackform__dialog__send-button,
 .interlabs-feedbackform__container .body .interlabs-feedbackform__container-succsess__close {
+    border-radius: 5px;
   width: 144px;
   height: 36px;
-  background: #70BB18;
-  border-radius: 2px;
+  background: #e30613;
   border: none;
   color: #F2F2F2;
   font-style: normal;
@@ -347,17 +342,17 @@
   vertical-align: middle;
 }
 .interlabs-feedbackform__container .modal-container {
+
   width: 700px;
   min-height: 500px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
-  border-radius: 2px;
+  border-radius: 20px;
   -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
 }
 .interlabs-feedbackform__container .modal-enter {
   opacity: 0;

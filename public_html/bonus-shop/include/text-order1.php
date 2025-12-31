@@ -1,43 +1,41 @@
 
-<!--<table class="table">
-    <tr>
-        <td class="">
-            <div class="td">
-                <div class="span">1</div>
-                <div class="ord-txt">Успешное <br>прохождение <br>этапов адаптации</div>
+<div class="l-order  container flex">
+    <div class="l-order_row row">
+
+
+        <div class="l-order_row-cell flex col-md-4 col-sm-12">
+            <div class="l-order_row-cell-left flex col-3">
+                <div class="circle flex">1</div>
+
             </div>
-        </td>
-        <td>
-            <div class="td">
-                <div class="span">2</div>
-                <div class="ord-txt">Активности, <br>способствующие <br>укреплению HR-бренда</div>
-            </div>
-        </td>
-        <td>
-            <div class="td">
-                <div class="span">3</div>
-                <div class="ord-txt">Активное участие в <br> корпоративных событиях</div>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class="td">
-                <div class="span">4</div>
-                <div class="ord-txt">Своевременное и <br> регулярное <br>профессиональное <br>обучение</div>
-            </div>
-        </td>
-        <td>
-            <div class="td">
-                <div class="span">5</div>
-                <div class="ord-txt">Участие в спортивных <br>соревнованиях</div>
-            </div>
-        </td>
-        <td>
-            <div class="td">
-                <div class="span">6</div>
-                <div class="ord-txt">Особые <br> профессиональные <br> успехи</div>
-            </div>
-        </td>
-    </tr>
-</table>-->
+            <div class="l-order_row-cell-right flex col-9">Успешное прохождение этапов адаптации</div>
+        </div>
+        <div class="l-order_row-cell flex  col-md-4 col-sm-12">
+            <div class="l-order_row-cell-left flex col-3"><div class="circle flex">2</div></div>
+            <div class="l-order_row-cell-right flex col-9">Активности, способствующие укреплению HR-бренда</div>
+        </div>
+        <div class="l-order_row-cell flex col-md-4 col-sm-12">
+            <div class="l-order_row-cell-left flex col-3"><div class="circle flex">3</div></div>
+            <div class="l-order_row-cell-right flex col-9">Активное участие в корпоративных событиях</div>
+        </div>
+
+    </div>
+    <div class="l-order_row row">
+
+
+        <div class="l-order_row-cell flex col-md-4 col-sm-12">
+            <div class="l-order_row-cell-left flex col-3"><div class="circle flex">4</div></div>
+            <div class="l-order_row-cell-right flex col-10">Своевременное и регулярное профессиональное обучение</div>
+        </div>
+        <div class="l-order_row-cell flex  col-md-4 col-sm-12">
+            <div class="l-order_row-cell-left flex col-3"><div class="circle flex">5</div></div>
+            <div class="l-order_row-cell-right flex col-10">Участие в спортивных соревнованиях</div>
+        </div>
+        <div class="l-order_row-cell flex col-md-4 col-sm-12">
+            <div class="l-order_row-cell-left flex col-3"><div class="circle flex">6</div></div>
+            <div class="l-order_row-cell-right flex col-10">Особые профессиональные успехи</div>
+        </div>
+
+    </div>
+
+</div>

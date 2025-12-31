@@ -84,7 +84,7 @@ $curPage = $APPLICATION->GetCurPage(true);
                 <? endif; ?>
                 <!--endregion-->
                 <!--region logo-->
-                <div class="col-lg-6 col-md-3 align-items-center bx-header-logo"
+                <div class="col-lg-6 col-md-6 align-items-center bx-header-logo"
                      style="display: flex;justify-content: center;">
                     <a class="bx-logo-block d-none d-md-block" href="<?= SITE_DIR ?>">
                         <? $APPLICATION->IncludeComponent(
@@ -323,7 +323,7 @@ $curPage = $APPLICATION->GetCurPage(true);
 
                     </div>
                 </div>
-                <div class="row container lab-text-order1">
+                <div class="container lab-text-order1">
                     <? $APPLICATION->IncludeComponent(
                             "bitrix:main.include",
                             "",

@@ -28,42 +28,82 @@ if ($curPage == SITE_DIR . "index.php"): ?>
 
         </div>
     </a>
-    <? $APPLICATION->IncludeComponent(
-            "bitrix:advertising.banner",
-            "bootstrap_v4",
-            array(
-                    "COMPONENT_TEMPLATE" => "bootstrap_v4",
-                    "TYPE" => "MAIN",
-                    "NOINDEX" => "Y",
-                    "QUANTITY" => "5",
-                    "BS_EFFECT" => "slide",
-                    "BS_CYCLING" => "N",
-                    "BS_WRAP" => "Y",
-                    "BS_PAUSE" => "Y",
-                    "BS_KEYBOARD" => "Y",
-                    "BS_ARROW_NAV" => "Y",
-                    "BS_BULLET_NAV" => "Y",
-                    "BS_HIDE_FOR_TABLETS" => "N",
-                    "BS_HIDE_FOR_PHONES" => "N",
-                    "CACHE_TYPE" => "A",
-                    "CACHE_TIME" => "36000000",
-                    "HEIGHT" => 500,
-                    "DEFAULT_TEMPLATE" => "jssor"
-            ),
-            false,
-            array(
-                    "ACTIVE_COMPONENT" => "Y"
-            )
-    ); ?>
+    <? $APPLICATION->IncludeComponent("bitrix:advertising.banner", "bootstrap_v4", array(
+	"COMPONENT_TEMPLATE" => "bootstrap_v4",
+		"TYPE" => "MAIN",
+		"NOINDEX" => "Y",
+		"QUANTITY" => "3",
+		"BS_EFFECT" => "slide",
+		"BS_CYCLING" => "Y",
+		"BS_WRAP" => "Y",
+		"BS_PAUSE" => "Y",
+		"BS_KEYBOARD" => "N",
+		"BS_ARROW_NAV" => "N",
+		"BS_BULLET_NAV" => "N",
+		"BS_HIDE_FOR_TABLETS" => "Y",
+		"BS_HIDE_FOR_PHONES" => "Y",
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => "36000000",
+		"HEIGHT" => "500",
+		"DEFAULT_TEMPLATE" => "-",
+		"EFFECT" => "random",
+		"CYCLING" => "N",
+		"SPEED" => "500",
+		"JQUERY" => "Y",
+		"DIRECTION_NAV" => "Y",
+		"CONTROL_NAV" => "Y",
+		"BS_INTERVAL" => "2000"
+	),
+	false,
+	array(
+	"ACTIVE_COMPONENT" => "N"
+	)
+); ?>
 
 <?php endif; ?>
 <?php // форма обратной связи?>
 <div id="feedback">
-    <? $APPLICATION->IncludeComponent(
-	"sporina:forms.feedback", 
-	".default", 
+    <?$APPLICATION->IncludeComponent("interlabs:feedbackform", ".popup1", array(
+	"AGREE_PROCESSING" => "N",
+		"AJAX_MODE" => "Y",
+		"AJAX_OPTION_ADDITIONAL" => "",
+		"AJAX_OPTION_HISTORY" => "N",
+		"AJAX_OPTION_JUMP" => "N",
+		"AJAX_OPTION_STYLE" => "Y",
+		"EMAIL_FROM" => "sale@sokolru.ru",
+		"EMAIL_TO" => "cavjob@yandex.ru",
+		"EVENT_TYPE" => "INTERLABS_FEEDBACK",
+		"FIELD_CHECK" => array(
+			0 => "NAME",
+			1 => "PHONE",
+			2 => "EMAIL",
+			3 => "",
+		),
+		"FORM_ID" => "i_1",
+		"IBLOCK_FIELDS_USE" => array(
+			0 => "NAME",
+			1 => "PHONE",
+			2 => "EMAIL",
+			3 => "MESSAGE",
+		),
+		"IBLOCK_FIELD_EMAIL" => "EMAIL",
+		"IBLOCK_FIELD_PHONE" => "PHONE",
+		"IBLOCK_ID" => "19",
+		"IBLOCK_TYPE" => "sporina_forms",
+		"MAX_FILE_COUNT" => "10",
+		"MAX_FILE_SIZE" => "5",
+		"MESSAGE_ID" => "137",
+		"SUBJECT" => "Напишите нам",
+		"USE_CAPTCHA" => "N",
+		"COMPONENT_TEMPLATE" => ".popup1"
+	),
+	false,
 	array(
-		"COMPONENT_TEMPLATE" => ".default",
+	"ACTIVE_COMPONENT" => "N"
+	)
+);?>
+    <? $APPLICATION->IncludeComponent("sporina:forms.feedback", ".default", array(
+	"COMPONENT_TEMPLATE" => ".default",
 		"FORM_NAME" => "Форма обратной связи",
 		"SUCCESS_MESSAGE" => "Спасибо! Ваша заявка отправлена.",
 		"ERROR_MESSAGE" => "Ошибка при отправке. Попробуйте позже.",
@@ -89,7 +129,10 @@ if ($curPage == SITE_DIR . "index.php"): ?>
 		"CACHE_TYPE" => "A",
 		"CACHE_TIME" => "3600"
 	),
-	false
+	false,
+	array(
+	"ACTIVE_COMPONENT" => "N"
+	)
 ); ?>
 </div>
 <footer class="bx-footer">

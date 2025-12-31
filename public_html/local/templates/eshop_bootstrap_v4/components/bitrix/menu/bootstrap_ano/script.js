@@ -191,7 +191,13 @@ BX.Main.MenuComponent.CatalogHorizontal = (function()
 					children: [
 						BX.create("i", {
 							attrs: {className: "bx-nav-bars"}
-						})
+						}),
+                        BX.create("i", {
+                            attrs: {className: "bx-nav-bars1"}
+                        }),
+                        BX.create("i", {
+                            attrs: {className: "bx-nav-bars2"}
+                        })
 					],
 					events: {
 						"click" : function() {

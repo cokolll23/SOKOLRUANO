@@ -14,11 +14,11 @@ $MESS["CAPTCHA_ENTER_CODE"] = "Введите код с картинки:";
 $MESS["AGREE_PROCESSING"] = "Согласен на обработку";
 $MESS["AGREE_PROCESSING_DIALOG_TITLE"] = "Соглашение";
 
-$MESS["FORM_POPUP_SHOW_BUTTON"] = "Обратный звонок";
+$MESS["FORM_POPUP_SHOW_BUTTON"] = "Написать администратору";
 $MESS["FORM_TITLE"] = "Заголовок";
 $MESS["FORM_SEND"] = "Отправить";
 $MESS["FORM_CLOSE"] = "Закрыть";
-$MESS["FORM_SAVED"] = "Сохранено";
+$MESS["FORM_SAVED"] = "Отправлено администратору";
 
 $MESS['ERROR_FILE_TO_MANY_FILES']='Слишком много файлов';
 $MESS['ERROR_FILE_SIZE_BIG']='Размер файла слишком велик';

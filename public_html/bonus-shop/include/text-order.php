@@ -5,11 +5,10 @@
         <div class="orders-text_top2">обменивать их на ценные бонусы, подарки и призы.</div>
     </div>
     <div class="orders-text_bottom">
-        <div class="orders-text_bottom1">Баллы начисляются сотрудникам еженедельно за</div>
-        <div class="orders-text_bottom2">активную деятельность и достижения, включая:</div>
+        <div class="orders-text_bottom1"><strong>Баллы начисляются сотрудникам еженедельно за активную деятельность и достижения, включая:</strong></div>
     </div>
 
-    <table class="table container-fluid" style="border: none!important">
+    <!--<table class="table container-fluid" style="border: none!important">
         <tr>
             <td class="">
                 <div class="td">
@@ -54,9 +53,9 @@
     <div class="row">
         <div class="col-md-4 col-sm-3"></div>
         <div class="col-md-4 col-sm-3" style="text-align: center;">
-            <a style="width: 60%;font-weight: bold; font-size: 16px;"  href="https://disk.yandex.ru/d/EzOAujB8eLesOA" type="button" class="more btn btn-danger">Подробнее</a>
+            <a style="font-weight: bold; font-size: 16px;"  href="https://disk.yandex.ru/d/EzOAujB8eLesOA" type="button" class="more btn btn-danger">Подробнее</a>
         </div>
         <div class="col-md-4 col-sm-3"></div>
-    </div>
+    </div>-->
 
 </div>

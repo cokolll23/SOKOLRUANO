@@ -666,7 +666,6 @@ a.see-balls_wrapp {
 }
 .l-order_row-cell-right{
     font-size: 22px;
-    padding-left: 30px;
 }
 @media (max-width: 1024px) {
     .l-order_row-cell-right{padding-left: 5px;}
@@ -679,6 +678,24 @@ a.see-balls_wrapp {
         justify-content: center;
     }
 }
+.lab-accordion-faq{
+    font-size: 38px;
+    font-family: ONY Moscow Wide;
+}
+.lab-accordion-faq section.accordion .tab__label {
+    font-size: 24px;
+}
+
+.lab-accordion-wrapp {
+    justify-content: center;
+
+}
+.lab-accordion-wrapp .accordion{
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+
 .l-order_row-cell-left .circle {
     justify-content: center;
     background-color: #e30613;

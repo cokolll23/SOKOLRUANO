@@ -33,6 +33,12 @@
         color: black;
         background: var(--theme);
         cursor: pointer;
+        font-size: 24px;
+    }
+    @media (max-width: 721px) {
+        .lab-accordion-faq .tab__label{
+            font-size: 22px;
+        }
     }
 
     .tab__label {
@@ -84,34 +90,41 @@
     }
 
 </style>
-<h2 style="text-align: center;"><b><span style="font-size: 42pt; font-family: &quot;Arial Black&quot;, Gadget;">Правила начисления и использования бонусов</span></b> </h2>
-<div class="container">
- <section class="accordion">
-	<div class="tab">
- <input type="checkbox" name="accordion-1" id="cb1" > <label for="cb1" class="tab__label"> <span style="font-family: &quot;Arial Black&quot;, Gadget; font-size: 22pt;">Начисление баллов</span> </label>
-		<div class="tab__content">
-			<p>
-				 Участники программы еженедельно получают баллы за выполнение установленных активностей
-			</p>
-		</div>
-	</div>
-	<div class="tab">
- <input type="checkbox" name="accordion-1" id="cb2"><span style="font-family: &quot;Arial Black&quot;, Gadget; font-size: 22pt;"> </span><label for="cb2" class="tab__label"><span style="font-family: &quot;Arial Black&quot;, Gadget; font-size: 22pt;">
+<h2 class="lab-accordion-faq" style="text-align: center;"><b><span>Правила начисления и использования бонусов</span></b>
+</h2>
+<div class="lab-accordion-wrapp container flex">
+    <section class="accordion flex  col-md-8">
+        <div class="tab">
+            <input type="checkbox" name="accordion-1" id="cb1">
+            <label for="cb1" class="tab__label">
+                <span>Начисление баллов</span>
+            </label>
+            <div class="tab__content">
+                <p>
+                    Участники программы еженедельно получают баллы за выполнение установленных активностей
+                </p>
+            </div>
+        </div>
+        <div class="tab">
+            <input type="checkbox" name="accordion-1" id="cb2"><span> </span><label for="cb2" class="tab__label"><span>
 		Использование баллов</span> </label>
-		<div class="tab__content">
-			<p>
-				 После завершения квартала все накопленные баллы сотрудника суммируются, открывая доступ к специальному магазину бонусов, где их можно обменять на выбранную продукцию.
-			</p>
-		</div>
-	</div>
-	<div class="tab">
- <input type="checkbox" name="accordion-1" id="cb3"> <label for="cb3" class="tab__label"> <span style="font-family: &quot;Arial Black&quot;, Gadget; font-size: 22pt;">Использование баллов</span> </label>
-		<div class="tab__content">
-			<p>
-				 Неиспользованные баллы, кроме специально отмеченных несгораемых баллов за корпоративное обучение, аннулируются по истечении квартала
-			</p>
-		</div>
-	</div>
- </section>
+            <div class="tab__content">
+                <p>
+                    После завершения квартала все накопленные баллы сотрудника суммируются, открывая доступ к
+                    специальному магазину бонусов, где их можно обменять на выбранную продукцию.
+                </p>
+            </div>
+        </div>
+        <div class="tab">
+            <input type="checkbox" name="accordion-1" id="cb3"> <label for="cb3" class="tab__label"> <span>Использование баллов</span>
+            </label>
+            <div class="tab__content">
+                <p>
+                    Неиспользованные баллы, кроме специально отмеченных несгораемых баллов за корпоративное обучение,
+                    аннулируются по истечении квартала
+                </p>
+            </div>
+        </div>
+    </section>
 </div>
- <br>
+<br>

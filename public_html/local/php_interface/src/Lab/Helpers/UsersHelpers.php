@@ -12,6 +12,43 @@ Loader::includeModule('main');
 
 class UsersHelpers
 {
+
+    /**
+     * Получаем ID группы пользователей по ее символьный код группы
+     */
+
+    public static function getUsersGroupIdByUserID(int $userID)
+    {
+
+    }
+
+
+    /**
+     * Получаем ID группы пользователей по ее символьный код группы
+     */
+
+    public static function getUsersGroupIdByCode(string $groupCode) : int
+    {
+        $groupId = \Bitrix\Main\GroupTable::getList([
+            'filter' => ['STRING_ID' => $groupCode],
+            'select' => ['ID'],
+            //'cache' => ['ttl' => 3600]
+        ])->fetch()['ID'];
+        return $groupId;
+    }
+
+    /**
+     * Получаем Код STRING_ID группы пользователей по ее ID
+     */
+    public static function getUsersGroupCodeByGropeID(int $groupId)
+    {
+        $groupCode = Bitrix\Main\GroupTable::getRow([
+            'select' => ['STRING_ID', 'NAME'],
+            'filter' => ['=ID' => $groupId]
+        ])['STRING_ID'];
+        return $groupCode;
+    }
+
     /**
      * Получаем список активных пользователей в группе
      */
@@ -74,7 +111,7 @@ class UsersHelpers
                 $userGroups[] = $groupId;
                 \CUser::SetUserGroup($userId, $userGroups);
             }
-           // addUserToGroup($userId, $groupId);
+            // addUserToGroup($userId, $groupId);
 
             $res = [
                 'success' => true,
@@ -82,7 +119,7 @@ class UsersHelpers
                 'message' => 'Пользователь успешно создан'
             ];
         } else {
-            $res =[
+            $res = [
                 'success' => false,
                 'message' => $user->LAST_ERROR
             ];
@@ -109,7 +146,8 @@ class UsersHelpers
           }*/
     }
 
-    public static function getCurrentUserEmail(){
+    public static function getCurrentUserEmail()
+    {
         // Получаем ID текущего пользователя
         global $USER;
         $userId = $USER->GetID();
@@ -118,7 +156,7 @@ class UsersHelpers
             // Запрашиваем профиль пользователя
             $rsUser = \CUser::GetByID($userId);
             if ($arUser = $rsUser->Fetch()) {
-                $userEmail=$arUser["EMAIL"];
+                $userEmail = $arUser["EMAIL"];
             }
         }
         return $userEmail;

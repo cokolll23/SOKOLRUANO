@@ -8,9 +8,9 @@ if (file_exists(__DIR__ . '/includes/pretty-print/pretty_print.php')) {
 
 use Lab\EventsHandlers\IblockEventsHandlers as EH;
 use Lab\Helpers\IblockHelpers as IH;
+use \Lab\Helpers\UsersHelpers as UH;
 
 //CUtil::InitJSCore(array('jquery3', 'popup', 'ajax', 'date'));
-
 $eventManager = \Bitrix\Main\EventManager::getInstance();
 
 if (!CModule::IncludeModule("sale")) {
@@ -20,8 +20,59 @@ if (!CModule::IncludeModule("iblock")) {
     return;
 }
 
+// todo действия при регистрации и удалении пользователя если пользователь из группы K-Team: Сотрудники [12 EMPLOYEES_s1]
+// todo если из АНО
+AddEventHandler("main", "OnAfterUserRegister", "OnAfterUserRegisterHandler");
+AddEventHandler("main", "OnUserDelete", "OnUserDeleteHandler");
+function OnAfterUserRegisterHandler(&$arFields)
+{ // если группа пользователя id 12 ['STRING_ID']= EMPLOYEES_s1 то добавляем пользователя в иб sotrudniki
+    $userId = $arFields["ID"];
+    $gropeCode = "EMPLOYEES_s1";
+    // $codeUserGroup = UH::getUsersGroupCodeByGropeID($arFields['ID']);
+    $gropeId = UH::getUsersGroupIdByCode($gropeCode);
+    if (in_array($gropeId, CUser::GetUserGroup($userId)))
+    {
+
+    } ;
+
+    $log = date('Y-m-d H:i:s') . ' OnAfterUserRegisterHandler ' . print_r($arFields, true);
+    file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+    Bitrix\Main\Diag\Debug::dumpToFile($log, 'OnAfterUserRegisterHandler' . date('d-m-Y; H:i:s'));
+}
+
+function OnUserDeleteHandler(&$arFields)
+{ // если группа пользователя id 12 то удаляем  пользователя в иб sotrudniki с Символьный кодом $arFields['email' ]
+
+    $log = date('Y-m-d H:i:s') . ' OnUserDeleteHandler ' . print_r($arFields, true);
+    file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+    Bitrix\Main\Diag\Debug::dumpToFile($log, 'OnUserDeleteHandler' . date('d-m-Y; H:i:s'));
+}
+
+// todo регистрация пользователя не из АНО после добавления в иб ТАБЛИЦА БОНУСОВ в группу Все покупатели [ 24 CRM_SHOP_BUYER]
+// todo удаление пользователя не из АНО после добавления в иб ТАБЛИЦА БОНУСОВ в группу Все покупатели [ 24 CRM_SHOP_BUYER]
+$eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", 'onAfterIBlockElementAddHandler');
+$eventManager->addEventHandler("iblock", "OnAfterIBlockElementDelete", 'onAfterIBlockElementDeleteHandler');
+
+function onAfterIBlockElementAddHandler(&$arFields)
+{
+
+    $log = date('Y-m-d H:i:s') . ' onAfterIBlockElementAddHandler ' . print_r($arFields, true);
+    file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+    Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterIBlockElementAddHandler' . date('d-m-Y; H:i:s'));
+}
+
+function
+onAfterIBlockElementDeleteHandler(&$arFields)
+{
+
+    $log = date('Y-m-d H:i:s') . ' onAfterIBlockElementDeleteHandler ' . print_r($arFields, true);
+    file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+    Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterIBlockElementDeleteHandler' . date('d-m-Y; H:i:s'));
+}
+
+
 // todo  уменьшение количества товара при оформлении заказа битрикс
-$eventManager->addEventHandler('sale', 'OnSaleOrderSaved', function(\Bitrix\Main\Event $event) {
+$eventManager->addEventHandler('sale', 'OnSaleOrderSaved', function (\Bitrix\Main\Event $event) {
     $order = $event->getParameter("ENTITY");
 
     $order = $event->getParameter("ENTITY");
@@ -58,6 +109,7 @@ $eventManager->addEventHandler('sale', 'OnSaleOrderSaved', function(\Bitrix\Main
 
 // todo сделать хендлер при изменении элемента складывать значения свойств
 $eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementUpdateHandler']);
+
 //$eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", 'OnAfterIBlockElementUpdateHandler');
 
 //todo Отменяем создание заказа до его создания при цена заказа выше определенной цифры https://chat.deepseek.com/a/chat/s/6e829ee6-c90c-46b8-a2f5-dbab70924b95
@@ -91,7 +143,7 @@ function statusChange(\Bitrix\Main\Event $event)
             'order' => ['ID' => 'DESC']
         ]);
 
-        while ($order = $dbRes->fetch()){
+        while ($order = $dbRes->fetch()) {
             $arItems[] = $order;
         }
 

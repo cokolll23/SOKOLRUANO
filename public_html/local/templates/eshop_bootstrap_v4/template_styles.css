@@ -433,8 +433,8 @@ NEW*/
 }
 
 .lab-banner-img img.num-3 {
-    right: 7%;
-    top: 15%;
+    right: 1%;
+    top: -7%;
 }
 
 .lab-banner-img img.num-4 {
@@ -646,8 +646,8 @@ a.see-balls_wrapp {
 }
 
 .lab-banner-img {
-    background: url("/bonus-shop/include/edited-photo.png");
-    background-size: cover;
+    /* background: url("/bonus-shop/include/banner.png") no-repeat 0 -110px;;
+     background-size: cover;*/
 }
 
 .bx-header {
@@ -664,24 +664,32 @@ a.see-balls_wrapp {
 .l-order {
     flex-wrap: wrap;
 }
-.l-order_row-cell-right{
+
+.l-order_row-cell-right {
     font-size: 22px;
 }
+
 @media (max-width: 1024px) {
-    .l-order_row-cell-right{padding-left: 5px;}
-    .l-order_row-cell-left .circle{
-        width: 40px!important;
-        height: 40px!important;
+    .l-order_row-cell-right {
+        padding-left: 5px;
+    }
+
+    .l-order_row-cell-left .circle {
+        width: 40px !important;
+        height: 40px !important;
 
     }
-    .l-order_row-cell-left{
+
+    .l-order_row-cell-left {
         justify-content: center;
     }
 }
-.lab-accordion-faq{
+
+.lab-accordion-faq {
     font-size: 38px;
     font-family: ONY Moscow Wide;
 }
+
 .lab-accordion-faq section.accordion .tab__label {
     font-size: 24px;
 }
@@ -690,7 +698,8 @@ a.see-balls_wrapp {
     justify-content: center;
 
 }
-.lab-accordion-wrapp .accordion{
+
+.lab-accordion-wrapp .accordion {
     justify-content: center;
     flex-wrap: wrap;
 

@@ -280,11 +280,12 @@ $curPage = $APPLICATION->GetCurPage(true);
                                 <div class="lab-banner_text-big1">Магазин</div>
                                 <br>
                                 <div class="lab-banner_text-big2">бонусов</div>
+                                <div class="">
+                                    <div class="lab-banner_text-small1">Обменяй М-баллы</div>
+                                    <div class="lab-banner_text-small2">на приятные сюрпризы!</div>
+                                </div>
                             </div>
-                            <div class="">
-                                <div class="lab-banner_text-small1">Обменяй М-баллы</div>
-                                <div class="lab-banner_text-small2">на приятные сюрпризы!</div>
-                            </div>
+
                         </div>
                     </div>
                     <div class="col-lg-6  lab-banner-img">
@@ -293,19 +294,10 @@ $curPage = $APPLICATION->GetCurPage(true);
                         if ($curPage == SITE_DIR . "index.php"):?>
                             <div class='lab-banner_imgs-wrapp'>
 
-
-                                <!--<img class="num-3" width="650" src="/bonus-shop/include/edited-photo.png" height="600">-->
+                                <img class="num-3" width="850" src="/bonus-shop/include/banner.png" height="800">
 
                             </div>
-                            <? /*$APPLICATION->IncludeComponent(
-                            "bitrix:main.include",
-                            "",
-                            array(
-                            "AREA_FILE_SHOW" => "file",
-                            "PATH" => SITE_DIR . "include/banner-img.php"),
-                            false
-                            );*/
-                            ?>
+
                         <? endif; ?>
                     </div>
                 </div>

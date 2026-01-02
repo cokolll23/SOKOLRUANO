@@ -28,37 +28,30 @@ if ($curPage == SITE_DIR . "index.php"): ?>
 
         </div>
     </a>
-    <? $APPLICATION->IncludeComponent("bitrix:advertising.banner", "bootstrap_v4", array(
-	"COMPONENT_TEMPLATE" => "bootstrap_v4",
-		"TYPE" => "MAIN",
-		"NOINDEX" => "Y",
-		"QUANTITY" => "3",
-		"BS_EFFECT" => "slide",
-		"BS_CYCLING" => "Y",
-		"BS_WRAP" => "Y",
-		"BS_PAUSE" => "Y",
-		"BS_KEYBOARD" => "N",
-		"BS_ARROW_NAV" => "N",
-		"BS_BULLET_NAV" => "N",
-		"BS_HIDE_FOR_TABLETS" => "Y",
-		"BS_HIDE_FOR_PHONES" => "Y",
-		"CACHE_TYPE" => "A",
-		"CACHE_TIME" => "36000000",
-		"HEIGHT" => "500",
-		"DEFAULT_TEMPLATE" => "-",
-		"EFFECT" => "random",
-		"CYCLING" => "N",
-		"SPEED" => "500",
-		"JQUERY" => "Y",
-		"DIRECTION_NAV" => "Y",
-		"CONTROL_NAV" => "Y",
-		"BS_INTERVAL" => "2000"
-	),
-	false,
-	array(
-	"ACTIVE_COMPONENT" => "N"
-	)
-); ?>
+    <? $APPLICATION->IncludeComponent(
+            "star:owlcarousel",
+            "",
+            Array(
+                    "AUTO" => "false",
+                    "CONTROLS" => "true",
+                    "COUNT" => "14",
+                    "COUNT_SLIDES" => "3",
+                    "DATA_TYPE" => "IBLOCK",
+                    "FOLDER" => "/upload/",
+                    "IBLOCK_ID" => "22",
+                    "IBLOCK_TYPE" => "slider",
+                    "IMAGE" => "DETAIL",
+                    "JQUERY" => "N",
+                    "LINK" => "N",
+                    "LOOP" => "true",
+                    "MARGIN" => "20",
+                    "NEW_WINDOW" => "N",
+                    "PAGER" => "true",
+                    "PROPERTY_CODE" => "USER",
+                    "SORT_BY1" => "SORT",
+                    "SORT_ORDER1" => "DESC"
+            )
+    );?>
 
 <?php endif; ?>
 <?php // форма обратной связи?>

@@ -37,28 +37,57 @@ class IblockHelpers
         return $foundIblocks[0]['ID'];
     }
 
-    public static function addElsToIblock($iblockCode = 'sotrudniki', $elementName, $elementCode)
+    /*
+    * получить id раздела ИБ по коду ИБ и раздела
+    * */
+    public static function getGroupIdByCode(string $iblockCode, $groupCode, $SITE_ID): int
     {
-        // todo добавить элементы в ib  'sotrudniki'
         $iBlockId = self::getIblockIdByCode($iblockCode);
+        $res = \CIBlockSection::GetList(array(), array('IBLOCK_ID' => $iBlockId, 'CODE' => $groupCode, 'SITE_ID' => $SITE_ID));
+        $section = $res->Fetch();
+        return $section['ID'];
+    }
 
-        $result = ElementTable::add([
+    /**
+     * изменение активности элемента иб на не активный
+     */
+
+    public static function changeActiveElementIb($elementId, $active)
+    {
+        $el = new CIBlockElement;
+        $arLoadProductArray = array(
+            "ACTIVE" => "N",            // активен
+        );
+        $res = $el->Update($elementId, $arLoadProductArray);
+
+    }
+
+
+    /*
+     * добавляем элемент ИБ по коду ИБ
+     * */
+    public static function addElsToIblock($iblockCode = 'sotrudniki', $userID, $elementName, $elementCode, $sectionCode, $SITE_ID)
+    {
+// todo добавить элементы в ib  'sotrudniki'
+        $iBlockId = self::getIblockIdByCode($iblockCode);
+        $sectId = self::getGroupIdByCode($iblockCode, $sectionCode, $SITE_ID);
+        $el = new \CIBlockElement;
+        $arLoadProductArray = array(
             'IBLOCK_ID' => $iBlockId,
+            "IBLOCK_SECTION_ID" => $sectId,
             'NAME' => $elementName,
+            "PREVIEW_TEXT" => $userID,
             'CODE' => $elementCode,
             'ACTIVE' => 'Y',
-        ]);
+        );
 
-        if ($result->isSuccess()) {
-            $elementId = $result->getId();
-            $strRes = "Элемент добавлен с ID: " . $elementId;
+        if ($PRODUCT_ID = $el->Add($arLoadProductArray)) {
+            $strRes = "New ID: " . $PRODUCT_ID;
         } else {
-            $errors = $result->getErrorMessages();
-            $strRes = $errors[0];
+            $strRes = "Error: " . $el->LAST_ERROR;
         }
 
         return $strRes;
-
     }
 
     public static function makeNormalizeArray($filePath)
@@ -124,12 +153,12 @@ class IblockHelpers
 
     public static function getPropertyIdByCode($iblockCode, $propertyCode)
     {
-        // Получаем ID инфоблока по коду
+// Получаем ID инфоблока по коду
         $res = \CIBlock::GetList([], ['CODE' => $iblockCode]);
         if ($iblock = $res->Fetch()) {
             $iblockId = $iblock['ID'];
 
-            // Получаем ID свойства по коду
+// Получаем ID свойства по коду
             $propRes = \CIBlockProperty::GetList(
                 [],
                 [
@@ -147,17 +176,16 @@ class IblockHelpers
     }
 
     /*
-     * получить инфу элемента иб по емеил текущего пользователя
-     * array(ID NAME PROPERTY_$propertyCode_VALUE)
-     * output $iblockId
-     * $iblockName
-     * $propVal by Code
-     */
+    * получить инфу элемента иб по емеил текущего пользователя
+    * array(ID NAME PROPERTY_$propertyCode_VALUE)
+    * output $iblockId
+    * $iblockName
+    * $propVal by Code
+    */
     public static function getPropertyValIblockByEmailCurrentUser($iblockCode, $propertyCode)
     {
         $currentUserEmail = UH::getCurrentUserEmail();
         $IBLOCK_ID = self::getIblockIdByCode($iblockCode);
-
 
         $propVal = \CIBlockElement::GetList(
             [],
@@ -174,18 +202,32 @@ class IblockHelpers
                 'PROPERTY_' . $propertyCode
             ]
         )->GetNext();
-       /* if ($propVal['PROPERTY_'.$propertyCode.'_VALUE']!=''){
+        /* if ($propVal['PROPERTY_'.$propertyCode.'_VALUE']!=''){
 
-            $propertyVal = 'У вас сумма баллов : '.$propVal['PROPERTY_'.$propertyCode.'_VALUE'];
+        $propertyVal = 'У вас сумма баллов : '.$propVal['PROPERTY_'.$propertyCode.'_VALUE'];
         }else{
-            $propertyVal = 'У вас на данный момент нет баллов';
+        $propertyVal = 'У вас на данный момент нет баллов';
         }*/
 
-       return  $propVal;
+        return $propVal;
     }
 
-    public static function getIblockElementInfo()
+    public static function getIblockElementInfo($iblockCode, $userEmailIbElCode)
     {
-
+        $IBLOCK_ID = self::getIblockIdByCode($iblockCode);
+        $arElVal = \CIBlockElement::GetList(
+            [],
+            [
+                'IBLOCK_ID' => $IBLOCK_ID,
+                'CODE' => $userEmailIbElCode,
+                'ACTIVE' => 'Y'
+            ],
+            false,
+            false,
+            [
+                'ID',
+            ]
+        )->GetNext();
+        return $arElVal;
     }
 }

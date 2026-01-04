@@ -29,29 +29,31 @@ if ($curPage == SITE_DIR . "index.php"): ?>
         </div>
     </a>
     <? $APPLICATION->IncludeComponent(
-            "star:owlcarousel",
-            "",
-            Array(
-                    "AUTO" => "false",
-                    "CONTROLS" => "true",
-                    "COUNT" => "14",
-                    "COUNT_SLIDES" => "3",
-                    "DATA_TYPE" => "IBLOCK",
-                    "FOLDER" => "/upload/",
-                    "IBLOCK_ID" => "22",
-                    "IBLOCK_TYPE" => "slider",
-                    "IMAGE" => "DETAIL",
-                    "JQUERY" => "N",
-                    "LINK" => "N",
-                    "LOOP" => "true",
-                    "MARGIN" => "20",
-                    "NEW_WINDOW" => "N",
-                    "PAGER" => "true",
-                    "PROPERTY_CODE" => "USER",
-                    "SORT_BY1" => "SORT",
-                    "SORT_ORDER1" => "DESC"
-            )
-    );?>
+	"star:owlcarousel", 
+	".default", 
+	array(
+		"AUTO" => "false",
+		"CONTROLS" => "true",
+		"COUNT" => "14",
+		"COUNT_SLIDES" => "3",
+		"DATA_TYPE" => "IBLOCK",
+		"FOLDER" => "/upload/",
+		"IBLOCK_ID" => "22",
+		"IBLOCK_TYPE" => "slider",
+		"IMAGE" => "PREVIEW",
+		"JQUERY" => "N",
+		"LINK" => "N",
+		"LOOP" => "true",
+		"MARGIN" => "20",
+		"NEW_WINDOW" => "N",
+		"PAGER" => "true",
+		"PROPERTY_CODE" => "",
+		"SORT_BY1" => "SORT",
+		"SORT_ORDER1" => "DESC",
+		"COMPONENT_TEMPLATE" => ".default"
+	),
+	false
+);?>
 
 <?php endif; ?>
 <?php // форма обратной связи?>

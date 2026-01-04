@@ -90,6 +90,7 @@ h1, h2, h3, h4, h5 {
     width: auto;
 }
 
+
 @media (max-width: 767px) {
     .bx-logo-block img {
         max-width: 100%;
@@ -717,6 +718,35 @@ a.see-balls_wrapp {
     background-color: var(--theme-b-bg-primary-hover);
     color: var(--theme-b-tx-primary-hover);
 }
+.alert-danger{font-size: 18px;}
+
+@media (max-width: 1500px) {
+    .lab-banner_text-big1, .lab-banner_text-big2 {
+        font-size: 100px;
+    }
+    .lab-banner-img img.num-3 {
+        right: 1%;
+        top: -5%;
+    }
+    .lab-banner_imgs-wrapp img {
+        width: 650px;
+        height: 600px;
+    }
+}
+@media (max-width: 900px) {
+    .lab-banner_text-big1, .lab-banner_text-big2 {
+        font-size: 80px;
+    }
+    .lab-banner-img img.num-3 {
+        right: 1%;
+        top: -5%;
+    }
+    .lab-banner_imgs-wrapp img {
+        width: 450px;
+        height: 400px;
+    }
+}
+
 
 
 

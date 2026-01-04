@@ -20,33 +20,112 @@ if (!CModule::IncludeModule("iblock")) {
     return;
 }
 
+// todo  уменьшение количества товара и итого баллов у юзера при оформлении заказа битрикс
+// в SaleEventsHandlers не работает много переадресации
+//$eventManager->addEventHandler('sale', 'OnSaleOrderSaved',['Lab\EventsHandlers\SaleEventsHandlers','onSaleOrderSavedHandler']);
+$eventManager->addEventHandler('sale', 'OnSaleOrderSaved','OnSaleOrderSavedHandler');
+function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
+{
+    $order = $event->getParameter("ENTITY");
+    $isNew = $event->getParameter("IS_NEW");
+    if (!$isNew) {
+        return;
+    }
+    $basket = $order->getBasket();
+
+    foreach ($basket as $basketItem) {
+        $productId = $basketItem->getProductId();
+        $quantity = $basketItem->getQuantity();
+        if (\Bitrix\Main\Loader::includeModule('catalog')) {
+            // Получаем текущие остатки
+            $productData = CCatalogProduct::GetByID($productId);
+
+            if ($productData) {
+                $newQuantity = $productData['QUANTITY'] - $quantity;
+
+                // Обновляем общее количество
+                CCatalogProduct::Update($productId, [
+                    'QUANTITY' => $newQuantity
+                ]);
+            }
+        }
+
+    }
+
+    if (in_array($order->getField('STATUS_ID'), array('N'))) {
+
+        $ORDER = \Bitrix\Sale\Order::load($order->getId());
+
+        if (!$ORDER) {
+            return;
+        }
+
+        // Получаем коллекцию свойств заказа
+        $propertyCollection = $ORDER->getPropertyCollection();
+        $userId = $ORDER->getUserId();
+
+        $customerProperties = [];
+
+        // Получаем email
+        $emailProperty = $propertyCollection->getUserEmail();
+        $orderPrice = $ORDER->getPrice();
+
+        $customerProperties['EMAIL'] = $emailProperty->getValue();
+        $customerProperties['PRICE'] = $orderPrice;
+
+
+        $iblockId = IH::getIblockIdByCode('sotrudniki');
+        $propertyId = IH::getPropertyIdByCode('sotrudniki', 'COLUMN33');
+        $elementCode = $customerProperties['EMAIL'];
+        $propertyCode = 'COLUMN33';
+
+        $COLUMN33_Result = \CIBlockElement::GetList(
+            [],
+            [
+                'IBLOCK_ID' => $iblockId,
+                'CODE' => $elementCode,
+                'ACTIVE' => 'Y'
+            ],
+            false,
+            false,
+            [
+                'ID',
+                'NAME',
+                'PROPERTY_' . $propertyCode
+            ]
+        )->GetNext();
+
+        $COLUMN33_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode . '_VALUE'] ?? null;
+        $elementId = $COLUMN33_Result['ID'];
+
+        $COLUMN33_ValueNew = (int)$COLUMN33_Value - (int)$customerProperties['PRICE'];
+
+        $arPrices = [$COLUMN33_Value, $customerProperties['PRICE'], $COLUMN33_ValueNew];
+
+        // Устанавливаем значение свойства
+        \CIBlockElement::SetPropertyValuesEx(
+            $elementId,
+            $iblockId,
+            array(
+                "COLUMN33" => $COLUMN33_ValueNew
+            )
+        );
+
+
+        /*$log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arPrices, true);
+        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));*/
+
+    }
+};
+
 // todo действия при регистрации и удалении пользователя если пользователь из группы K-Team: Сотрудники [12 EMPLOYEES_s1]
 // todo если из АНО
-AddEventHandler("main", "OnAfterUserRegister", "OnAfterUserRegisterHandler");
-AddEventHandler("main", "OnUserDelete", "OnUserDeleteHandler");
-function OnAfterUserRegisterHandler(&$arFields)
-{ // если группа пользователя id 12 ['STRING_ID']= EMPLOYEES_s1 то добавляем пользователя в иб sotrudniki
-    $userId = $arFields["ID"];
-    $gropeCode = "EMPLOYEES_s1";
-    // $codeUserGroup = UH::getUsersGroupCodeByGropeID($arFields['ID']);
-    $gropeId = UH::getUsersGroupIdByCode($gropeCode);
-    if (in_array($gropeId, CUser::GetUserGroup($userId)))
-    {
 
-    } ;
+AddEventHandler("main", "OnAfterUserAdd", ['Lab\EventsHandlers\UserEventsHandlers', 'onAfterUserAddHandler']);
+AddEventHandler("main", "OnAfterUserUpdate", ['Lab\EventsHandlers\UserEventsHandlers', 'onAfterUserUpdateHandler']);
 
-    $log = date('Y-m-d H:i:s') . ' OnAfterUserRegisterHandler ' . print_r($arFields, true);
-    file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-    Bitrix\Main\Diag\Debug::dumpToFile($log, 'OnAfterUserRegisterHandler' . date('d-m-Y; H:i:s'));
-}
 
-function OnUserDeleteHandler(&$arFields)
-{ // если группа пользователя id 12 то удаляем  пользователя в иб sotrudniki с Символьный кодом $arFields['email' ]
-
-    $log = date('Y-m-d H:i:s') . ' OnUserDeleteHandler ' . print_r($arFields, true);
-    file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-    Bitrix\Main\Diag\Debug::dumpToFile($log, 'OnUserDeleteHandler' . date('d-m-Y; H:i:s'));
-}
 
 // todo регистрация пользователя не из АНО после добавления в иб ТАБЛИЦА БОНУСОВ в группу Все покупатели [ 24 CRM_SHOP_BUYER]
 // todo удаление пользователя не из АНО после добавления в иб ТАБЛИЦА БОНУСОВ в группу Все покупатели [ 24 CRM_SHOP_BUYER]
@@ -55,6 +134,45 @@ $eventManager->addEventHandler("iblock", "OnAfterIBlockElementDelete", 'onAfterI
 
 function onAfterIBlockElementAddHandler(&$arFields)
 {
+    // todo отправка писем при добавлении сообщения обратной связи CODE interlabs.feedbackform
+    $IBLOCK_ID = $arFields['IBLOCK_ID'];
+    $IBLOCK_CODE = IH::getIBlockCodeById($IBLOCK_ID);
+    if ($IBLOCK_CODE === 'interlabs.feedbackform') {
+
+        /* $adminEmail = COption::GetOptionString("main", "email_from");
+         $iblockName = CIBlock::GetByID($targetIblockId)->Fetch()['NAME'];
+
+         $subject = "Добавлен новый элемент в инфоблок «{$iblockName}»";
+
+         $message = "
+             <h3>Новый элемент #{$arFields['ID']}</h3>
+             <p><strong>Название:</strong> {$arFields['NAME']}</p>
+             <p><strong>Дата создания:</strong> ".FormatDate('j F Y H:i')."</p>
+         ";
+
+         if (!empty($arFields['PREVIEW_TEXT'])) {
+             $message .= "<p><strong>Описание:</strong> {$arFields['PREVIEW_TEXT']}</p>";
+         }
+
+         $message .= "
+             <p>
+                 <a href='/bitrix/admin/iblock_element_edit.php?IBLOCK_ID={$targetIblockId}&type=content&ID={$arFields['ID']}'>
+                     Редактировать элемент
+                 </a>
+             </p>
+         ";
+
+         CEvent::SendImmediate(
+             "IBLOCK_NEW_ELEMENT",
+             SITE_ID,
+             array(
+                 "EMAIL_TO" => $adminEmail,
+                 "SUBJECT" => $subject,
+                 "BODY" => $message,
+             )
+         );*/
+
+    }
 
     $log = date('Y-m-d H:i:s') . ' onAfterIBlockElementAddHandler ' . print_r($arFields, true);
     file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
@@ -71,41 +189,7 @@ onAfterIBlockElementDeleteHandler(&$arFields)
 }
 
 
-// todo  уменьшение количества товара при оформлении заказа битрикс
-$eventManager->addEventHandler('sale', 'OnSaleOrderSaved', function (\Bitrix\Main\Event $event) {
-    $order = $event->getParameter("ENTITY");
 
-    $order = $event->getParameter("ENTITY");
-    $isNew = $event->getParameter("IS_NEW");
-
-    if (!$isNew) {
-        return;
-    }
-
-    $basket = $order->getBasket();
-
-    foreach ($basket as $basketItem) {
-        $productId = $basketItem->getProductId();
-        $quantity = $basketItem->getQuantity();
-
-        // Вариант 1: Обновление через CCatalogProduct
-        if (\Bitrix\Main\Loader::includeModule('catalog')) {
-            // Получаем текущие остатки
-            $productData = CCatalogProduct::GetByID($productId);
-
-            if ($productData) {
-                $newQuantity = $productData['QUANTITY'] - $quantity;
-
-                // Обновляем общее количество
-                CCatalogProduct::Update($productId, [
-                    'QUANTITY' => $newQuantity
-                ]);
-            }
-        }
-
-
-    }
-});
 
 // todo сделать хендлер при изменении элемента складывать значения свойств
 $eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementUpdateHandler']);
@@ -117,7 +201,7 @@ AddEventHandler("sale", "OnBeforeOrderAdd", ['Lab\EventsHandlers\SaleEventsHandl
 
 //todo при изменении статуса на Выполнен id F  вычитает стоимость заказа из значения св-ва COLUMN33 данного покупателя вычисляем по E-mail
 // в иб sotrudniki по символьному коду элемента
-$eventManager->addEventHandler('sale', 'OnSaleStatusOrderChange', 'statusChange');
+//$eventManager->addEventHandler('sale', 'OnSaleStatusOrderChange', 'statusChange');
 function statusChange(\Bitrix\Main\Event $event)
 
 {

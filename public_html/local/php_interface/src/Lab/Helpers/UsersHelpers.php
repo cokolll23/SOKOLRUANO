@@ -161,5 +161,16 @@ class UsersHelpers
         }
         return $userEmail;
     }
+    public static function getUserEmailByUserId($userId)
+    {
+        if ($userId > 0) {
+            // Запрашиваем профиль пользователя
+            $rsUser = \CUser::GetByID($userId);
+            if ($arUser = $rsUser->Fetch()) {
+                $userEmail = $arUser["EMAIL"];
+            }
+        }
+        return $userEmail;
+    }
 
 }

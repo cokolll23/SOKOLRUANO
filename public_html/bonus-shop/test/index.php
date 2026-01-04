@@ -32,7 +32,7 @@ $userGroups = CUser::GetUserGroup($userId);
 //$arUser=getUserWithDetails($userId) ;
 pretty_print($userGroups);
 
-echo $gropeId = UH::getUsersGroupIdByCode('EMPLOYEES_s1');
+$gropeId = UH::getUsersGroupIdByCode('EMPLOYEES_s1');
 $arGroups = CUser::GetUserGroup($userId);
 //pretty_print($arGroups);
 if (in_array(12, CUser::GetUserGroup($userId)))
@@ -40,6 +40,8 @@ if (in_array(12, CUser::GetUserGroup($userId)))
     echo 1;
 
 };
+echo $sectID=Lab\Helpers\IblockHelpers::getGroupIdByCode('sotrudniki','mfu',' s2');
+
 
 ?>
 

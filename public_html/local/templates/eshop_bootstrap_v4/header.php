@@ -274,7 +274,7 @@ $curPage = $APPLICATION->GetCurPage(true);
             <!--red banner img-->
             <? if ($curPage == SITE_DIR . "index.php"): ?>
                 <div class="row lab-banner">
-                    <div class='col lab-banner_text-wrapp'>
+                    <div class='col-lg-6 col-12  lab-banner_text-wrapp'>
                         <div class='col lab-banner_text-inner'>
                             <div class="">
                                 <div class="lab-banner_text-big1">Магазин</div>
@@ -285,10 +285,9 @@ $curPage = $APPLICATION->GetCurPage(true);
                                     <div class="lab-banner_text-small2">на приятные сюрпризы!</div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-                    <div class="col-lg-6  lab-banner-img">
+                    <div class="col-lg-6 col-sm-none lab-banner-img">
                         <? $curPage = $APPLICATION->GetCurPage(true);
 
                         if ($curPage == SITE_DIR . "index.php"):?>

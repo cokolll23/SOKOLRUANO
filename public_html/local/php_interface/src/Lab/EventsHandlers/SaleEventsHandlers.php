@@ -10,6 +10,36 @@ use Lab\Helpers\IblockHelpers as IH;
 
 class SaleEventsHandlers
 {
+    // todo  уменьшение количества товара при оформлении заказа битрикс
+    public static  function onSaleOrderSavedHandler (\Bitrix\Main\Event $event)
+    {
+        $order = $event->getParameter("ENTITY");
+        $isNew = $event->getParameter("IS_NEW");
+
+        if (!$isNew) {
+            return;
+        }
+        $basket = $order->getBasket();
+
+        foreach ($basket as $basketItem) {
+            $productId = $basketItem->getProductId();
+            $quantity = $basketItem->getQuantity();
+            if (\Bitrix\Main\Loader::includeModule('catalog')) {
+                // Получаем текущие остатки
+                $productData = CCatalogProduct::GetByID($productId);
+
+                if ($productData) {
+                    $newQuantity = $productData['QUANTITY'] - $quantity;
+
+                    // Обновляем общее количество
+                    CCatalogProduct::Update($productId, [
+                        'QUANTITY' => $newQuantity
+                    ]);
+                }
+            }
+
+        }
+    }
     public static function onBeforeOrderAdd(&$arFields)
     {
         $orderPrice = $arFields['PRICE'] ;
@@ -47,7 +77,7 @@ class SaleEventsHandlers
 
         if ($diffRes != 1) {
             global $APPLICATION;
-            $APPLICATION->ThrowException('Не можете заказать на эту сумму.  Стоимость заказа - '. $orderPrice . ' руб. , у Вас в наличие - ' . $column33Value . ' баллов');
+            $APPLICATION->ThrowException('Не можете заказать на эту сумму, Уменьшите количество товаров в блоке выше со списком товаров .  Стоимость заказа - '. $orderPrice . ' руб. , у Вас в наличие - ' . $column33Value . ' баллов');
             return false;
         }
 

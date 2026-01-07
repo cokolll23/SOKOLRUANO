@@ -62,13 +62,12 @@ class IblockHelpers
 
     }
 
-
-    /*
+    /**
      * добавляем элемент ИБ по коду ИБ
-     * */
+     */
     public static function addElsToIblock($iblockCode = 'sotrudniki', $userID, $elementName, $elementCode, $sectionCode, $SITE_ID)
     {
-// todo добавить элементы в ib  'sotrudniki'
+    // todo добавить элементы в ib  'sotrudniki'
         $iBlockId = self::getIblockIdByCode($iblockCode);
         $sectId = self::getGroupIdByCode($iblockCode, $sectionCode, $SITE_ID);
         $el = new \CIBlockElement;

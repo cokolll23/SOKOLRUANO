@@ -10,6 +10,7 @@ use Lab\EventsHandlers\IblockEventsHandlers as EH;
 use Lab\Helpers\IblockHelpers as IH;
 use \Lab\Helpers\UsersHelpers as UH;
 
+\Bitrix\Main\UI\Extension::load('lab.mainjs');
 //CUtil::InitJSCore(array('jquery3', 'popup', 'ajax', 'date'));
 $eventManager = \Bitrix\Main\EventManager::getInstance();
 
@@ -121,16 +122,91 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
 
 // todo действия при регистрации и удалении пользователя если пользователь из группы K-Team: Сотрудники [12 EMPLOYEES_s1]
 // todo если из АНО
-
 AddEventHandler("main", "OnAfterUserAdd", ['Lab\EventsHandlers\UserEventsHandlers', 'onAfterUserAddHandler']);
 AddEventHandler("main", "OnAfterUserUpdate", ['Lab\EventsHandlers\UserEventsHandlers', 'onAfterUserUpdateHandler']);
+//todo Отменяем создание заказа до его создания при цена заказа выше определенной цифры https://chat.deepseek.com/a/chat/s/6e829ee6-c90c-46b8-a2f5-dbab70924b95
+AddEventHandler("sale", "OnBeforeOrderAdd", ['Lab\EventsHandlers\SaleEventsHandlers', 'onBeforeOrderAdd']);
+//todo при изменении статуса на Выполнен id F  вычитает стоимость заказа из значения св-ва COLUMN33 данного покупателя вычисляем по E-mail
+// в иб sotrudniki по символьному коду элемента
+$eventManager->addEventHandler('sale', 'OnSaleStatusOrderChange', 'statusChange');
+function statusChange(\Bitrix\Main\Event $event)
+{
+    $order = $event->getParameter("ENTITY");
+    // если статус заказа вотменен
+    if (in_array($order->getField('STATUS_ID'), array('D'))) {
+
+        $ORDER = \Bitrix\Sale\Order::load($order->getId());
+
+        if (!$ORDER) {
+            return;
+        }
+
+        // Получаем коллекцию свойств заказа
+        $propertyCollection = $ORDER->getPropertyCollection();
+        $userId = $ORDER->getUserId();
+
+        $customerProperties = [];
+
+        // Получаем email
+        $emailProperty = $propertyCollection->getUserEmail();
+        $orderPrice = $ORDER->getPrice();
+
+        $customerProperties['EMAIL'] = $emailProperty->getValue();
+        $customerProperties['PRICE'] = $orderPrice;
 
 
+        $iblockId = IH::getIblockIdByCode('sotrudniki');
+        $propertyId = IH::getPropertyIdByCode('sotrudniki', 'COLUMN33');
+        $elementCode = $customerProperties['EMAIL'];
+        $propertyCode = 'COLUMN33';
 
+        $COLUMN33_Result = \CIBlockElement::GetList(
+            [],
+            [
+                'IBLOCK_ID' => $iblockId,
+                'CODE' => $elementCode,
+                'ACTIVE' => 'Y'
+            ],
+            false,
+            false,
+            [
+                'ID',
+                'NAME',
+                'PROPERTY_' . $propertyCode
+            ]
+        )->GetNext();
+
+        $COLUMN33_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode . '_VALUE'] ?? null;
+        $elementId = $COLUMN33_Result['ID'];
+
+        $COLUMN33_ValueNew = (int)$COLUMN33_Value + (int)$customerProperties['PRICE'];
+
+        $arPrices = [$COLUMN33_Value, $customerProperties['PRICE'], $COLUMN33_ValueNew];
+
+        // Устанавливаем значение свойства
+        \CIBlockElement::SetPropertyValuesEx(
+            $elementId,
+            $iblockId,
+            array(
+                "COLUMN33" => $COLUMN33_ValueNew
+            )
+        );
+
+
+        /*$log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arPrices, true);
+        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));*/
+
+    }
+
+
+}
 // todo регистрация пользователя не из АНО после добавления в иб ТАБЛИЦА БОНУСОВ в группу Все покупатели [ 24 CRM_SHOP_BUYER]
 // todo удаление пользователя не из АНО после добавления в иб ТАБЛИЦА БОНУСОВ в группу Все покупатели [ 24 CRM_SHOP_BUYER]
-$eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", 'onAfterIBlockElementAddHandler');
-$eventManager->addEventHandler("iblock", "OnAfterIBlockElementDelete", 'onAfterIBlockElementDeleteHandler');
+$eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", ['Lab\EventsHandlers\IblockEventsHandlers','onAfterIBlockElementAddHandler']);
+// todo сделать хендлер при изменении элемента складывать значения свойств
+$eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementUpdateHandler']);
+$eventManager->addEventHandler("iblock", "OnAfterIBlockElementDelete", ['Lab\EventsHandlers\IblockEventsHandlers','onAfterIBlockElementDeleteHandler']);
 
 function onAfterIBlockElementAddHandler(&$arFields)
 {
@@ -186,122 +262,4 @@ onAfterIBlockElementDeleteHandler(&$arFields)
     $log = date('Y-m-d H:i:s') . ' onAfterIBlockElementDeleteHandler ' . print_r($arFields, true);
     file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
     Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterIBlockElementDeleteHandler' . date('d-m-Y; H:i:s'));
-}
-
-
-
-
-// todo сделать хендлер при изменении элемента складывать значения свойств
-$eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementUpdateHandler']);
-
-//$eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", 'OnAfterIBlockElementUpdateHandler');
-
-//todo Отменяем создание заказа до его создания при цена заказа выше определенной цифры https://chat.deepseek.com/a/chat/s/6e829ee6-c90c-46b8-a2f5-dbab70924b95
-AddEventHandler("sale", "OnBeforeOrderAdd", ['Lab\EventsHandlers\SaleEventsHandlers', 'onBeforeOrderAdd']);
-
-//todo при изменении статуса на Выполнен id F  вычитает стоимость заказа из значения св-ва COLUMN33 данного покупателя вычисляем по E-mail
-// в иб sotrudniki по символьному коду элемента
-//$eventManager->addEventHandler('sale', 'OnSaleStatusOrderChange', 'statusChange');
-function statusChange(\Bitrix\Main\Event $event)
-
-{
-    $order = $event->getParameter("ENTITY");
-
-    if (in_array($order->getField('STATUS_ID'), array('D'))) {
-        // при отмене заказа увеличение количества товара
-
-        $ORDER = \Bitrix\Sale\Order::load($order->getId());
-
-        if (!$ORDER) {
-            return;
-        }
-        // Получаем коллекцию свойств заказа
-        $propertyCollection = $ORDER->getPropertyCollection();
-        $userId = $ORDER->getUserId();
-
-        $customerProperties = [];
-
-        $dbRes = Order::getList([
-            'select' => ['ID'],
-            'filter' => [],
-            'order' => ['ID' => 'DESC']
-        ]);
-
-        while ($order = $dbRes->fetch()) {
-            $arItems[] = $order;
-        }
-
-        $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arItems, true);
-        $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arItems, true);
-        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-
-    }
-
-    if (in_array($order->getField('STATUS_ID'), array('F'))) {
-
-        $ORDER = \Bitrix\Sale\Order::load($order->getId());
-
-        if (!$ORDER) {
-            return;
-        }
-
-        // Получаем коллекцию свойств заказа
-        $propertyCollection = $ORDER->getPropertyCollection();
-        $userId = $ORDER->getUserId();
-
-        $customerProperties = [];
-
-        // Получаем email
-        $emailProperty = $propertyCollection->getUserEmail();
-        $orderPrice = $ORDER->getPrice();
-
-        $customerProperties['EMAIL'] = $emailProperty->getValue();
-        $customerProperties['PRICE'] = $orderPrice;
-
-
-        $iblockId = IH::getIblockIdByCode('sotrudniki');
-        $propertyId = IH::getPropertyIdByCode('sotrudniki', 'COLUMN33');
-        $elementCode = $customerProperties['EMAIL'];
-        $propertyCode = 'COLUMN33';
-
-        $COLUMN33_Result = \CIBlockElement::GetList(
-            [],
-            [
-                'IBLOCK_ID' => $iblockId,
-                'CODE' => $elementCode,
-                'ACTIVE' => 'Y'
-            ],
-            false,
-            false,
-            [
-                'ID',
-                'NAME',
-                'PROPERTY_' . $propertyCode
-            ]
-        )->GetNext();
-
-        $COLUMN33_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode . '_VALUE'] ?? null;
-        $elementId = $COLUMN33_Result['ID'];
-
-        $COLUMN33_ValueNew = (int)$COLUMN33_Value - (int)$customerProperties['PRICE'];
-
-        $arPrices = [$COLUMN33_Value, $customerProperties['PRICE'], $COLUMN33_ValueNew];
-
-        // Устанавливаем значение свойства
-        \CIBlockElement::SetPropertyValuesEx(
-            $elementId,
-            $iblockId,
-            array(
-                "COLUMN33" => $COLUMN33_ValueNew
-            )
-        );
-
-
-        /*$log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arPrices, true);
-        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));*/
-
-    }
-
-
 }

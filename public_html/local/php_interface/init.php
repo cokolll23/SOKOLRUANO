@@ -10,7 +10,7 @@ use Lab\EventsHandlers\IblockEventsHandlers as EH;
 use Lab\Helpers\IblockHelpers as IH;
 use \Lab\Helpers\UsersHelpers as UH;
 
-\Bitrix\Main\UI\Extension::load('lab.mainjs');
+//\Bitrix\Main\UI\Extension::load('lab.mainjs');
 //CUtil::InitJSCore(array('jquery3', 'popup', 'ajax', 'date'));
 $eventManager = \Bitrix\Main\EventManager::getInstance();
 

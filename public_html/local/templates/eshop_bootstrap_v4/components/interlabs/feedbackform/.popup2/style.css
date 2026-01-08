@@ -527,4 +527,5 @@
 }
 
 ul.ul-events-props li.li-events-prop{cursor: pointer}
+ul.ul-events-props li.li-events-prop.clicked{background-color: #cccccc}
 ul.ul-events-props li.li-events-prop:hover{background-color: #cccccc}

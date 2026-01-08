@@ -42,7 +42,8 @@ if (in_array(12, CUser::GetUserGroup($userId)))
 };
 echo $sectID=Lab\Helpers\IblockHelpers::getGroupIdByCode('sotrudniki','mfu',' s2');
 
-
+$arProps=Lab\Helpers\IblockHelpers::getPropsListIblock('sotrudniki');
+pretty_print($arProps);
 ?>
 
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

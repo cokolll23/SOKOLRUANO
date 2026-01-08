@@ -46,10 +46,14 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                     <path d="M1 17L17 1" stroke="#8B8989" stroke-width="2" stroke-linecap="round"/>
                 </svg>
                         </span>
+
                 </div>
 
 
                 <div class="body">
+                    <div>
+                        Здесь вы можете записать бонус баллы за мероприятия
+                    </div>
                     <div class="interlabs-feedbackform__container__errors">
                         <?php if (isset($arResult['validateErrors']) && count($arResult['validateErrors']) > 0) { ?>
                             <?php foreach ($arResult['validateErrors'] as $error) { ?>
@@ -69,7 +73,7 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                          class="js-div-to-form-convert ajax">
                         <input name="AJAX_CALL" value="Y" type="hidden">
                         <?php }else{ ?>
-                        <form method="post" enctype="multipart/form-data" action=""
+                        <form id="<?php echo $arParams['FORM_ID'] ?>" method="post" enctype="multipart/form-data" action=""
                               data-validatefields='<?php echo json_encode($arResult['template']['validate']); ?>'
                               class="">
                             <?php } ?>
@@ -192,7 +196,16 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                                                 break;
                                             case 'text':
                                             default:
-                                                ?>
+                                                if ($code == 'EVENT_CODE' || $code == 'EVENT_NAME') {
+                                                    ?>
+                                                    <label style="display:  none;" for="<?php echo $code; ?>"><?php echo $field['NAME']; ?><?php echo $field['REQUIRED'] ? '<span class="field-required">*</span>' : ''; ?></label>
+                                                    <input style="display: none;"  id="<?php echo $code; ?>" name="<?php echo $code; ?>"
+                                                           placeholder="<?php echo $field['NAME']; ?>"
+                                                           type="text"
+                                                           value="<?php echo Feedbackform::reqInput($code, $arResult['form'][$code]); ?>"
+                                                            <?php echo $field['REQUIRED'] ? ' validate="validate" required ' : ''; ?>
+                                                    >
+                                                <?php } else {?>
                                                     <label for="<?php echo $code; ?>"><?php echo $field['NAME']; ?><?php echo $field['REQUIRED'] ? '<span class="field-required">*</span>' : ''; ?></label>
                                                     <input id="<?php echo $code; ?>" name="<?php echo $code; ?>"
                                                            placeholder="<?php echo $field['NAME']; ?>"
@@ -201,9 +214,12 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                                                             <?php echo $field['REQUIRED'] ? ' validate="validate" required ' : ''; ?>
                                                     >
 
-                                               <? } ?>
+                                               <? }} ?>
                                     </div>
                                 <? } ?>
+                                <a href="#" id="addBonus" class="add-bonus">Выберите мероприятие из списка</a>
+
+                                <div id="result-container"></div>
 
                                 <?php if ($arParams['USE_CAPTCHA'] === 'Y') { ?>
                                     <div class="form-group">
@@ -274,9 +290,7 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                                         type="submit">
                                     <?php echo Loc::getMessage("FORM_SEND"); ?>
                                 </button>
-                                <a class="modal-default-button js-interlabs-feedbackform__dialog__cancel-button">
-                                    <?php echo Loc::getMessage("FORM_CLOSE"); ?>
-                                </a>
+
                             </div>
                             <?php if ($arResult['AJAX_MODE'] === 'Y'){ ?>
                     </div>
@@ -293,9 +307,8 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
 
     <div class="interlabs-feedbackform__container-succsess modal-mask <?php echo $arResult['isSaveFeedback'] === false ? ' hidden' : ''; ?>">
         <div class="modal-wrapper">
-            <div class="modal-container">
+            <div class="container modal-container">
                 <div class="header">
-                    <label><?php echo $arResult['SUBJECT'] ? $arResult['SUBJECT'] : Loc::getMessage("FORM_TITLE"); ?></label>
                     <span class="js-interlabs-feedbackform__dialog__close">
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                              xmlns="http://www.w3.org/2000/svg">
@@ -306,15 +319,10 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
 
                 </div>
                 <div class="body">
+                    Ваше сообщение отправлено администратору
                     <div class="scroll-area">
                         <label><?php echo Loc::getMessage("FORM_SAVED"); ?></label>
                     </div>
-                    <div class="form-group control-buttons">
-                        <a class="interlabs-feedbackform__container-succsess__close">
-                            <?php echo Loc::getMessage("FORM_CLOSE"); ?>
-                        </a>
-                    </div>
-
                 </div>
 
 

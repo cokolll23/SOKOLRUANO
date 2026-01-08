@@ -13,7 +13,7 @@ if ($userId > 0) {
     // Запрашиваем профиль пользователя
     $rsUser = \CUser::GetByID($userId);
     if ($arUser = $rsUser->Fetch()) {
-        $userEmail=$arUser["EMAIL"];
+        $userEmail = $arUser["EMAIL"];
     }
 }
 
@@ -28,9 +28,9 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
 <div class="row">
 
     <? if ($USER->IsAuthorized()): ?>
-    <div class="col-12">
-        <?= $propertyVal; ?>
-    </div>
+        <div class="col-12">
+            <?= $propertyVal; ?>
+        </div>
     <? endif; ?>
     <div class="col-12">
         <? if ($ar['ID'] != '' && $USER->IsAuthorized()) { ?>
@@ -39,7 +39,7 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
         <?php } ?>
     </div>
     <div class="col-12">
-        <?$APPLICATION->IncludeComponent(// создать инфоблок
+        <? $APPLICATION->IncludeComponent(// создать инфоблок
                 "interlabs:feedbackform",
                 ".popup1",
                 array(
@@ -56,7 +56,7 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
                                 0 => "NAME",
                                 1 => "PHONE",
                                 2 => "EMAIL",
-                                3 => "",
+
                         ),
                         "FORM_ID" => "i_1",
                         "IBLOCK_FIELDS_USE" => array(
@@ -64,11 +64,12 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
                                 1 => "PHONE",
                                 2 => "EMAIL",
                                 3 => "MESSAGE",
+
                         ),
                         "IBLOCK_FIELD_EMAIL" => "EMAIL",
                         "IBLOCK_FIELD_PHONE" => "PHONE",
-                        "IBLOCK_ID" => "19",
-                        "IBLOCK_TYPE" => "sporina_forms",
+                        "IBLOCK_ID" => "23",
+                        "IBLOCK_TYPE" => "feedbackmsgs",
                         "MAX_FILE_COUNT" => "10",
                         "MAX_FILE_SIZE" => "5",
                         "MESSAGE_ID" => "137",
@@ -77,8 +78,51 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
                         "COMPONENT_TEMPLATE" => ".popup1"
                 ),
                 false
-        );?>
-        <!--<a href="<?php /*= SITE_DIR */?>index.php#feedback"> Написать администратору </a>-->
+        ); ?>
+        <? $APPLICATION->IncludeComponent(// создать инфоблок
+                "interlabs:feedbackform",
+                ".popup2",
+                array(
+                        "AGREE_PROCESSING" => "N",
+                        "AJAX_MODE" => "Y",
+                        "AJAX_OPTION_ADDITIONAL" => "",
+                        "AJAX_OPTION_HISTORY" => "N",
+                        "AJAX_OPTION_JUMP" => "N",
+                        "AJAX_OPTION_STYLE" => "Y",
+                        "EMAIL_FROM" => "sale@sokolru.ru",
+                        "EMAIL_TO" => "cavjob@yandex.ru ,  av230267@yandex.ru",
+                        "EVENT_TYPE" => "INTERLABS_FEEDBACK",
+                        "FIELD_CHECK" => array(
+                                0 => "NAME",
+                                1 => "PHONE",
+                                2 => "EMAIL",
+                                3 => "EVENT_CODE",
+                                4 => "EVENT_NAME",
+                                5 => "SCORES_QTT",
+                        ),
+                        "FORM_ID" => "i_2",
+                        "IBLOCK_FIELDS_USE" => array(
+                                0 => "NAME",
+                                1 => "PHONE",
+                                2 => "EMAIL",
+                                3 => "EVENT_CODE",
+                                4 => "EVENT_NAME",
+                                5 => "SCORES_QTT",
+                        ),
+                        "IBLOCK_FIELD_EMAIL" => "EMAIL",
+                        "IBLOCK_FIELD_PHONE" => "PHONE",
+                        "IBLOCK_ID" => "24",
+                        "IBLOCK_TYPE" => "feedbackmsgs",
+                        "MAX_FILE_COUNT" => "10",
+                        "MAX_FILE_SIZE" => "5",
+
+                        "SUBJECT" => "Записать баллы бонусов",
+                        "USE_CAPTCHA" => "N",
+                        "COMPONENT_TEMPLATE" => ".popup1"
+                ),
+                false
+        ); ?>
+        <!--<a href="<?php /*= SITE_DIR */ ?>index.php#feedback"> Написать администратору </a>-->
     </div>
 </div>
 

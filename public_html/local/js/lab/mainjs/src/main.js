@@ -1,3 +1,3 @@
 BX.ready(function () {
-    alert('BX');
+    //alert('BX');
 });

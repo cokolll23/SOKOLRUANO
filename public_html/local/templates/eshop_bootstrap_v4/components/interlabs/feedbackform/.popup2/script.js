@@ -15,6 +15,34 @@ if (typeof window.interlabs.feedbackform === "undefined") {
 
 $(document).ready(function () {
 
+    $('body').on('click', '#addBonus', function (e) {
+        e.preventDefault();
+        //alert(' ok');
+        $.ajax({
+            url: 'ajaxLoadEvents.php', // Путь к обработчику
+            dataType: 'json',
+            method: 'POST',
+            data: {
+                action: 'propsEventsList',
+            },
+            success: function (response) {
+
+                document.getElementById('result-container').innerHTML = response.html;
+            }
+        });
+    });
+    $('body').on('click', 'ul.ul-events-props li.li-events-prop', function (e) {
+        e.preventDefault();
+        let _this= $(this);
+        let thisId = $(this).attr('id');
+        let thisNAME = $(this).text();
+        $('#EVENT_CODE').val(thisId);
+        $('#EVENT_NAME').val(thisNAME);
+
+        $('.li-events-prop').removeClass('clicked');
+        _this.addClass('clicked');
+
+    });
 
     if (_typeof(window.__validatorMessages) === "object") {
         $.extend($.validator.messages, window.__validatorMessages);

@@ -6,6 +6,11 @@ use Lab\Helpers\IblockHelpers as IblockHelpers;
 
 class IblockEventsHandlers
 {
+    /**
+     * суммируются все значения свойств ИБ в поле Итого CODE COLUMN33
+     * @param $arFields
+     * @return void
+     */
     public static function onAfterIBlockElementUpdateHandler(&$arFields)
     {
        $iblockCode = IblockHelpers::getIBlockCodeById($arFields['IBLOCK_ID']);
@@ -101,6 +106,6 @@ class IblockEventsHandlers
 
         $log = date('Y-m-d H:i:s') . ' onAfterIBlockElementAddHandler ' . print_r($arFields, true);
         file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-        Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterIBlockElementAddHandler' . date('d-m-Y; H:i:s'));
+        \Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterIBlockElementAddHandler' . date('d-m-Y; H:i:s'));
     }
 }

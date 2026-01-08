@@ -746,6 +746,7 @@ a.see-balls_wrapp {
         height: 400px;
     }
 }
+.bx-red .product-item-label-text span, .bx-red .product-item-label-ring{background-color: #e30613!important;}
 
 
 

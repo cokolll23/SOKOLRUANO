@@ -192,7 +192,16 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                                                 break;
                                             case 'text':
                                             default:
-                                                ?>
+                                                if ($code == 'EVENT_CODE' || $code == 'EVENT_NAME') {
+                                                    ?>
+                                                    <label style="display:  block;" for="<?php echo $code; ?>"><?php echo $field['NAME']; ?><?php echo $field['REQUIRED'] ? '<span class="field-required">*</span>' : ''; ?></label>
+                                                    <input style="display: block;"  id="<?php echo $code; ?>" name="<?php echo $code; ?>"
+                                                           placeholder="<?php echo $field['NAME']; ?>"
+                                                           type="text"
+                                                           value="<?php echo Feedbackform::reqInput($code, $arResult['form'][$code]); ?>"
+                                                            <?php echo $field['REQUIRED'] ? ' validate="validate" required ' : ''; ?>
+                                                    >
+                                                <?php } else {?>
                                                     <label for="<?php echo $code; ?>"><?php echo $field['NAME']; ?><?php echo $field['REQUIRED'] ? '<span class="field-required">*</span>' : ''; ?></label>
                                                     <input id="<?php echo $code; ?>" name="<?php echo $code; ?>"
                                                            placeholder="<?php echo $field['NAME']; ?>"
@@ -201,9 +210,12 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                                                             <?php echo $field['REQUIRED'] ? ' validate="validate" required ' : ''; ?>
                                                     >
 
-                                               <? } ?>
+                                               <? }} ?>
                                     </div>
                                 <? } ?>
+                                <a href="#" id="addBonus" class="add-bonus">Добавить бонус</a>
+
+                                <div id="result-container"></div>
 
                                 <?php if ($arParams['USE_CAPTCHA'] === 'Y') { ?>
                                     <div class="form-group">

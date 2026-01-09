@@ -118,7 +118,7 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
 
                         "SUBJECT" => "Записать баллы бонусов",
                         "USE_CAPTCHA" => "N",
-                        "COMPONENT_TEMPLATE" => ".popup1"
+                        "COMPONENT_TEMPLATE" => ".popup2"
                 ),
                 false
         ); ?>

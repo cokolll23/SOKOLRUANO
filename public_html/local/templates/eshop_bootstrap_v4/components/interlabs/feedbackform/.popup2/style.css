@@ -529,3 +529,9 @@
 ul.ul-events-props li.li-events-prop{cursor: pointer}
 ul.ul-events-props li.li-events-prop.clicked{background-color: #cccccc}
 ul.ul-events-props li.li-events-prop:hover{background-color: #cccccc}
+.interlabs-feedbackform__container-succsess .header{justify-content: flex-end;}
+.interlabs-feedbackform__container-succsess .body{justify-content: center}
+.interlabs-feedbackform__container-succsess .body .scroll-area{
+    font-size:210%;
+    color: #28a745;
+}

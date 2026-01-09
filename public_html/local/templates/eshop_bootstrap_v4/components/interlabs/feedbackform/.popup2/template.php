@@ -305,7 +305,7 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
     </div>
 
 
-    <div class="interlabs-feedbackform__container-succsess modal-mask <?php echo $arResult['isSaveFeedback'] === false ? ' hidden' : ''; ?>">
+    <div id="s-<?php echo $arParams['FORM_ID'] ?>" class="interlabs-feedbackform__container-succsess modal-mask <?php echo $arResult['isSaveFeedback'] === false ? ' hidden' : ''; ?>">
         <div class="modal-wrapper">
             <div class="container modal-container">
                 <div class="header">
@@ -318,10 +318,10 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                     </span>
 
                 </div>
-                <div class="body">
-                    Ваше сообщение отправлено администратору
+                <div class="body flex">
+
                     <div class="scroll-area">
-                        <label><?php echo Loc::getMessage("FORM_SAVED"); ?></label>
+                        <label>Ваше сообщение отправлено администратору</label>
                     </div>
                 </div>
 

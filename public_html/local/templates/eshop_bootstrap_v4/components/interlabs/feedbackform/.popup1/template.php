@@ -270,7 +270,7 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                                 <?php } ?>
                             </div>
                             <div class="form-group  control-buttons">
-                                <button class="modal-default-button js-interlabs-feedbackform__dialog__send-button"
+                                <button class="modal-default-button js-interlabs-feedbackform__dialog__send-button1"
                                         type="submit">
                                     <?php echo Loc::getMessage("FORM_SEND"); ?>
                                 </button>
@@ -309,11 +309,7 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                     <div class="scroll-area">
                         <label><?php echo Loc::getMessage("FORM_SAVED"); ?></label>
                     </div>
-                    <div class="form-group control-buttons">
-                        <a class="interlabs-feedbackform__container-succsess__close">
-                            <?php echo Loc::getMessage("FORM_CLOSE"); ?>
-                        </a>
-                    </div>
+
 
                 </div>
 

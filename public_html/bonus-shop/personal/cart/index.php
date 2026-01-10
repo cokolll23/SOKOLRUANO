@@ -20,16 +20,7 @@ while ($arItems = $dbBasketItems->Fetch()) {
     $countItemsInCart += $arItems['QUANTITY'];
 }
 ?>
-<?php if ($countItemsInCart == 0): ?>
-    <div class="container flex" style="min-height: 500px; justify-content: center;">
-        <div class="">
-            <h3>Ваша корзина пуста</h3>
-            <button class="btn btn-danger"><a style="color: #fff" href="/bonus-shop/#lab-catalog" type="button">Перейти к покупкам</a></button>
-        </div>
-    </div>
 
-
-<?php else: ?>
 
     <? $APPLICATION->SetTitle("Корзина");
     $APPLICATION->IncludeComponent("bitrix:sale.basket.basket", "bootstrap_bonus", array(
@@ -209,5 +200,5 @@ while ($arItems = $dbBasketItems->Fetch()) {
             ),
             false
     ); ?>
-<?php endif; ?>
+
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

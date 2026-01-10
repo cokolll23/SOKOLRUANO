@@ -79,7 +79,7 @@ $(document).ready(function () {
         /**
          * Ajax send request
          */
-        dialog.find('.ajax .js-interlabs-feedbackform__dialog__send-button').on('click', function () {
+        dialog.find('.ajax .js-interlabs-feedbackform__dialog__send-button1').on('click', function () {
             var el = $(this);
             var container = el.parents('.interlabs-feedbackform__container:first');
             var dialog = container.find('.interlabs-feedbackform__container__dialog');

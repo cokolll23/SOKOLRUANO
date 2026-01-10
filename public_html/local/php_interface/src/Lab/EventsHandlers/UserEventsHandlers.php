@@ -33,7 +33,7 @@ class UserEventsHandlers
 
     public static function onAfterUserUpdateHandler(&$arFields)
     {
-        CModule::IncludeModule('iblock');
+        \CModule::IncludeModule('iblock');
         $ACTIVE = $arFields["ACTIVE"];
         $userId = $arFields["ID"];
 

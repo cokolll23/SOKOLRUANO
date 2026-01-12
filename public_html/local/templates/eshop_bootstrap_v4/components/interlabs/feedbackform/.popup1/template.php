@@ -309,11 +309,7 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                     <div class="scroll-area">
                         <label><?php echo Loc::getMessage("FORM_SAVED"); ?></label>
                     </div>
-
-
                 </div>
-
-
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@ BX.ready(function () {
     // Обработка удаления товара
     $(document).on('click', '.basket-item-actions-remove', function(e) {
         e.preventDefault();
+        BX.reload();
 
         var itemId = $(this).data('item-id');
 

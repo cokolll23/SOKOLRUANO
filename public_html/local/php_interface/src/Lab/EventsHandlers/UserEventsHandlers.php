@@ -40,22 +40,14 @@ class UserEventsHandlers
         $userEmail = UsersHelpers::getUserEmailByUserId($userId);
         $userIblockId = IblockHelpers::getIblockElementInfo('sotrudniki', $userEmail)['ID'];
 
-        //if ($ACTIVE == "N") {
+        if ($arFields['RESULT'] == 1) {
             $el = new \CIBlockElement;
             $arLoadProductArray = array(
                 "ACTIVE" => $ACTIVE,
             );
             $PRODUCT_ID = $userIblockId;
             $res = $el->Update($PRODUCT_ID, $arLoadProductArray);
-        //}
-        /*if ($ACTIVE == "Y") {
-            $el = new \CIBlockElement;
-            $arLoadProductArray = array(
-                "ACTIVE" => 'Y',
-            );
-            $PRODUCT_ID = $userIblockId;
-            $res = $el->Update($PRODUCT_ID, $arLoadProductArray);
-        }*/
+        }
         $log = date('Y-m-d H:i:s') . ' onAfterUserUpdateHandler ' . print_r($arFields, true);
         file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
         \Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterUserUpdateHandler' . date('d-m-Y; H:i:s'));

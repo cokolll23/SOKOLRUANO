@@ -11,7 +11,7 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-pretty_print($arResult);
+
 ?>
 <div class="catalog-section">
     <? if ($arParams["DISPLAY_TOP_PAGER"]): ?>

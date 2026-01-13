@@ -13,24 +13,24 @@ class IblockEventsHandlers
      */
     public static function onAfterIBlockElementUpdateHandler(&$arFields)
     {
-       $iblockCode = IblockHelpers::getIBlockCodeById($arFields['IBLOCK_ID']);
-       $propertyId= IblockHelpers::getPropertyIdByCode( 'sotrudniki','COLUMN33');
+        $iblockCode = IblockHelpers::getIBlockCodeById($arFields['IBLOCK_ID']);
+        $propertyId = IblockHelpers::getPropertyIdByCode('sotrudniki', 'COLUMN33');
 
-       if ($iblockCode ==='sotrudniki') {
+        if ($iblockCode === 'sotrudniki') {
 
-           $intElementID = $arFields['ID'];
-           $iblockID = $arFields['IBLOCK_ID'];
+            $intElementID = $arFields['ID'];
+            $iblockID = $arFields['IBLOCK_ID'];
 
-           if (!is_array($arFields['PROPERTY_VALUES']))
-               return;
+            if (!is_array($arFields['PROPERTY_VALUES']))
+                return;
 
-           $res = array_diff_key($arFields['PROPERTY_VALUES'], array($propertyId => true)) ;
+            $res = array_diff_key($arFields['PROPERTY_VALUES'], array($propertyId => true));
 
-           array_walk_recursive($res, function ($item, $key) use (&$result) {
-               $result[] = $item;
-           });
-           $summa=array_sum($result);
-       }
+            array_walk_recursive($res, function ($item, $key) use (&$result) {
+                $result[] = $item;
+            });
+            $summa = array_sum($result);
+        }
         \Bitrix\Main\Loader::includeModule("iblock");
         // ID инфоблока (IBLOCK_ID) и ID элемента (ID)
         $iblockId = $arFields['IBLOCK_ID']; // Замените на ваш ID инфоблока
@@ -61,13 +61,36 @@ class IblockEventsHandlers
         $IBLOCK_ID = $arFields['IBLOCK_ID'];
         $IBLOCK_CODE = IblockHelpers::getIBlockCodeById($IBLOCK_ID);
 
-        if ($IBLOCK_CODE === 'sotrudniki')
-        {
+        if ($IBLOCK_CODE === 'sotrudniki') {
+
+        }
+        if ($IBLOCK_CODE === 'interlabs.signscores1') {
+
+            $PROPERTY_VALUES = $arFields['PROPERTY_VALUES'];
+            $updatingElementCode = $PROPERTY_VALUES['EMAIL'];
+            $updatingElementId = IblockHelpers::getIblockElementInfo('sotrudniki', $updatingElementCode)['ID'];
+            $updatingElementChangingPropCode = $PROPERTY_VALUES['EVENT_CODE'];
+            //$updatingElementChangingPropId = ;
+            $interlabsSignscoresPropsList = IblockHelpers::getPropsListIblock('interlabs.signscores');
+
+
+
+            /* (
+                 'PHONE' => 89651382656,
+                 'EMAIL' => 'somov.i@ya.ru',
+                 'EVENT_CODE' => 'COLUMN3',
+                 'EVENT_NAME' => 'Прохождение приветственного адаптационного тренинга "Твой город- твое дело" 10 б',
+                 'SCORES_QTT' => 10
+             );*/
+
+
+            $log = date('Y-m-d H:i:s') . ' onAfterIBlockElementAddHandler ' . print_r($arFields, true);
+            file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+            \Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterIBlockElementAddHandler' . date('d-m-Y; H:i:s'));
 
         }
 
-        if ($IBLOCK_CODE === 'interlabs.feedbackform')
-        {
+        if ($IBLOCK_CODE === 'interlabs.feedbackform') {
 
             /* $adminEmail = COption::GetOptionString("main", "email_from");
              $iblockName = CIBlock::GetByID($targetIblockId)->Fetch()['NAME'];
@@ -104,8 +127,6 @@ class IblockEventsHandlers
 
         }
 
-        $log = date('Y-m-d H:i:s') . ' onAfterIBlockElementAddHandler ' . print_r($arFields, true);
-        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-        \Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterIBlockElementAddHandler' . date('d-m-Y; H:i:s'));
+
     }
 }

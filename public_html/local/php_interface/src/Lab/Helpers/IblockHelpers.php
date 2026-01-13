@@ -62,12 +62,35 @@ class IblockHelpers
 
     }
 
+    public static function updateElementIblockByElementId($elementId, $iblockUpdateElCode, $arPropValues)
+    {
+
+        $el = new CIBlockElement;
+
+        $PROP = $arPropValues;
+
+        $arLoadProductArray = Array(
+            //"MODIFIED_BY"    => $USER->GetID(), // элемент изменен текущим пользователем
+            "PREVIEW_TEXT"   => "текст для списка элементов",
+            "DETAIL_TEXT"    => "текст для детального просмотра",
+        );
+        if(!empty($PROP)){
+            $arLoadProductArray['PROPERTY_VALUES']=$PROP;
+        }
+
+        $arLoadProductArray = array(
+            "ACTIVE" => "N",            // активен
+        );
+        $res = $el->Update($elementId, $arLoadProductArray);
+
+    }
+
     /**
      * добавляем элемент ИБ по коду ИБ
      */
     public static function addElsToIblock($iblockCode = 'sotrudniki', $userID, $elementName, $elementCode, $sectionCode, $SITE_ID)
     {
-    // todo добавить элементы в ib  'sotrudniki'
+        // todo добавить элементы в ib  'sotrudniki'
         $iBlockId = self::getIblockIdByCode($iblockCode);
         $sectId = self::getGroupIdByCode($iblockCode, $sectionCode, $SITE_ID);
         $el = new \CIBlockElement;
@@ -105,7 +128,7 @@ class IblockHelpers
         return $arUsers;
     }
 
-    public static function getPropsListIblock($iblockCode = 'sotrudniki')
+    public static function getPropsListIblock($iblockCode = 'sotrudniki') : array
     {
         $iblockId = self::getIblockIdByCode($iblockCode);
         $properties = PropertyTable::getList([

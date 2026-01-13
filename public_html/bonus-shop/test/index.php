@@ -6,44 +6,20 @@ $APPLICATION->SetTitle("test");
 
 <?
 use Bitrix\Main\UserTable;
-use Lab\Helpers\UsersHelpers as UH;
+use Lab\Helpers\UsersHelpers;
+use Lab\Helpers\IblockHelpers;
 
+$PROPERTY_VALUES=IblockHelpers::getPropsListIblock('interlabs.signscores');
 
+// todo получить id элемента по его коду сим
+$elementCode = $PROPERTY_VALUES ['EMAIL'];
+$elPropertyCode = $PROPERTY_VALUES ['EVENT_CODE'];
+$elPropertyNewValue = $PROPERTY_VALUES ['EVENT_NAME'];
 
-function getUserWithDetails($userId) {
-    $user = CUser::GetByID($userId)->Fetch();
+echo IblockHelpers::getIblockElementInfo('sotrudniki', 'somov.i@ya.ru')['ID'];
 
-    if ($user) {
-        // Получить группы пользователя
-        $userGroups = CUser::GetUserGroup($userId);
-        $user['GROUPS'] = $userGroups;
+pretty_print($PROPERTY_VALUES);
 
-        // Получить отделы (если есть модуль intranet)
-        /*if (CModule::IncludeModule('intranet')) {
-            $departments = CIntranetUtils::GetUserDepartments($userId);
-            $user['DEPARTMENTS'] = $departments;
-        }*/
-    }
-
-    return $user;
-}
-$userId = 2397;
-$userGroups = CUser::GetUserGroup($userId);
-//$arUser=getUserWithDetails($userId) ;
-pretty_print($userGroups);
-
-$gropeId = UH::getUsersGroupIdByCode('EMPLOYEES_s1');
-$arGroups = CUser::GetUserGroup($userId);
-//pretty_print($arGroups);
-if (in_array(12, CUser::GetUserGroup($userId)))
-{
-    echo 1;
-
-};
-echo $sectID=Lab\Helpers\IblockHelpers::getGroupIdByCode('sotrudniki','mfu',' s2');
-
-$arProps=Lab\Helpers\IblockHelpers::getPropsListIblock('sotrudniki');
-pretty_print($arProps);
 ?>
 
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

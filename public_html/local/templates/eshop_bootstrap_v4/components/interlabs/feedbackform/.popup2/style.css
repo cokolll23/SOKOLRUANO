@@ -1,5 +1,5 @@
 .interlabs-feedbackform__container {
-  font-size: 12px;
+  font-size: 14px;
 }
 .interlabs-feedbackform__container .hidden {
   display: none;
@@ -23,9 +23,9 @@
   font-style: normal;
   font-weight: normal;
   line-height: 25px;
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 .interlabs-feedbackform__container .js-interlabs-feedbackform__dialog__cancel-button {
   padding: 5px 12px;
@@ -320,7 +320,7 @@
   line-height: 25px;
   font-size: 14px;
   text-align: center;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 .interlabs-feedbackform__container .js-interlabs-feedbackform__container-show-button {
   width: 155px;
@@ -443,7 +443,7 @@
   line-height: 25px;
   font-size: 14px;
   text-align: center;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 @media screen and (min-width: 0px) and (max-width: 800px) {
   .interlabs-feedbackform__container .interlabs-feedbackform__container__dialog .body .scroll-area {

@@ -16,6 +16,7 @@ class IblockEventsHandlers
         $iblockCode = IblockHelpers::getIBlockCodeById($arFields['IBLOCK_ID']);
         $propertyId = IblockHelpers::getPropertyIdByCode('sotrudniki', 'COLUMN33');
 
+
         if ($iblockCode === 'sotrudniki') {
 
             $intElementID = $arFields['ID'];
@@ -64,29 +65,19 @@ class IblockEventsHandlers
         if ($IBLOCK_CODE === 'sotrudniki') {
 
         }
-        if ($IBLOCK_CODE === 'interlabs.signscores1') {
+        if ($IBLOCK_CODE === 'interlabs.feedbackform') {
 
-            $PROPERTY_VALUES = $arFields['PROPERTY_VALUES'];
-            $updatingElementCode = $PROPERTY_VALUES['EMAIL'];
-            $updatingElementId = IblockHelpers::getIblockElementInfo('sotrudniki', $updatingElementCode)['ID'];
-            $updatingElementChangingPropCode = $PROPERTY_VALUES['EVENT_CODE'];
+            //$PROPERTY_VALUES = $arFields['PROPERTY_VALUES'];
+            //$updatingElementCode = $PROPERTY_VALUES['EMAIL'];
+            //$updatingElementId = IblockHelpers::getIblockElementInfo('sotrudniki', $updatingElementCode)['ID'];
+            //$updatingElementChangingPropCode = $PROPERTY_VALUES['EVENT_CODE'];
             //$updatingElementChangingPropId = ;
-            $interlabsSignscoresPropsList = IblockHelpers::getPropsListIblock('interlabs.signscores');
+            //$interlabsSignscoresPropsList = IblockHelpers::getPropsListIblock('interlabs.signscores');
 
 
-
-            /* (
-                 'PHONE' => 89651382656,
-                 'EMAIL' => 'somov.i@ya.ru',
-                 'EVENT_CODE' => 'COLUMN3',
-                 'EVENT_NAME' => 'Прохождение приветственного адаптационного тренинга "Твой город- твое дело" 10 б',
-                 'SCORES_QTT' => 10
-             );*/
-
-
-            $log = date('Y-m-d H:i:s') . ' onAfterIBlockElementAddHandler ' . print_r($arFields, true);
+            $log = date('Y-m-d H:i:s') . ' interlabs.feedbackform ' . print_r($arFields, true);
             file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-            \Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterIBlockElementAddHandler' . date('d-m-Y; H:i:s'));
+            \Bitrix\Main\Diag\Debug::dumpToFile($log, 'interlabs.feedbackform' . date('d-m-Y; H:i:s'));
 
         }
 

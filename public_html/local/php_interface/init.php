@@ -10,7 +10,7 @@ use Lab\EventsHandlers\IblockEventsHandlers as EH;
 use Lab\Helpers\IblockHelpers as IH;
 use \Lab\Helpers\UsersHelpers as UH;
 
-//\Bitrix\Main\UI\Extension::load('lab.mainjs');
+//\Bitrix\Main\UI\Extension::load('lab.mainjs'); , BaryshevaAD1@mos.ru, StarenkoOG@mos.ru, PORT-communications@mos.ru
 //CUtil::InitJSCore(array('jquery3', 'popup', 'ajax', 'date'));
 $eventManager = \Bitrix\Main\EventManager::getInstance();
 
@@ -24,7 +24,7 @@ if (!CModule::IncludeModule("iblock")) {
 // todo  уменьшение количества товара и итого баллов у юзера при оформлении заказа битрикс
 // в SaleEventsHandlers не работает много переадресации
 //$eventManager->addEventHandler('sale', 'OnSaleOrderSaved',['Lab\EventsHandlers\SaleEventsHandlers','onSaleOrderSavedHandler']);
-$eventManager->addEventHandler('sale', 'OnSaleOrderSaved','OnSaleOrderSavedHandler');
+$eventManager->addEventHandler('sale', 'OnSaleOrderSaved', 'OnSaleOrderSavedHandler');
 function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
 {
     $order = $event->getParameter("ENTITY");
@@ -73,12 +73,12 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
 
         $customerProperties['EMAIL'] = $emailProperty->getValue();
         $customerProperties['PRICE'] = $orderPrice;
-
+        $elementCode = $customerProperties['EMAIL'];
+        $propertyCode = 'COLUMN33';
 
         $iblockId = IH::getIblockIdByCode('sotrudniki');
         $propertyId = IH::getPropertyIdByCode('sotrudniki', 'COLUMN33');
-        $elementCode = $customerProperties['EMAIL'];
-        $propertyCode = 'COLUMN33';
+        $elementId = IH::getIblockElementInfo('sotrudniki', $elementCode)['ID'];
 
         $COLUMN33_Result = \CIBlockElement::GetList(
             [],
@@ -96,6 +96,13 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
             ]
         )->GetNext();
 
+        $res = \CIBlockElement::GetProperty($iblockId, $elementId, "sort", "asc", array());
+        while ($ob = $res->GetNext()) {
+            if ($ob['VALUE'] > 0 && $ob['CODE'] != 'COLUMN33') {
+                $propsNotZero[] = $ob;
+            }
+        }
+
         $COLUMN33_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode . '_VALUE'] ?? null;
         $elementId = $COLUMN33_Result['ID'];
 
@@ -112,11 +119,9 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
             )
         );
 
-
-        /*$log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($arPrices, true);
+        $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($propsNotZero, true);
         file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));*/
-
+        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));
     }
 };
 
@@ -201,22 +206,28 @@ function statusChange(\Bitrix\Main\Event $event)
 
 
 }
+
 // todo регистрация пользователя не из АНО после добавления в иб ТАБЛИЦА БОНУСОВ в группу Все покупатели [ 24 CRM_SHOP_BUYER]
 // todo удаление пользователя не из АНО после добавления в иб ТАБЛИЦА БОНУСОВ в группу Все покупатели [ 24 CRM_SHOP_BUYER]
-$eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", ['Lab\EventsHandlers\IblockEventsHandlers','onAfterIBlockElementAddHandler']);
+$eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementAddHandler']);
 // todo сделать хендлер при изменении элемента складывать значения свойств
 $eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementUpdateHandler']);
 //$eventManager->addEventHandler("iblock", "OnAfterIBlockElementDelete", ['Lab\EventsHandlers\IblockEventsHandlers','onAfterIBlockElementDeleteHandler']);
-
-function onAfterIBlockElementAddHandler(&$arFields)
+$eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", 'onAfterIBlockElementAddHandler1');
+function onAfterIBlockElementAddHandler1(&$arFields)
 {
     // todo отправка писем при добавлении сообщения обратной связи CODE interlabs.feedbackform
     $IBLOCK_ID = $arFields['IBLOCK_ID'];
     $IBLOCK_CODE = IH::getIBlockCodeById($IBLOCK_ID);
+
     if ($IBLOCK_CODE === 'interlabs.feedbackform') {
 
-        /* $adminEmail = COption::GetOptionString("main", "email_from");
-         $iblockName = CIBlock::GetByID($targetIblockId)->Fetch()['NAME'];
+        $log = date('Y-m-d H:i:s') . ' interlabs.feedbackform ' . print_r($arFields, true);
+        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+        Bitrix\Main\Diag\Debug::dumpToFile($log, 'interlabs.feedbackform' . date('d-m-Y; H:i:s'));
+
+         $adminEmail = 'cavjob@ya.ru';
+         $iblockName = CIBlock::GetByID($IBLOCK_ID)->Fetch()['NAME'];
 
          $subject = "Добавлен новый элемент в инфоблок «{$iblockName}»";
 
@@ -232,27 +243,33 @@ function onAfterIBlockElementAddHandler(&$arFields)
 
          $message .= "
              <p>
-                 <a href='/bitrix/admin/iblock_element_edit.php?IBLOCK_ID={$targetIblockId}&type=content&ID={$arFields['ID']}'>
+                 <a href='/bitrix/admin/iblock_element_edit.php?IBLOCK_ID={$IBLOCK_ID}&type=content&ID={$arFields['ID']}'>
                      Редактировать элемент
                  </a>
              </p>
          ";
 
-         CEvent::SendImmediate(
-             "IBLOCK_NEW_ELEMENT",
+        $to = "cavjob@ya.ru"; // Адрес получателя
+        $subject = "Привет из PHP!"; // Тема письма
+        $message = "Это тестовое письмо, отправленное с помощью функции mail() в PHP."; // Тело письма
+        $headers = "From: sender@example.com\r\n"; // Заголовки
+
+        mail($to, "Загаловок", "Текст письма \n 1-ая строчка \n 2-ая строчка \n 3-ая строчка");
+
+
+        CEvent::SendImmediate(
+             "WF_NEW_IBLOCK_ELEMENT",
              SITE_ID,
              array(
                  "EMAIL_TO" => $adminEmail,
                  "SUBJECT" => $subject,
                  "BODY" => $message,
              )
-         );*/
+         );
 
     }
 
-    $log = date('Y-m-d H:i:s') . ' onAfterIBlockElementAddHandler ' . print_r($arFields, true);
-    file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-    Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterIBlockElementAddHandler' . date('d-m-Y; H:i:s'));
+
 }
 
 function

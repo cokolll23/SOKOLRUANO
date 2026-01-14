@@ -193,15 +193,15 @@ CUtil::InitJSCore(array('interlabs_feedbackform'));
                                             case 'text':
                                             default:
                                                 ?>
-                                                    <label for="<?php echo $code; ?>"><?php echo $field['NAME']; ?><?php echo $field['REQUIRED'] ? '<span class="field-required">*</span>' : ''; ?></label>
-                                                    <input id="<?php echo $code; ?>" name="<?php echo $code; ?>"
-                                                           placeholder="<?php echo $field['NAME']; ?>"
-                                                           type="text"
-                                                           value="<?php echo Feedbackform::reqInput($code, $arResult['form'][$code]); ?>"
-                                                            <?php echo $field['REQUIRED'] ? ' validate="validate" required ' : ''; ?>
-                                                    >
+                                                <label for="<?php echo $code; ?>"><?php echo $field['NAME']; ?><?php echo $field['REQUIRED'] ? '<span class="field-required">*</span>' : ''; ?></label>
+                                                <input id="<?php echo $code; ?>" name="<?php echo $code; ?>"
+                                                       placeholder="<?php echo $field['NAME']; ?>"
+                                                       type="text"
+                                                       value="<?php echo Feedbackform::reqInput($code, $arResult['form'][$code]); ?>"
+                                                        <?php echo $field['REQUIRED'] ? ' validate="validate" required ' : ''; ?>
+                                                >
 
-                                               <? } ?>
+                                            <? } ?>
                                     </div>
                                 <? } ?>
 

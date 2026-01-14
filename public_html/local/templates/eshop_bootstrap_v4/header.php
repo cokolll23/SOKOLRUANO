@@ -170,8 +170,6 @@ $curPage = $APPLICATION->GetCurPage(true);
                 </div>-->
             </div>
             <!--endregion-->
-
-
             <div class="row">
                 <!--region cur user баллы -->
                 <div class="col-lg-6 col-md-6 align-items-center bx-header-logo1"
@@ -246,8 +244,8 @@ $curPage = $APPLICATION->GetCurPage(true);
             </div>
             <!--region breadcrumb-->
             <? if ($curPage != SITE_DIR . "index.php"): ?>
-                <div class="row mt-20">
-                    <div class="row mb-3">
+                <div class="row ">
+                    <div class="row ">
                         <div class="col" id="navigation">
                             <? $APPLICATION->IncludeComponent(
                                     "bitrix:breadcrumb",

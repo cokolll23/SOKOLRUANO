@@ -334,4 +334,4 @@ $curPage = $APPLICATION->GetCurPage(true);
                 <div class="row ">
                     <? endif; ?>
                     <? $needSidebar = preg_match("~^" . SITE_DIR . "(catalog|personal\/cart|personal\/order\/make)/~", $curPage); ?>
-                    <div class="bx-content <?= ($needSidebar ? "col" : "col-md-9 col-sm-8") ?>">
+                    <div class="bx-content <?= ($needSidebar ? "container" : "container") ?>">

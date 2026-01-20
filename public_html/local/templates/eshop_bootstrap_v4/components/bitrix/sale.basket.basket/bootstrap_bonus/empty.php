@@ -2,7 +2,7 @@
 
 use Bitrix\Main\Localization\Loc;
 ?>
-пусто
+
 <div class="bx-sbb-empty-cart-container">
 	<div class="bx-sbb-empty-cart-image">
 		<img src="" alt="">

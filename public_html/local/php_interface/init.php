@@ -119,9 +119,9 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
             )
         );
 
-        $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($propsNotZero, true);
+       /* $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($propsNotZero, true);
         file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));
+        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));*/
     }
 };
 
@@ -145,6 +145,7 @@ function statusChange(\Bitrix\Main\Event $event)
         if (!$ORDER) {
             return;
         }
+ Bitrix\Main\Diag\Debug::writeToFile($ORDER, '  $ORDER  ' . date('d-m-Y; H:i:s'));
 
         // Получаем коллекцию свойств заказа
         $propertyCollection = $ORDER->getPropertyCollection();
@@ -254,7 +255,7 @@ function onAfterIBlockElementAddHandler1(&$arFields)
         $message = "Это тестовое письмо, отправленное с помощью функции mail() в PHP."; // Тело письма
         $headers = "From: sender@example.com\r\n"; // Заголовки
 
-        mail($to, "Загаловок", "Текст письма \n 1-ая строчка \n 2-ая строчка \n 3-ая строчка");
+      /*  mail($to, $subject, "Текст письма \n 1-ая строчка \n 2-ая строчка \n 3-ая строчка",$headers);
 
 
         CEvent::SendImmediate(
@@ -265,7 +266,7 @@ function onAfterIBlockElementAddHandler1(&$arFields)
                  "SUBJECT" => $subject,
                  "BODY" => $message,
              )
-         );
+         );*/
 
     }
 

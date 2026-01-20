@@ -6,6 +6,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 	"bitrix:catalog", 
 	"bootstrap_v4", 
 	array(
+
 		"IBLOCK_TYPE" => "catalog",
 		"IBLOCK_ID" => "17",
 		"TEMPLATE_THEME" => "site",

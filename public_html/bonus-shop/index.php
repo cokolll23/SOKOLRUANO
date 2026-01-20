@@ -3,9 +3,9 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Интернет-магазин \"<Бонусы>\"");
 ?><div id="lab-catalog">
 	 <?$APPLICATION->IncludeComponent(
-	"bitrix:catalog.section",
-	"bootstrap_v4",
-	Array(
+	"bitrix:catalog.section", 
+	"bootstrap_v4", 
+	array(
 		"ACTION_VARIABLE" => "action",
 		"ADD_PICT_PROP" => "MORE_PHOTO",
 		"ADD_PROPERTIES_TO_BASKET" => "Y",
@@ -44,8 +44,12 @@ $APPLICATION->SetTitle("Интернет-магазин \"<Бонусы>\"");
 		"IBLOCK_TYPE" => "catalog",
 		"IBLOCK_TYPE_ID" => "catalog",
 		"INCLUDE_SUBSECTIONS" => "Y",
-		"LABEL_PROP" => array(0=>"LAB_SKORO",1=>"NEWPRODUCT",),
-		"LABEL_PROP_MOBILE" => array(),
+		"LABEL_PROP" => array(
+			0 => "LAB_SKORO",
+			1 => "NEWPRODUCT",
+		),
+		"LABEL_PROP_MOBILE" => array(
+		),
 		"LABEL_PROP_POSITION" => "top-right",
 		"LAZY_LOAD" => "N",
 		"LINE_ELEMENT_COUNT" => "3",
@@ -61,15 +65,31 @@ $APPLICATION->SetTitle("Интернет-магазин \"<Бонусы>\"");
 		"MESS_SHOW_MAX_QUANTITY" => "Наличие",
 		"META_DESCRIPTION" => "-",
 		"META_KEYWORDS" => "-",
-		"OFFERS_CART_PROPERTIES" => array(0=>"COLOR_REF",1=>"SIZES_SHOES",2=>"SIZES_CLOTHES",),
-		"OFFERS_FIELD_CODE" => array(0=>"NAME",1=>"",),
-		"OFFERS_PROPERTY_CODE" => array(0=>"COLOR_REF",1=>"SIZES_SHOES",2=>"SIZES_CLOTHES",3=>"",),
+		"OFFERS_CART_PROPERTIES" => array(
+			0 => "COLOR_REF",
+			1 => "SIZES_SHOES",
+			2 => "SIZES_CLOTHES",
+		),
+		"OFFERS_FIELD_CODE" => array(
+			0 => "NAME",
+			1 => "",
+		),
+		"OFFERS_PROPERTY_CODE" => array(
+			0 => "COLOR_REF",
+			1 => "SIZES_SHOES",
+			2 => "SIZES_CLOTHES",
+			3 => "",
+		),
 		"OFFERS_SORT_FIELD" => "sort",
 		"OFFERS_SORT_FIELD2" => "id",
 		"OFFERS_SORT_ORDER" => "desc",
 		"OFFERS_SORT_ORDER2" => "desc",
 		"OFFER_ADD_PICT_PROP" => "MORE_PHOTO",
-		"OFFER_TREE_PROPS" => array(0=>"COLOR_REF",1=>"SIZES_SHOES",2=>"SIZES_CLOTHES",),
+		"OFFER_TREE_PROPS" => array(
+			0 => "COLOR_REF",
+			1 => "SIZES_SHOES",
+			2 => "SIZES_CLOTHES",
+		),
 		"PAGER_BASE_LINK_ENABLE" => "N",
 		"PAGER_DESC_NUMBERING" => "N",
 		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
@@ -79,7 +99,9 @@ $APPLICATION->SetTitle("Интернет-магазин \"<Бонусы>\"");
 		"PAGER_TITLE" => "Товары",
 		"PAGE_ELEMENT_COUNT" => "9",
 		"PARTIAL_PRODUCT_PROPERTIES" => "N",
-		"PRICE_CODE" => array(0=>"BASE",),
+		"PRICE_CODE" => array(
+			0 => "BASE",
+		),
 		"PRICE_VAT_INCLUDE" => "N",
 		"PRODUCT_BLOCKS_ORDER" => "price,quantity,props,sku,quantityLimit,buttons",
 		"PRODUCT_DISPLAY_MODE" => "Y",
@@ -89,14 +111,22 @@ $APPLICATION->SetTitle("Интернет-магазин \"<Бонусы>\"");
 		"PRODUCT_QUANTITY_VARIABLE" => "",
 		"PRODUCT_ROW_VARIANTS" => "[{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false}]",
 		"PRODUCT_SUBSCRIPTION" => "N",
-		"PROPERTY_CODE" => array(0=>"NEWPRODUCT",1=>"",),
-		"PROPERTY_CODE_MOBILE" => array(0=>"ARTNUMBER",),
+		"PROPERTY_CODE" => array(
+			0 => "NEWPRODUCT",
+			1 => "",
+		),
+		"PROPERTY_CODE_MOBILE" => array(
+			0 => "ARTNUMBER",
+		),
 		"SECTION_CODE" => "",
 		"SECTION_CODE_PATH" => "",
 		"SECTION_ID" => $_REQUEST["SECTION_ID"],
 		"SECTION_ID_VARIABLE" => "SECTION_ID",
 		"SECTION_URL" => "",
-		"SECTION_USER_FIELDS" => array(0=>"",1=>"",),
+		"SECTION_USER_FIELDS" => array(
+			0 => "",
+			1 => "",
+		),
 		"SEF_MODE" => "N",
 		"SEF_RULE" => "",
 		"SET_BROWSER_TITLE" => "Y",
@@ -120,26 +150,8 @@ $APPLICATION->SetTitle("Интернет-магазин \"<Бонусы>\"");
 		"USE_MAIN_ELEMENT_SECTION" => "N",
 		"USE_PRICE_COUNT" => "N",
 		"USE_PRODUCT_QUANTITY" => "N"
-	)
-);?>
-</div>
-<?$APPLICATION->IncludeComponent(
-	"awelite:slider",
-	".default",
-	array(
-		"AUTOSCROLL" => "0",
-		"CACHE_TIME" => "0",
-		"CACHE_TYPE" => "A",
-		"IBLOCK_ID" => "26",
-		"LIMIT" => "14",
-		"PICTURE_SOURCE" => "DETAIL_PICTURE",
-		"POSITION_TEXT" => "down",
-		"SHOW_ARROWS" => "Y",
-		"SHOW_DOTS" => "Y",
-		"SHOW_TEXT" => "N",
-		"SLIDER_TYPE" => "image",
-		"TEXT_SOURCE" => "PREVIEW_TEXT",
-		"COMPONENT_TEMPLATE" => ".default"
 	),
 	false
-);?><? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
+);?>
+</div>
+<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

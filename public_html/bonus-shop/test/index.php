@@ -3,33 +3,34 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("test");
 
 ?>
-
-<?
-use Bitrix\Main\UserTable;
-use Lab\Helpers\UsersHelpers;
-use Lab\Helpers\IblockHelpers;
-use Bitrix\Iblock\Elements\ElementTable;
-use Bitrix\Iblock\PropertyTable;
-
-$PROPERTY_VALUES=IblockHelpers::getPropsListIblock('interlabs.signscores');
-
-// todo получить id элемента по его коду сим
-$elementCode = $PROPERTY_VALUES ['EMAIL'];
-$elPropertyCode = $PROPERTY_VALUES ['EVENT_CODE'];
-$elPropertyNewValue = $PROPERTY_VALUES ['EVENT_NAME'];
-
-$ID=IblockHelpers::getIblockElementInfo('sotrudniki', 'somov.i@ya.ru')['ID'];
-$IBLOCK_ID = IblockHelpers ::getIblockIdByCode('sotrudniki');
-$VALUES = array();
-$res = CIBlockElement::GetProperty($IBLOCK_ID, $ID, "sort", "asc", array());
-while ($ob = $res->GetNext())
-{
-    if ($ob['VALUE']>0 && $ob['CODE']!='COLUMN33' ){
-        $VALUES[] = $ob;
-    }
-
-}
-pretty_print($VALUES);
+<?php
+use Lab\Helpers\SaleHelpers as SaleHelpers;
+$arResQntt= SaleHelpers::getCurrentUserRealQuantityBasketProduct();
+pretty_print($arResQntt);
 ?>
+<?php
+/*    $ORDER = \Bitrix\Sale\Order::load(58);
 
+    CModule::IncludeModule('sale');
+    CModule::IncludeModule('catalog');
+
+     $res = \CSaleBasket::GetList(array(), array("ORDER_ID" => $ORDER)); // ID заказа
+    $json_product = array();
+    while ($arItem = $res->Fetch()) {
+    $json_product[] = array(
+    'name' => $arItem['NAME'],
+    'id' => $arItem['PRODUCT_ID'],
+    'price' => $arItem['PRICE'],
+    'quantity' => $arItem['QUANTITY']
+    );
+    }
+    foreach ($json as $item) {
+    $basketQuantity = $item['quantity'];
+    $quantityNow = \CCatalogProduct::GetByID($item['id'])['QUANTITY'];
+    $ar_res[] = \CCatalogProduct::GetByID($item['id']);
+    $quantityNew = $quantityNow + $basketQuantity;
+    $arFields = array('QUANTITY' => $quantityNew);// зарезервированное количество
+    \CCatalogProduct::Update($item['id'], $arFields);
+    }
+*/ ?>
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

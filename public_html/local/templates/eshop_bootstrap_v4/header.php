@@ -26,7 +26,9 @@ $curPage = $APPLICATION->GetCurPage(true);
 
 </head>
 <body class="bx-background-image bx-theme-<?= $theme ?>" <? $APPLICATION->ShowProperty("backgroundImage"); ?>>
-<div id="panel"><? $APPLICATION->ShowPanel(); ?></div>
+<div id="panel">
+    <? $APPLICATION->ShowPanel(); ?>
+</div>
 
 <div class="bx-wrapper" id="bx_eshop_wrap">
     <header class="bx-header stiky">
@@ -191,7 +193,7 @@ $curPage = $APPLICATION->GetCurPage(true);
                 <?php
 
                 if (\Bitrix\Main\ModuleManager::isModuleInstalled('search')):?>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 deskSearch">
                         <div class="">
                             <? $APPLICATION->IncludeComponent(
                                     "bitrix:search.title",
@@ -329,9 +331,13 @@ $curPage = $APPLICATION->GetCurPage(true);
             <? endif ?>
             <!--End red banner img-->
             <? if ($curPage != SITE_DIR . "tablitsa-ballov/index.php"): ?>
-            <div class="row row-content ">
+            <div class="row row-content content-wrapp">
                 <? else: ?>
                 <div class="row ">
                     <? endif; ?>
-                    <? $needSidebar = preg_match("~^" . SITE_DIR . "(catalog|personal\/cart|personal\/order\/make)/~", $curPage); ?>
-                    <div class="bx-content <?= ($needSidebar ? "container" : "container") ?>">
+                    <? $needSidebar = preg_match("~^" . SITE_DIR . "(catalog|personal\/cart|personal\/order\/tablitsa-ballov)/~", $curPage); ?>
+                    <? if ($curPage == SITE_DIR . "index.php"): ?>
+                    <div class="bx-content container">
+                        <?else:?>
+                    <div class="bx-content <?= ($needSidebar ? "container" : "") ?>">
+                        <?endif;?>

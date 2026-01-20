@@ -1,45 +1,10 @@
 <?php
-global $USER;
+$context = \Bitrix\Main\Application::getInstance()->getContext();
+$request = $context->getRequest();
 
-use Lab\Helpers\UsersHelpers as Users;
-use Lab\Helpers\IblockHelpers as IH;
-
-$ar = IH::getPropertyValIblockByEmailCurrentUser('sotrudniki', 'COLUMN33');
-//pretty_print($ar);
-global $USER;
-$userId = $USER->GetID();
-
-if ($userId > 0) {
-    // Запрашиваем профиль пользователя
-    $rsUser = \CUser::GetByID($userId);
-    if ($arUser = $rsUser->Fetch()) {
-        $userEmail = $arUser["EMAIL"];
-    }
-}
-
-if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
-
-    $propertyVal = 'У вас сумма баллов : ' . $ar['PROPERTY_COLUMN33_VALUE'];
-} else {
-    $propertyVal = 'У вас на данный момент нет баллов';
-} ?>
-
-
-
-<div class="row">
-    <? if ($USER->IsAuthorized()): ?>
-        <div class="col-12">
-            <?= $propertyVal; ?>
-        </div>
-    <? endif; ?>
-    <div class="col-12">
-        <? if ($ar['ID'] != '' && $USER->IsAuthorized()) { ?> <a
-                href="<?= SITE_DIR ?>detal/?ELEMENT_ID=<?= $ar['ID']; ?>
-		 ">Перейти на детальный просмотр баллов</a>
-        <?php } ?>
-    </div>
-    <div class="col-12">
-        <? // редактировать поля в шаблонепочтовом public_html/bitrix/components/interlabs/feedbackform/class.php
+if ($request->isAjaxRequest() && $request->get("action") == "mobileInsert" ) {
+    ob_start();
+      // редактировать поля в шаблонепочтовом public_html/bitrix/components/interlabs/feedbackform/class.php
         $APPLICATION->IncludeComponent(
                 "interlabs:feedbackform",
                 ".popup1",
@@ -93,6 +58,15 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
                         "SUBJECT" => "Записать баллы бонусов",
                         "USE_CAPTCHA" => "N"
                 )
-        ); ?> <!--<a href="<?php /*= SITE_DIR */ ?>index.php#feedback"> Написать администратору </a>-->
-    </div>
-</div>
+        );
+
+    $output = ob_get_contents();
+    ob_end_clean();
+
+    $arResult = [
+        "success" => true,
+        "html" => $output
+    ];
+    echo json_encode($arResult);
+
+}

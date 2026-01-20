@@ -1,3 +1,4 @@
+
 (function(window) {
 
 	if (!window.BX || BX.CatalogMenu)
@@ -182,6 +183,7 @@ BX.Main.MenuComponent.CatalogHorizontal = (function()
 					children: [ BX.clone(BX("ul_" + this.menuBlockId)) ]
 				});
 				document.body.insertBefore(menuMobile, document.body.firstChild);
+
 			}
 
 			if (!menuMobileButton)

@@ -738,6 +738,9 @@ a.see-balls_wrapp {
         height: 600px;
     }
 }
+@media (max-width: 769px) {
+    .deskSearch #search{display: none}
+}
 
 @media (max-width: 900px) {
     .lab-banner_text-big1, .lab-banner_text-big2 {
@@ -758,6 +761,11 @@ a.see-balls_wrapp {
 .bx-red .product-item-label-text span, .bx-red .product-item-label-ring {
     background-color: #e30613 !important;
 }
+.star_OWLCAROUSEL_item img{
+    max-height: 400px;
+}
+.bx-aside-nav ul{display: flex}
+
 
 
 

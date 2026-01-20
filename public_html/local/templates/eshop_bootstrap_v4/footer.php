@@ -1,7 +1,7 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 
 
-</div><!--end row-->
+</div><!--end row content-wrapp-->
 
 </div><!--end .container.bx-content-section-->
 </div><!--end .workarea-->

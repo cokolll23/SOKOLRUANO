@@ -1,4 +1,5 @@
 <?php
+
 namespace Lab\EventsHandlers;
 
 
@@ -11,41 +12,41 @@ use Lab\Helpers\IblockHelpers as IH;
 class SaleEventsHandlers
 {
     // todo  уменьшение количества товара при оформлении заказа битрикс
-    public static  function onSaleOrderSavedHandler (\Bitrix\Main\Event $event)
+    public static function onSaleOrderSavedHandler(\Bitrix\Main\Event $event)
     {
         $order = $event->getParameter("ENTITY");
         $isNew = $event->getParameter("IS_NEW");
 
-        if (!$isNew) {
-            return;
-        }
-        $basket = $order->getBasket();
+        if ($isNew) {
+            $basket = $order->getBasket();
 
-        foreach ($basket as $basketItem) {
-            $productId = $basketItem->getProductId();
-            $quantity = $basketItem->getQuantity();
-            if (\Bitrix\Main\Loader::includeModule('catalog')) {
-                // Получаем текущие остатки
-                $productData = CCatalogProduct::GetByID($productId);
+            foreach ($basket as $basketItem) {
+                $productId = $basketItem->getProductId();
+                $quantity = $basketItem->getQuantity();
+                if (\Bitrix\Main\Loader::includeModule('catalog')) {
+                    // Получаем текущие остатки
+                    $productData = \CCatalogProduct::GetByID($productId);
 
-                if ($productData) {
-                    $newQuantity = $productData['QUANTITY'] - $quantity;
+                    if ($productData) {
+                        $newQuantity = $productData['QUANTITY'] - $quantity;
 
-                    // Обновляем общее количество
-                    CCatalogProduct::Update($productId, [
-                        'QUANTITY' => $newQuantity
-                    ]);
+                        // Обновляем общее количество
+                        \CCatalogProduct::Update($productId, [
+                            'QUANTITY' => $newQuantity
+                        ]);
+                    }
                 }
-            }
 
+            }
         }
     }
+
     public static function onBeforeOrderAdd(&$arFields)
     {
-        $orderPrice = $arFields['PRICE'] ;
-        $USER_EMAIL =  $arFields['USER_EMAIL'];
+        $orderPrice = $arFields['PRICE'];
+        $USER_EMAIL = $arFields['USER_EMAIL'];
         $iblockId = IH::getIblockIdByCode('sotrudniki');
-        $orderPrice = $arFields['PRICE'] ;
+        $orderPrice = $arFields['PRICE'];
         $elementCode = $arFields['USER_EMAIL'];
 
         \Bitrix\Main\Loader::includeModule("iblock");
@@ -69,15 +70,15 @@ class SaleEventsHandlers
         } else {
             $column33Value = 0;
         }
-        if ($column33Value >=$orderPrice){
+        if ($column33Value >= $orderPrice) {
             $diffRes = 1;
-        }else{
+        } else {
             $diffRes = 0;
         }
 
         if ($diffRes != 1) {
             global $APPLICATION;
-            $APPLICATION->ThrowException('Не можете заказать на эту сумму, Уменьшите количество товаров в блоке выше со списком товаров .  Стоимость заказа - '. $orderPrice . ' руб. , у Вас в наличие - ' . $column33Value . ' баллов');
+            $APPLICATION->ThrowException('Не можете заказать на эту сумму, Уменьшите количество товаров в блоке выше со списком товаров .  Стоимость заказа - ' . $orderPrice . ' руб. , у Вас в наличие - ' . $column33Value . ' баллов');
             return false;
         }
 
@@ -87,7 +88,8 @@ class SaleEventsHandlers
     }
 
     // todo  изменение статуса заказа на D Выполнен
-    public static function OnSaleOrderSavedHandler1(\Bitrix\Main\Event $event) {
+    public static function OnSaleOrderSavedHandler1(\Bitrix\Main\Event $event)
+    {
         $order = $event->getParameter("ENTITY");
         if ($order->isCanceled() && $order->getField("STATUS_ID") != "D") {
             $order->setField("STATUS_ID", "D");
@@ -146,7 +148,7 @@ class SaleEventsHandlers
                     )
                 );
 
-                foreach ($basket as $i=> $basketItem) {
+                foreach ($basket as $i => $basketItem) {
                     $productName = $basketItem->getField('NAME');
                     $productId = $basketItem->getField('PRODUCT_ID');
                     $quantity = $basketItem->getField('QUANTITY');
@@ -156,17 +158,35 @@ class SaleEventsHandlers
                     $arBasketInfo [$i]["productId "] = $basketItem->getField('PRODUCT_ID');
                     $arBasketInfo [$i]["quantity"] = $basketItem->getField('QUANTITY');
                     $arBasketInfo [$i]["price"] = $basketItem->getPrice();
-                    $arBasketInfo [$i]["priceTotal"] = $basketItem->getPrice()*$basketItem->getField('QUANTITY');
+                    $arBasketInfo [$i]["priceTotal"] = $basketItem->getPrice() * $basketItem->getField('QUANTITY');
                 }
             } else {
                 echo "Заказ не найден";
             }
 
+            foreach ($basket as $basketItem) {
+                $productId = $basketItem->getProductId();
+                $quantity = $basketItem->getQuantity();
+                if (\Bitrix\Main\Loader::includeModule('catalog')) {
+                    // Получаем текущие остатки
+                    $productData = \CCatalogProduct::GetByID($productId);
+
+                    if ($productData) {
+                        $newQuantity = $productData['QUANTITY'] + $quantity;
+
+                        // Обновляем общее количество
+                        \CCatalogProduct::Update($productId, [
+                            'QUANTITY' => $newQuantity
+                        ]);
+                    }
+                }
+
+            }
 
 
-            $log = date('Y-m-d H:i:s') . ' onSaleOrderSavedHandler1 ' . print_r($arBasketInfo, true);
+           /* $log = date('Y-m-d H:i:s') . ' onSaleOrderSavedHandler1 ' . print_r($arBasketInfo, true);
             file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-            \Bitrix\Main\Diag\Debug::dumpToFile($log, 'onSaleOrderSavedHandler1' . date('d-m-Y; H:i:s'));
+            \Bitrix\Main\Diag\Debug::dumpToFile($log, 'onSaleOrderSavedHandler1' . date('d-m-Y; H:i:s'));*/
         }
 
     }

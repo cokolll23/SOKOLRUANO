@@ -86,11 +86,88 @@ class SaleEventsHandlers
 
     }
 
-    public static function onStatusChange(Bitrix\Main\Event $event)
-    {
-       /* $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($event, true);
-        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));*/
+    // todo  изменение статуса заказа на D Выполнен
+    public static function OnSaleOrderSavedHandler1(\Bitrix\Main\Event $event) {
+        $order = $event->getParameter("ENTITY");
+        if ($order->isCanceled() && $order->getField("STATUS_ID") != "D") {
+            $order->setField("STATUS_ID", "D");
+
+            if ($order) {
+                $basket = $order->getBasket();
+                $price = $basket->getPrice();
+                // Получаем коллекцию свойств заказа
+                $propertyCollection = $order->getPropertyCollection();
+                $userId = $order->getUserId();
+
+                $customerProperties = [];
+
+                // Получаем email
+                $emailProperty = $propertyCollection->getUserEmail();
+                $orderPrice = $order->getPrice();
+
+                $customerProperties['EMAIL'] = $emailProperty->getValue();
+                $customerProperties['PRICE'] = $orderPrice;
+
+
+                $iblockId = IH::getIblockIdByCode('sotrudniki');
+                $propertyId = IH::getPropertyIdByCode('sotrudniki', 'COLUMN33');
+                $elementCode = $customerProperties['EMAIL'];
+                $propertyCode = 'COLUMN33';
+
+                $COLUMN33_Result = \CIBlockElement::GetList(
+                    [],
+                    [
+                        'IBLOCK_ID' => $iblockId,
+                        'CODE' => $elementCode,
+                        'ACTIVE' => 'Y'
+                    ],
+                    false,
+                    false,
+                    [
+                        'ID',
+                        'NAME',
+                        'PROPERTY_' . $propertyCode
+                    ]
+                )->GetNext();
+
+                $COLUMN33_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode . '_VALUE'] ?? null;
+                $elementId = $COLUMN33_Result['ID'];
+
+                $COLUMN33_ValueNew = (int)$COLUMN33_Value + (int)$customerProperties['PRICE'];
+
+                $arPrices = [$COLUMN33_Value, $customerProperties['PRICE'], $COLUMN33_ValueNew];
+
+                // Устанавливаем значение свойства
+                \CIBlockElement::SetPropertyValuesEx(
+                    $elementId,
+                    $iblockId,
+                    array(
+                        "COLUMN33" => $COLUMN33_ValueNew
+                    )
+                );
+
+                foreach ($basket as $i=> $basketItem) {
+                    $productName = $basketItem->getField('NAME');
+                    $productId = $basketItem->getField('PRODUCT_ID');
+                    $quantity = $basketItem->getField('QUANTITY');
+                    $price = $basketItem->getPrice();
+
+                    $arBasketInfo [$i]["NAME"] = $productName;
+                    $arBasketInfo [$i]["productId "] = $basketItem->getField('PRODUCT_ID');
+                    $arBasketInfo [$i]["quantity"] = $basketItem->getField('QUANTITY');
+                    $arBasketInfo [$i]["price"] = $basketItem->getPrice();
+                    $arBasketInfo [$i]["priceTotal"] = $basketItem->getPrice()*$basketItem->getField('QUANTITY');
+                }
+            } else {
+                echo "Заказ не найден";
+            }
+
+
+
+            $log = date('Y-m-d H:i:s') . ' onSaleOrderSavedHandler1 ' . print_r($arBasketInfo, true);
+            file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+            \Bitrix\Main\Diag\Debug::dumpToFile($log, 'onSaleOrderSavedHandler1' . date('d-m-Y; H:i:s'));
+        }
 
     }
 

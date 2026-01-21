@@ -9,9 +9,9 @@ return [
     'css' => [
         'src/style.css',
     ],
-    /*'rel' => [
+    'rel' => [
         'jquery3',
         'main.core'
-    ]*/
+    ]
 ];
 // \Bitrix\Main\UI\Extension::load('lab.mainjs');

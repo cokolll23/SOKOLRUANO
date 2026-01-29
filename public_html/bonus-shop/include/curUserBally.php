@@ -65,6 +65,9 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
                         "MESSAGE_ID" => "137",
                         "SUBJECT" => "Написать администратору",
                         "USE_CAPTCHA" => "N"
+                ),false,
+                array(
+                        "ACTIVE_COMPONENT" => "N"
                 )
         ); ?>
         <? $APPLICATION->IncludeComponent(
@@ -92,6 +95,9 @@ if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
                         "MESSAGE_ID" => "137",
                         "SUBJECT" => "Записать баллы бонусов",
                         "USE_CAPTCHA" => "N"
+                ),false,
+                array(
+                        "ACTIVE_COMPONENT" => "N"
                 )
         ); ?> <!--<a href="<?php /*= SITE_DIR */ ?>index.php#feedback"> Написать администратору </a>-->
     </div>

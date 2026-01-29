@@ -78,7 +78,7 @@ class SaleEventsHandlers
 
         if ($diffRes != 1) {
             global $APPLICATION;
-            $APPLICATION->ThrowException('Не можете заказать на эту сумму, Уменьшите количество товаров в блоке выше со списком товаров .  Стоимость заказа - ' . $orderPrice . ' руб. , у Вас в наличие - ' . $column33Value . ' баллов');
+            $APPLICATION->ThrowException('Не можете заказать на эту сумму, Уменьшите количество товаров в блоке выше со списком товаров .  Стоимость заказа - ' . $orderPrice . ' М-баллов , у Вас в наличие - ' . $column33Value . ' М-баллов');
             return false;
         }
 

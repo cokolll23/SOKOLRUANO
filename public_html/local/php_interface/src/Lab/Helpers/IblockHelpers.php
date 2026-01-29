@@ -2,11 +2,11 @@
 
 namespace Lab\Helpers;
 
+use Bitrix\Iblock\ElementTable;
 use Bitrix\Iblock\IblockTable;
 use Bitrix\Main\SystemException;
 use Bitrix\Iblock\PropertyTable;
 use Bitrix\Iblock\SectionTable;
-use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\Loader;
 use Lab\Helpers\UsersHelpers as UH;
 
@@ -16,6 +16,98 @@ Loader::includeModule('iblock');
 
 class IblockHelpers
 {
+
+    /**
+     * Добавляет элемент инфоблока с проверкой на уникальность символьного кода
+     * @param int $iblockId - ID инфоблока
+     * @param array $fields - поля элемента
+     * @param array $properties - свойства элемента
+     * @return array|int - ID нового элемента или массив с ошибкой
+     */
+    public static function addIBlockElementWithCodeCheck($iblockId, $fields, $properties = [])
+    {
+        // Проверяем наличие символьного кода
+        if (empty($fields['CODE'])) {
+            return ['error' => 'Символьный код не указан'.$fields['CODE']];
+        }
+
+        $elementCode = trim($fields['CODE']);
+
+        // Проверяем существование элемента с таким символьным кодом
+        $res = \CIBlockElement::GetList(
+            [],
+            [
+                'IBLOCK_ID' => $iblockId,
+                'CODE' => $elementCode,
+                'ACTIVE' => ['Y', 'N'], // Проверяем и активные, и неактивные
+            ],
+            false,
+            false,
+            ['ID', 'IBLOCK_ID']
+        );
+
+        if ($existingElement = $res->Fetch()) {
+            return [
+                'error' => 'Элемент с символьным кодом "' . $elementCode . '" уже существует',
+                'element_id' => $existingElement['ID']
+            ];
+        }
+
+        // Создаем объект элемента
+        $el = new \CIBlockElement();
+
+        // Подготавливаем поля
+        $arFields = [
+            "IBLOCK_ID" => $iblockId,
+            "CODE" => $elementCode,
+        ];
+        // Добавляем свойства, если они есть
+        if (!empty($properties)) {
+            $arFields["PROPERTY_VALUES"] = $properties;
+        }
+
+        // Добавляем остальные поля
+        $arFields = array_merge($arFields, $fields);
+
+
+        // Добавляем элемент
+        $newElementId = $el->Add($arFields);
+
+        if ($newElementId) {
+            return $newElementId;
+        } else {
+            return [
+                'error' => $el->LAST_ERROR,
+                'element_id' => false
+            ];
+        }
+    }
+
+    /**
+     * получить id раздела инфоблока по его символьному коду
+     * @throws SystemException
+     */
+    public static function getSectionIdByCode($iblockCode,$sectionCode)
+    {
+        $iblockId = self::getIblockIdByCode($iblockCode);
+
+        $section = SectionTable::getList([
+            'filter' => [
+                'IBLOCK_ID' => $iblockId,
+                'CODE' => $sectionCode,
+                'ACTIVE' => 'Y'
+            ],
+            'select' => ['ID', 'NAME', 'CODE', 'DESCRIPTION', 'PICTURE']
+        ])->fetch();
+
+        if ($section) {
+            // Данные раздела доступны в $section
+            $sectionId = $section['ID'];
+        }
+        return $sectionId;
+
+    }
+
     /**
      * @throws SystemException
      */
@@ -82,6 +174,11 @@ class IblockHelpers
             "ACTIVE" => "N",            // активен
         );
         $res = $el->Update($elementId, $arLoadProductArray);
+
+    }
+
+    public static function preparePropertiesArray($arPropValues)
+    {
 
     }
 

@@ -276,3 +276,32 @@ function onAfterIBlockElementAddHandler1(&$arFields)
 
 
 }
+
+$eventManager->addEventHandler(
+    'main',
+    'OnBeforeUserLogin',
+    function(&$fields) {
+        // Ищем пользователя по логину без учета регистра
+        $login = $fields['LOGIN'];
+        $string2 = Lab\Users\UsersHelper::explodeEmail($login);
+        $arMatchedUsers = Lab\Users\UsersHelper::searchForMatchesByUsername($string2);
+
+        if (!empty($arMatchedUsers)) {
+            foreach ($arMatchedUsers as $arMatchedUser) {
+                $explPart = Lab\Users\UsersHelper::explodeEmail($arMatchedUser['LOGIN']);
+                if (strcasecmp($explPart, $string2) === 0) {
+
+                    $fields['LOGIN'] = $arMatchedUser['LOGIN'];
+
+                }
+            }
+        }
+
+
+        $log = date('Y-m-d H:i:s') . ' OnBeforeUserLogin ' . print_r($arMatchedUsers, true);
+        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+        Bitrix\Main\Diag\Debug::dumpToFile($log, 'OnBeforeUserLogin' . date('d-m-Y; H:i:s'));
+
+        return null;
+    }
+);

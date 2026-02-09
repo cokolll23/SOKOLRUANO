@@ -2,35 +2,33 @@
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("test");
 
-?>
-<?php
-use Lab\Helpers\SaleHelpers as SaleHelpers;
-$arResQntt= SaleHelpers::getCurrentUserRealQuantityBasketProduct();
-pretty_print($arResQntt);
-?>
-<?php
-/*    $ORDER = \Bitrix\Sale\Order::load(58);
+use Lab\Users\UsersHelper;
 
-    CModule::IncludeModule('sale');
-    CModule::IncludeModule('catalog');
+$stringB = 'ziminSY@mos.ru';
+echo $string2 = UsersHelper::explodeEmail($stringB);
 
-     $res = \CSaleBasket::GetList(array(), array("ORDER_ID" => $ORDER)); // ID заказа
-    $json_product = array();
-    while ($arItem = $res->Fetch()) {
-    $json_product[] = array(
-    'name' => $arItem['NAME'],
-    'id' => $arItem['PRODUCT_ID'],
-    'price' => $arItem['PRICE'],
-    'quantity' => $arItem['QUANTITY']
-    );
+$arMatchedUsers = UsersHelper::searchForMatchesByUsername($string2);
+pretty_print($arMatchedUsers);
+
+if (!empty($arMatchedUsers)) {
+    foreach ($arMatchedUsers as $arMatchedUser) {
+        echo $explPart = UsersHelper::explodeEmail($arMatchedUser['LOGIN']);
+        if (strcasecmp($explPart, $string2) === 0) {
+
+            $checkUser = 1;
+
+        } else {
+            $checkUser = 0;
+        }
     }
-    foreach ($json as $item) {
-    $basketQuantity = $item['quantity'];
-    $quantityNow = \CCatalogProduct::GetByID($item['id'])['QUANTITY'];
-    $ar_res[] = \CCatalogProduct::GetByID($item['id']);
-    $quantityNew = $quantityNow + $basketQuantity;
-    $arFields = array('QUANTITY' => $quantityNew);// зарезервированное количество
-    \CCatalogProduct::Update($item['id'], $arFields);
-    }
-*/ ?>
+    echo $checkUser;
+}
+
+
+?>
+
+<?php
+
+?>
+
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

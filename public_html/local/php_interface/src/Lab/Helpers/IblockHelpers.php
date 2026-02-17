@@ -28,7 +28,7 @@ class IblockHelpers
     {
         // Проверяем наличие символьного кода
         if (empty($fields['CODE'])) {
-            return ['error' => 'Символьный код не указан'.$fields['CODE']];
+            return ['error' => 'Символьный код не указан' . $fields['CODE']];
         }
 
         $elementCode = trim($fields['CODE']);
@@ -87,7 +87,7 @@ class IblockHelpers
      * получить id раздела инфоблока по его символьному коду
      * @throws SystemException
      */
-    public static function getSectionIdByCode($iblockCode,$sectionCode)
+    public static function getSectionIdByCode($iblockCode, $sectionCode)
     {
         $iblockId = self::getIblockIdByCode($iblockCode);
 
@@ -129,9 +129,9 @@ class IblockHelpers
         return $foundIblocks[0]['ID'];
     }
 
-    /*
-    * получить id раздела ИБ по коду ИБ и раздела
-    * */
+    /**
+     * получить id раздела ИБ по коду ИБ и раздела
+     * */
     public static function getGroupIdByCode(string $iblockCode, $groupCode, $SITE_ID): int
     {
         $iBlockId = self::getIblockIdByCode($iblockCode);
@@ -161,13 +161,13 @@ class IblockHelpers
 
         $PROP = $arPropValues;
 
-        $arLoadProductArray = Array(
+        $arLoadProductArray = array(
             //"MODIFIED_BY"    => $USER->GetID(), // элемент изменен текущим пользователем
-            "PREVIEW_TEXT"   => "текст для списка элементов",
-            "DETAIL_TEXT"    => "текст для детального просмотра",
+            "PREVIEW_TEXT" => "текст для списка элементов",
+            "DETAIL_TEXT" => "текст для детального просмотра",
         );
-        if(!empty($PROP)){
-            $arLoadProductArray['PROPERTY_VALUES']=$PROP;
+        if (!empty($PROP)) {
+            $arLoadProductArray['PROPERTY_VALUES'] = $PROP;
         }
 
         $arLoadProductArray = array(
@@ -225,7 +225,7 @@ class IblockHelpers
         return $arUsers;
     }
 
-    public static function getPropsListIblock($iblockCode = 'sotrudniki') : array
+    public static function getPropsListIblock($iblockCode = 'sotrudniki'): array
     {
         $iblockId = self::getIblockIdByCode($iblockCode);
         $properties = PropertyTable::getList([
@@ -270,14 +270,50 @@ class IblockHelpers
         return $iblockCode;
     }
 
+
+    /**
+     * получить значение  свойства по его Коду
+     */
+    public static function getPropertyValueByElementCode($elementCode, $propertyCode = 'COLUMN34')
+    {
+        // $elementCode Email user
+
+        $res = \CIBlockElement::GetList(
+            [],
+            [
+                'CODE' => $elementCode,
+                'ACTIVE' => 'Y',
+            ],
+            false,
+            false,
+            [
+                'ID',
+                'NAME',
+                'PROPERTY_' . $propertyCode,
+            ]
+        );
+
+        if ($arElement = $res->Fetch()) {
+            $PropertyValue = $arElement['PROPERTY_' . $propertyCode . '_VALUE'];
+
+        }
+        return $PropertyValue;
+    }
+
+    /**
+     * получить ID свойства по его коду
+     * array(ID NAME PROPERTY_$propertyCode_VALUE)
+     * $iblockName
+     * $propVal by Code
+     */
     public static function getPropertyIdByCode($iblockCode, $propertyCode)
     {
-// Получаем ID инфоблока по коду
+        // Получаем ID инфоблока по коду
         $res = \CIBlock::GetList([], ['CODE' => $iblockCode]);
         if ($iblock = $res->Fetch()) {
             $iblockId = $iblock['ID'];
 
-// Получаем ID свойства по коду
+            // Получаем ID свойства по коду
             $propRes = \CIBlockProperty::GetList(
                 [],
                 [
@@ -294,13 +330,13 @@ class IblockHelpers
         return false;
     }
 
-    /*
-    * получить инфу элемента иб по емеил текущего пользователя
-    * array(ID NAME PROPERTY_$propertyCode_VALUE)
-    * output $iblockId
-    * $iblockName
-    * $propVal by Code
-    */
+    /**
+     * получить инфу элемента иб по емеил текущего пользователя
+     * array(ID NAME PROPERTY_$propertyCode_VALUE)
+     * output $iblockId
+     * $iblockName
+     * $propVal by Code
+     */
     public static function getPropertyValIblockByEmailCurrentUser($iblockCode, $propertyCode)
     {
         $currentUserEmail = UH::getCurrentUserEmail();
@@ -331,7 +367,7 @@ class IblockHelpers
         return $propVal;
     }
 
-    public static function getIblockElementInfo($iblockCode, $userEmailIbElCode)
+    public static function getIblockElementInfo($iblockCode, $userEmailIbElCode): array
     {
         $IBLOCK_ID = self::getIblockIdByCode($iblockCode);
         $arElVal = \CIBlockElement::GetList(

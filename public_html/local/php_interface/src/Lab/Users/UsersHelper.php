@@ -21,17 +21,6 @@ class UsersHelper
                 ]
             ]);
 
-        $result = $query->exec();
-
-        $query
-            ->setSelect(['ID', 'LOGIN', 'NAME', 'LAST_NAME', 'EMAIL'])
-            ->setFilter([
-                [
-                    'LOGIN' => '%' . $searchString . '%'
-
-                ]
-            ]);
-
         $result = $query->exec()->fetchAll();
 
         return $result;
@@ -57,5 +46,7 @@ class UsersHelper
         }
         return $blEmail;
     }
+
+
 
 }

@@ -6,7 +6,10 @@ namespace Lab\EventsHandlers;
 use Bitrix\Sale;
 use Bitrix\Catalog;
 use Bitrix\Main\Diag\Debug;
+use Bitrix\Main\Entity;
+use Bitrix\Main\Type\DateTime;
 use Lab\Helpers\IblockHelpers as IH;
+use Lab\Helpers\RecalculateScores as RS;
 
 
 class SaleEventsHandlers
@@ -41,8 +44,11 @@ class SaleEventsHandlers
         }
     }
 
+
+
     public static function onBeforeOrderAdd(&$arFields)
     {
+
         $orderPrice = $arFields['PRICE'];
         $USER_EMAIL = $arFields['USER_EMAIL'];
         $iblockId = IH::getIblockIdByCode('sotrudniki');
@@ -82,15 +88,13 @@ class SaleEventsHandlers
             return false;
         }
 
-        $log = date('Y-m-d H:i:s') . ' OnAfterIBlockElementUpdateHandler ' . print_r($arFields, true);
-        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-
     }
 
     // todo  изменение статуса заказа на D Выполнен
     public static function OnSaleOrderSavedHandler1(\Bitrix\Main\Event $event)
     {
         $order = $event->getParameter("ENTITY");
+        // если заказ отменен добавляем баллы назад
         if ($order->isCanceled() && $order->getField("STATUS_ID") != "D") {
             $order->setField("STATUS_ID", "D");
 
@@ -115,6 +119,7 @@ class SaleEventsHandlers
                 $propertyId = IH::getPropertyIdByCode('sotrudniki', 'COLUMN33');
                 $elementCode = $customerProperties['EMAIL'];
                 $propertyCode = 'COLUMN33';
+                $propertyCode34 = 'COLUMN34';
 
                 $COLUMN33_Result = \CIBlockElement::GetList(
                     [],
@@ -128,25 +133,30 @@ class SaleEventsHandlers
                     [
                         'ID',
                         'NAME',
-                        'PROPERTY_' . $propertyCode
+                        'PROPERTY_' . $propertyCode,
+                        'PROPERTY_' . $propertyCode34
                     ]
                 )->GetNext();
 
                 $COLUMN33_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode . '_VALUE'] ?? null;
+                $COLUMN34_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode34 . '_VALUE'] ?? null;
                 $elementId = $COLUMN33_Result['ID'];
 
                 $COLUMN33_ValueNew = (int)$COLUMN33_Value + (int)$customerProperties['PRICE'];
 
                 $arPrices = [$COLUMN33_Value, $customerProperties['PRICE'], $COLUMN33_ValueNew];
+                $elementPropColumn34Val= \Lab\Helpers\SaleHelpers::getPriceOrdersByUserId($userId);
+                RS::getTotalScores('sotrudniki', $customerProperties['EMAIL']);
 
                 // Устанавливаем значение свойства
-                \CIBlockElement::SetPropertyValuesEx(
+               /* \CIBlockElement::SetPropertyValuesEx(
                     $elementId,
                     $iblockId,
                     array(
-                        "COLUMN33" => $COLUMN33_ValueNew
+                        "COLUMN33" => $COLUMN33_ValueNew,
+                        "COLUMN34" => $elementPropColumn34Val,
                     )
-                );
+                );*/
 
                 foreach ($basket as $i => $basketItem) {
                     $productName = $basketItem->getField('NAME');
@@ -184,9 +194,7 @@ class SaleEventsHandlers
             }
 
 
-           /* $log = date('Y-m-d H:i:s') . ' onSaleOrderSavedHandler1 ' . print_r($arBasketInfo, true);
-            file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-            \Bitrix\Main\Diag\Debug::dumpToFile($log, 'onSaleOrderSavedHandler1' . date('d-m-Y; H:i:s'));*/
+
         }
 
     }

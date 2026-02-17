@@ -9,6 +9,7 @@ if (file_exists(__DIR__ . '/includes/pretty-print/pretty_print.php')) {
 use Lab\EventsHandlers\IblockEventsHandlers as EH;
 use Lab\Helpers\IblockHelpers as IH;
 use \Lab\Helpers\UsersHelpers as UH;
+use Lab\Helpers\RecalculateScores as RS;
 
 \Bitrix\Main\UI\Extension::load('lab.mainjs');
 // , BaryshevaAD1@mos.ru, StarenkoOG@mos.ru, PORT-communications@mos.ru
@@ -25,9 +26,11 @@ if (!CModule::IncludeModule("iblock")) {
 // SALE ORDERS
 //todo Отменяем создание заказа до его создания при цена заказа выше определенной цифры https://chat.deepseek.com/a/chat/s/6e829ee6-c90c-46b8-a2f5-dbab70924b95
 AddEventHandler("sale", "OnBeforeOrderAdd", ['Lab\EventsHandlers\SaleEventsHandlers', 'onBeforeOrderAdd']);
+//\Bitrix\Main\EventManager::getInstance()->addEventHandler('sale', 'OnSaleOrderBeforeSaved', ['Lab\EventsHandlers\SaleEventsHandlers', 'onBeforeOrderAdd1']);
 
 // todo  при Отмене заказа из личного кабинета покупателя изменяет статус на D
 $eventManager->addEventHandler("sale", "OnSaleOrderSaved", ['Lab\EventsHandlers\SaleEventsHandlers','OnSaleOrderSavedHandler1']);
+
 // todo  уменьшение количества товара и итого баллов у юзера при оформлении заказа битрикс
 // в SaleEventsHandlers не работает много переадресации
 //$eventManager->addEventHandler('sale', 'OnSaleOrderSaved',['Lab\EventsHandlers\SaleEventsHandlers','onSaleOrderSavedHandler']);
@@ -38,6 +41,7 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
     $isNew = $event->getParameter("IS_NEW");
     if ($isNew) {
         $basket = $order->getBasket();
+        // вычитаем кол-во шт из Доступного кол-ва при создании Заказа
         foreach ($basket as $basketItem) {
             $productId = $basketItem->getProductId();
             $quantity = $basketItem->getQuantity();
@@ -56,6 +60,8 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
             }
 
         }
+
+        // вычитаем баллы из Итого при создании Заказа
         if (in_array($order->getField('STATUS_ID'), array('N'))) {
 
             $ORDER = \Bitrix\Sale\Order::load($order->getId());
@@ -78,10 +84,14 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
             $customerProperties['PRICE'] = $orderPrice;
             $elementCode = $customerProperties['EMAIL'];
             $propertyCode = 'COLUMN33';
+            $propertyCode34 = 'COLUMN34';
 
             $iblockId = IH::getIblockIdByCode('sotrudniki');
             $propertyId = IH::getPropertyIdByCode('sotrudniki', 'COLUMN33');
             $elementId = IH::getIblockElementInfo('sotrudniki', $elementCode)['ID'];
+
+            // получить стоимость всех не отмененных заказов покупателя по его ID пользователя
+            $elementPropColumn34Val= \Lab\Helpers\SaleHelpers::getPriceOrdersByUserId($userId);
 
             $COLUMN33_Result = \CIBlockElement::GetList(
                 [],
@@ -95,7 +105,7 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
                 [
                     'ID',
                     'NAME',
-                    'PROPERTY_' . $propertyCode
+                    'PROPERTY_' . $propertyCode,
                 ]
             )->GetNext();
 
@@ -107,27 +117,31 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
             }
 
             $COLUMN33_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode . '_VALUE'] ?? null;
+            //$COLUMN34_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode34 . '_VALUE'] ?? null;
             $elementId = $COLUMN33_Result['ID'];
+
+           // $COLUMN34_ValueNew = $COLUMN34_Value + (int)$customerProperties['PRICE'];
+
 
             $COLUMN33_ValueNew = (int)$COLUMN33_Value - (int)$customerProperties['PRICE'];
 
             $arPrices = [$COLUMN33_Value, $customerProperties['PRICE'], $COLUMN33_ValueNew];
 
             // Устанавливаем значение свойства
-            \CIBlockElement::SetPropertyValuesEx(
+            /*\CIBlockElement::SetPropertyValuesEx(
                 $elementId,
                 $iblockId,
                 array(
-                    "COLUMN33" => $COLUMN33_ValueNew
+                    "COLUMN33" => $COLUMN33_ValueNew,
+                    "COLUMN34" => $elementPropColumn34Val
                 )
-            );
+            );*/
+            RS::getTotalScores('sotrudniki',  $elementCode ) ;
 
-            /* $log = date('Y-m-d H:i:s') . ' onStatusChange' . print_r($propsNotZero, true);
-             file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-             Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));*/
         }
     }
 };
+
 //todo при изменении статуса на D  id F  вычитает стоимость заказа из значения св-ва COLUMN33 данного покупателя вычисляем по E-mail
 // и при отмене из кабинета добавляет
 //$eventManager->addEventHandler('sale', 'OnSaleStatusOrderChange', 'statusChange');
@@ -215,7 +229,7 @@ AddEventHandler("main", "OnAfterUserUpdate", ['Lab\EventsHandlers\UserEventsHand
 // todo регистрация пользователя не из АНО после добавления в иб ТАБЛИЦА БОНУСОВ в группу Все покупатели [ 24 CRM_SHOP_BUYER]
 // todo удаление пользователя не из АНО после добавления в иб ТАБЛИЦА БОНУСОВ в группу Все покупатели [ 24 CRM_SHOP_BUYER]
 $eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementAddHandler']);
-// todo сделать хендлер при изменении элемента складывать значения свойств
+// todo  при изменении элемента складывать значения свойств
 $eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementUpdateHandler']);
 //$eventManager->addEventHandler("iblock", "OnAfterIBlockElementDelete", ['Lab\EventsHandlers\IblockEventsHandlers','onAfterIBlockElementDeleteHandler']);
 $eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", 'onAfterIBlockElementAddHandler1');
@@ -276,7 +290,7 @@ function onAfterIBlockElementAddHandler1(&$arFields)
 
 
 }
-
+// регистронезависимый логин
 $eventManager->addEventHandler(
     'main',
     'OnBeforeUserLogin',
@@ -298,7 +312,7 @@ $eventManager->addEventHandler(
         }
 
 
-        $log = date('Y-m-d H:i:s') . ' OnBeforeUserLogin ' . print_r($arMatchedUsers, true);
+        $log = date('Y-m-d H:i:s') . ' OnBeforeUserLogin ' . print_r($fields, true);
         file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
         Bitrix\Main\Diag\Debug::dumpToFile($log, 'OnBeforeUserLogin' . date('d-m-Y; H:i:s'));
 

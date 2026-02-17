@@ -1,25 +1,25 @@
 <?php
 global $USER;
 
-use Lab\Helpers\UsersHelpers as Users;
+use Lab\Helpers\UsersHelpers as UH;
 use Lab\Helpers\IblockHelpers as IH;
 
 $ar = IH::getPropertyValIblockByEmailCurrentUser('sotrudniki', 'COLUMN33');
 //pretty_print($ar);
 global $USER;
-$userId = $USER->GetID();
+ $userId = $USER->GetID();
+// Email текущего пользователя
+$currEmail = UH::getCurrentUserEmail();
+// Email  пользователя по его id
+$userEmail = UH::getUserEmailByUserId(664);
 
-if ($userId > 0) {
-    // Запрашиваем профиль пользователя
-    $rsUser = \CUser::GetByID($userId);
-    if ($arUser = $rsUser->Fetch()) {
-        $userEmail = $arUser["EMAIL"];
-    }
-}
+$sumBallov = IH::getPropertyValueByElementCode($currEmail, 'COLUMN33');
 
-if ($ar['PROPERTY_COLUMN33_VALUE'] != '') {
 
-    $propertyVal = 'У вас сумма баллов : ' . $ar['PROPERTY_COLUMN33_VALUE'];
+
+if ($sumBallov) {
+
+    $propertyVal = 'У вас сумма баллов : ' . $sumBallov;
 } else {
     $propertyVal = 'У вас на данный момент нет баллов';
 } ?>

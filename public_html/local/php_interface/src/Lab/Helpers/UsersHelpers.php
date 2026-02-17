@@ -3,7 +3,6 @@
 namespace Lab\Helpers;
 
 use \Bitrix\Main\UserGroupTable as UserGroupTable;
-
 use Bitrix\Main\Loader;
 use Bitrix\Main\UserTable;
 use Bitrix\Main\Security\Password;
@@ -22,12 +21,36 @@ class UsersHelpers
 
     }
 
+    /**
+     * Получаем ID юзера пользователя по его Email
+     */
+
+    public static function getUserIdIdByUserEmail($email)
+    {
+        $user = UserTable::getList([
+            'select' => ['ID'], // Выбираем только ID
+            'filter' => ['=EMAIL' => $email], // Фильтр по email
+            'limit' => 1 // На всякий случай ограничиваем одним результатом
+        ])->fetch();
+
+        if ($user) {
+            $userEmail = $user['ID'];
+            return $userEmail;
+        } else {
+            //echo "Пользователь с email " . $email . " не найден.";
+            global $APPLICATION;
+            $APPLICATION->ThrowException('Пользователь с email  ' . $email . ' не найден. ');
+            return false;
+        }
+
+    }
+
 
     /**
      * Получаем ID группы пользователей по ее символьный код группы
      */
 
-    public static function getUsersGroupIdByCode(string $groupCode) : int
+    public static function getUsersGroupIdByCode(string $groupCode): int
     {
         $groupId = \Bitrix\Main\GroupTable::getList([
             'filter' => ['STRING_ID' => $groupCode],
@@ -161,6 +184,12 @@ class UsersHelpers
         }
         return $userEmail;
     }
+
+    /**
+     * получить Email пользователя по его id
+     * @param $userId
+     * @return mixed
+     */
     public static function getUserEmailByUserId($userId)
     {
         if ($userId > 0) {

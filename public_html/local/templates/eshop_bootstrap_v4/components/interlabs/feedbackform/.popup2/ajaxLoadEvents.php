@@ -11,7 +11,7 @@ if ($request->isAjaxRequest() && $request->get("action") == "propsEventsList" ) 
 
 
     ob_start();
-    $arProps=IblockHelpers::getPropsListIblock('sotrudniki');
+    $arProps=IblockHelpers::getPropsListIblockForFeedBackForm('sotrudniki');
 
     $output = ob_get_contents();
     ob_end_clean();

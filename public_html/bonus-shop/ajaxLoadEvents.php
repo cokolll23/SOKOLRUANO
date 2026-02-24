@@ -8,7 +8,7 @@ $request = $context->getRequest();
 
 if ($request->isAjaxRequest() && $request->get("action") == "propsEventsList" ) {
 
-    $arProps=Lab\Helpers\IblockHelpers::getPropsListIblock('sotrudniki');
+    $arProps=IblockHelpers::getPropsListIblockForFeedBackForm('sotrudniki');
 
     ob_start();?>
     <ul class="ul-events-props">

@@ -239,6 +239,24 @@ class IblockHelpers
         }
         return $arProps;
     }
+    public static function getPropsListIblockForFeedBackForm($iblockCode = 'sotrudniki'): array
+    {
+        $iblockId = self::getIblockIdByCode($iblockCode);
+        $properties = PropertyTable::getList([
+            'filter' => ['IBLOCK_ID' => $iblockId],
+            'order' => ['SORT' => 'ASC'],
+            'select' => ['*']
+        ]);
+
+        while ($property = $properties->fetch()) {
+            if ($property['CODE'] != 'COLUMN33' && $property['CODE'] != 'COLUMN34')
+            {
+                $arProps[] = $property;
+            }
+
+        }
+        return $arProps;
+    }
 
     public static function getSectionsListIblock($iblockCode = 'sotrudniki')
     {

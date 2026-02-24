@@ -3,6 +3,7 @@
 namespace Lab\EventsHandlers;
 
 use Lab\Helpers\IblockHelpers as IblockHelpers;
+use Lab\Helpers\IblockHelpers as IH;
 use Lab\Helpers\SaleHelpers;
 use Lab\Helpers\RecalculateScores as RS;
 
@@ -18,7 +19,7 @@ class IblockEventsHandlers
         $iblockCode = IblockHelpers::getIBlockCodeById($arFields['IBLOCK_ID']);
         $propertyId = IblockHelpers::getPropertyIdByCode('sotrudniki', 'COLUMN33');
         $propertyIdColumn34 = IblockHelpers::getPropertyIdByCode('sotrudniki', 'COLUMN34');
-        $userEmail=$arFields['CODE'];
+        $userEmail = $arFields['CODE'];
 
         if ($iblockCode === 'sotrudniki') {
 
@@ -41,23 +42,23 @@ class IblockEventsHandlers
         $iblockId = $arFields['IBLOCK_ID']; // Замените на ваш ID инфоблока
         $elementId = $intElementID; // Замените на ID элемента
 
-        $arPropertyValueColumn34 =$arFields['PROPERTY_VALUES'][$propertyIdColumn34];
-        foreach ($arPropertyValueColumn34 as $item){
-            if(!empty($item['VALUE'])){
+        $arPropertyValueColumn34 = $arFields['PROPERTY_VALUES'][$propertyIdColumn34];
+        foreach ($arPropertyValueColumn34 as $item) {
+            if (!empty($item['VALUE'])) {
                 $propertyValueColumn34 = $item['VALUE'];
             }
         }
         $newValue = $summa - $propertyValueColumn34;
 
-        $totalPrise=RS::getTotalScores('sotrudniki', $userEmail);
+        $totalPrise = RS::getTotalScores('sotrudniki', $userEmail);
         // Устанавливаем значение свойства
-       /* \CIBlockElement::SetPropertyValuesEx(
-            $elementId,
-            $iblockId,
-            array(
-                "COLUMN33" => $newValue
-            )
-        );*/
+        /* \CIBlockElement::SetPropertyValuesEx(
+             $elementId,
+             $iblockId,
+             array(
+                 "COLUMN33" => $newValue
+             )
+         );*/
 
     }
 
@@ -117,6 +118,119 @@ class IblockEventsHandlers
                      "BODY" => $message,
                  )
              );*/
+
+        }
+
+
+    }
+
+    /**
+     * отправляет письмо после добавления элемента в иб interlabs.feedbackform Написать администратору
+     * @param $arFields
+     * @return void
+     */
+    public static function onAfterIBlockElementAddHandlerSendMail(&$arFields)
+    {
+        // todo отправка писем при добавлении сообщения обратной связи CODE interlabs.feedbackform
+        $IBLOCK_ID = $arFields['IBLOCK_ID'];
+        $IBLOCK_CODE = IH::getIBlockCodeById($IBLOCK_ID);
+        $elID = $arFields['ID'];
+
+
+        $server = \Bitrix\Main\Context::getCurrent()->getServer();
+        $domain = $server->getServerName();
+
+        if ($IBLOCK_CODE === 'interlabs.feedbackform') { // Из формы Написать администратору
+
+            $to = $adminEmail = 'cavjob@ya.ru';
+
+            $hrefToEditionElementInIB = "https://{$domain}/bitrix/admin/iblock_element_edit.php?IBLOCK_ID={$IBLOCK_ID}&type=feedbackmsgs&lang=ru&ID={$elID}&find_section_section=0&WF=Y";
+
+
+            $iblockName = \CIBlock::GetByID($IBLOCK_ID)->Fetch()['NAME'];
+
+            $subject = "=?UTF-8?B?" . base64_encode("Магазин бонусов форма Написать администратору") . "?=";
+
+            $message = <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пример письма</title>
+</head>
+<body>
+<p class='highlight'>Письмо от {$arFields['NAME']} </p>
+<p class='highlight'>Телефон: {$arFields ['PROPERTY_VALUES']['PHONE']} </p>
+<p class='highlight'>EMAIL: {$arFields['PROPERTY_VALUES']['EMAIL']} </p>
+<p class='highlight'>Сообщение: {$arFields['PROPERTY_VALUES']['MESSAGE']} </p>
+<a href="{$hrefToEditionElementInIB}">В сообщение</a>
+    
+</body>
+</html>
+HTML;
+
+            $headers = [
+                'MIME-Version: 1.0',
+                'Content-type: text/html; charset=utf-8',
+                'From: Магазин бонусов <ya@example.com>',
+                'Reply-To: ответ@example.com',
+                'X-Mailer: PHP/' . phpversion()
+            ];
+            if (mail($to, $subject, $message, implode("\r\n", $headers))) {
+                echo "<h2 style='color: green;'>Письмо отправлено администратору</h2>";
+            } else {
+                echo "Ошибка отправки";
+            }
+
+        }
+        if ($IBLOCK_CODE === 'interlabs.signscores') { // Из формы Написать администратору
+
+
+            $log = date('Y-m-d H:i:s') . ' interlabs.signscores ' . print_r($arFields, true);
+            file_put_contents($_SERVER["DOCUMENT_ROOT"] . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+            \Bitrix\Main\Diag\Debug::dumpToFile($log, 'interlabs.signscores' . date('d-m-Y; H:i:s'));
+
+            $to = $adminEmail = 'cavjob@ya.ru';
+
+            $hrefToEditionElementInIB = "https://{$domain}/bitrix/admin/iblock_element_edit.php?IBLOCK_ID={$IBLOCK_ID}&type=feedbackmsgs&lang=ru&ID={$elID}&find_section_section=0&WF=Y";
+
+
+            $iblockName = \CIBlock::GetByID($IBLOCK_ID)->Fetch()['NAME'];
+
+            $subject = "=?UTF-8?B?" . base64_encode("Магазин бонусов форма Запись М-баллов") . "?=";
+           /* [EVENT_CODE] => COLUMN12
+            [EVENT_NAME] => Проведение семинара/вебинара/экскурсии/мастер-классадля сотрудников (детей сотрудников) 20 б
+            [SCORES_QTT] => 10*/
+            $message = <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пример письма</title>
+</head>
+<body>
+<p class='highlight'>Письмо от {$arFields['NAME']} </p>
+<p class='highlight'>Телефон: {$arFields ['PROPERTY_VALUES']['PHONE']} </p>
+<p class='highlight'>EMAIL: {$arFields['PROPERTY_VALUES']['EMAIL']} </p>
+<p class='highlight'>Количество М-баллов: {$arFields['PROPERTY_VALUES']['SCORES_QTT']} </p>
+<p class='highlight'>Название мероприятия: {$arFields['PROPERTY_VALUES']['EVENT_NAME']} </p>
+<p class='highlight'>Код мероприятия: {$arFields['PROPERTY_VALUES']['EVENT_CODE']} </p>
+<a href="{$hrefToEditionElementInIB}">В сообщение {$hrefToEditionElementInIB}</a>
+    
+</body>
+</html>
+HTML;
+
+            $headers = [
+                'MIME-Version: 1.0',
+                'Content-type: text/html; charset=utf-8',
+                'From: Магазин бонусов <ya@example.com>',
+                'Reply-To: ответ@example.com',
+                'X-Mailer: PHP/' . phpversion()
+            ];
+            if (mail($to, $subject, $message)) {
+                echo "<h2 style='color: green;'>Письмо отправлено администратору</h2>";
+            } else {
+                echo "Ошибка отправки";
+            }
 
         }
 

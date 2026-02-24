@@ -29,7 +29,7 @@ AddEventHandler("sale", "OnBeforeOrderAdd", ['Lab\EventsHandlers\SaleEventsHandl
 //\Bitrix\Main\EventManager::getInstance()->addEventHandler('sale', 'OnSaleOrderBeforeSaved', ['Lab\EventsHandlers\SaleEventsHandlers', 'onBeforeOrderAdd1']);
 
 // todo  при Отмене заказа из личного кабинета покупателя изменяет статус на D
-$eventManager->addEventHandler("sale", "OnSaleOrderSaved", ['Lab\EventsHandlers\SaleEventsHandlers','OnSaleOrderSavedHandler1']);
+$eventManager->addEventHandler("sale", "OnSaleOrderSaved", ['Lab\EventsHandlers\SaleEventsHandlers', 'OnSaleOrderSavedHandler1']);
 
 // todo  уменьшение количества товара и итого баллов у юзера при оформлении заказа битрикс
 // в SaleEventsHandlers не работает много переадресации
@@ -91,7 +91,7 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
             $elementId = IH::getIblockElementInfo('sotrudniki', $elementCode)['ID'];
 
             // получить стоимость всех не отмененных заказов покупателя по его ID пользователя
-            $elementPropColumn34Val= \Lab\Helpers\SaleHelpers::getPriceOrdersByUserId($userId);
+            $elementPropColumn34Val = \Lab\Helpers\SaleHelpers::getPriceOrdersByUserId($userId);
 
             $COLUMN33_Result = \CIBlockElement::GetList(
                 [],
@@ -120,7 +120,7 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
             //$COLUMN34_Value = $COLUMN33_Result['PROPERTY_' . $propertyCode34 . '_VALUE'] ?? null;
             $elementId = $COLUMN33_Result['ID'];
 
-           // $COLUMN34_ValueNew = $COLUMN34_Value + (int)$customerProperties['PRICE'];
+            // $COLUMN34_ValueNew = $COLUMN34_Value + (int)$customerProperties['PRICE'];
 
 
             $COLUMN33_ValueNew = (int)$COLUMN33_Value - (int)$customerProperties['PRICE'];
@@ -136,11 +136,13 @@ function OnSaleOrderSavedHandler(\Bitrix\Main\Event $event)
                     "COLUMN34" => $elementPropColumn34Val
                 )
             );*/
-            RS::getTotalScores('sotrudniki',  $elementCode ) ;
+            RS::getTotalScores('sotrudniki', $elementCode);
 
         }
     }
-};
+}
+
+;
 
 //todo при изменении статуса на D  id F  вычитает стоимость заказа из значения св-ва COLUMN33 данного покупателя вычисляем по E-mail
 // и при отмене из кабинета добавляет
@@ -219,7 +221,6 @@ function statusChange(\Bitrix\Main\Event $event)
 }
 
 
-
 // todo действия при регистрации и удалении пользователя если пользователь из группы K-Team: Сотрудники [12 EMPLOYEES_s1]
 // todo если из АНО
 AddEventHandler("main", "OnAfterUserAdd", ['Lab\EventsHandlers\UserEventsHandlers', 'onAfterUserAddHandler']);
@@ -232,90 +233,9 @@ $eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", ['Lab\Events
 // todo  при изменении элемента складывать значения свойств
 $eventManager->addEventHandler("iblock", "OnAfterIBlockElementUpdate", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementUpdateHandler']);
 //$eventManager->addEventHandler("iblock", "OnAfterIBlockElementDelete", ['Lab\EventsHandlers\IblockEventsHandlers','onAfterIBlockElementDeleteHandler']);
-$eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", 'onAfterIBlockElementAddHandler1');
-function onAfterIBlockElementAddHandler1(&$arFields)
-{
-    // todo отправка писем при добавлении сообщения обратной связи CODE interlabs.feedbackform
-    $IBLOCK_ID = $arFields['IBLOCK_ID'];
-    $IBLOCK_CODE = IH::getIBlockCodeById($IBLOCK_ID);
-
-    if ($IBLOCK_CODE === 'interlabs.feedbackform') {
-
-        $log = date('Y-m-d H:i:s') . ' interlabs.feedbackform ' . print_r($arFields, true);
-        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-        Bitrix\Main\Diag\Debug::dumpToFile($log, 'interlabs.feedbackform' . date('d-m-Y; H:i:s'));
-
-         $adminEmail = 'cavjob@ya.ru';
-         $iblockName = CIBlock::GetByID($IBLOCK_ID)->Fetch()['NAME'];
-
-         $subject = "Добавлен новый элемент в инфоблок «{$iblockName}»";
-
-         $message = "
-             <h3>Новый элемент #{$arFields['ID']}</h3>
-             <p><strong>Название:</strong> {$arFields['NAME']}</p>
-             <p><strong>Дата создания:</strong> ".FormatDate('j F Y H:i')."</p>
-         ";
-
-         if (!empty($arFields['PREVIEW_TEXT'])) {
-             $message .= "<p><strong>Описание:</strong> {$arFields['PREVIEW_TEXT']}</p>";
-         }
-
-         $message .= "
-             <p>
-                 <a href='/bitrix/admin/iblock_element_edit.php?IBLOCK_ID={$IBLOCK_ID}&type=content&ID={$arFields['ID']}'>
-                     Редактировать элемент
-                 </a>
-             </p>
-         ";
-
-        $to = "cavjob@ya.ru"; // Адрес получателя
-        $subject = "Привет из PHP!"; // Тема письма
-        $message = "Это тестовое письмо, отправленное с помощью функции mail() в PHP."; // Тело письма
-        $headers = "From: sender@example.com\r\n"; // Заголовки
-
-      /*  mail($to, $subject, "Текст письма \n 1-ая строчка \n 2-ая строчка \n 3-ая строчка",$headers);
+//$eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", 'onAfterIBlockElementAddHandler1');
+//$eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", 'onAfterIBlockElementAddHandlerSendMail');
+$eventManager->addEventHandler("iblock", "OnAfterIBlockElementAdd", ['Lab\EventsHandlers\IblockEventsHandlers', 'onAfterIBlockElementAddHandlerSendMail']);
 
 
-        CEvent::SendImmediate(
-             "WF_NEW_IBLOCK_ELEMENT",
-             SITE_ID,
-             array(
-                 "EMAIL_TO" => $adminEmail,
-                 "SUBJECT" => $subject,
-                 "BODY" => $message,
-             )
-         );*/
 
-    }
-
-
-}
-// регистронезависимый логин
-$eventManager->addEventHandler(
-    'main',
-    'OnBeforeUserLogin',
-    function(&$fields) {
-        // Ищем пользователя по логину без учета регистра
-        $login = $fields['LOGIN'];
-        $string2 = Lab\Users\UsersHelper::explodeEmail($login);
-        $arMatchedUsers = Lab\Users\UsersHelper::searchForMatchesByUsername($string2);
-
-        if (!empty($arMatchedUsers)) {
-            foreach ($arMatchedUsers as $arMatchedUser) {
-                $explPart = Lab\Users\UsersHelper::explodeEmail($arMatchedUser['LOGIN']);
-                if (strcasecmp($explPart, $string2) === 0) {
-
-                    $fields['LOGIN'] = $arMatchedUser['LOGIN'];
-
-                }
-            }
-        }
-
-
-        $log = date('Y-m-d H:i:s') . ' OnBeforeUserLogin ' . print_r($fields, true);
-        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-        Bitrix\Main\Diag\Debug::dumpToFile($log, 'OnBeforeUserLogin' . date('d-m-Y; H:i:s'));
-
-        return null;
-    }
-);

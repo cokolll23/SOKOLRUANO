@@ -26,7 +26,7 @@ class UserEventsHandlers
             $userName = $arFields["LAST_NAME"] . ' ' . $arFields["NAME"];
             $res = IblockHelpers::addElsToIblock('sotrudniki', $userId, $userName, $arFields["EMAIL"], 'ano', 's2');
             $log = date('Y-m-d H:i:s') . ' OnAfterUserAddHandler ' . print_r($arFields, true);
-            file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+            file_put_contents($_SERVER["DOCUMENT_ROOT"] . '/log.txt', $log . PHP_EOL, FILE_APPEND);
             \Bitrix\Main\Diag\Debug::dumpToFile($res, 'OnAfterUserAddHandler' . date('d-m-Y; H:i:s'));
         };
     }
@@ -49,9 +49,29 @@ class UserEventsHandlers
             $res = $el->Update($PRODUCT_ID, $arLoadProductArray);
         }
         $log = date('Y-m-d H:i:s') . ' onAfterUserUpdateHandler ' . print_r($arFields, true);
-        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+        file_put_contents($_SERVER["DOCUMENT_ROOT"] . '/log.txt', $log . PHP_EOL, FILE_APPEND);
         \Bitrix\Main\Diag\Debug::dumpToFile($log, 'onAfterUserUpdateHandler' . date('d-m-Y; H:i:s'));
     }
 
+// Функция-обработчик
+    public static function onAfterUserRegisterHandler(&$arFields)
+    {
+        // Проверяем, что регистрация прошла успешно (присвоен ID)
+        if ($arFields["USER_ID"] > 0) {
+            // Здесь можно написать свой код: отправить доп. уведомление, записать в лог и т.д.
+            $userId = $arFields["USER_ID"];
+            $userEmail = $arFields["EMAIL"];
 
+            // Пример: запись в лог события
+            CEventLog::Add(array(
+                "SEVERITY" => "INFO",
+                "AUDIT_TYPE_ID" => "USER_REGISTER_SUCCESS",
+                "DESCRIPTION" => "Зарегистрирован новый пользователь ID: " . $userId . ", Email: " . $userEmail,
+            ));
+        }
+        $log = date('Y-m-d H:i:s') . ' OnAfterIBlockElementUpdateHandler ' . print_r($arFields, true);
+        file_put_contents($_SERVER["DOCUMENT_ROOT"] . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+        Bitrix\Main\Diag\Debug::dumpToFile($log, '$event onStatusChange' . date('d-m-Y; H:i:s'));
+
+    }
 }
